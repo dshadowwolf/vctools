@@ -54,9 +54,24 @@ void gpio_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 			value >>= 1;
 			old_value >>= 1;
 		}
+	} else if (address >= VC_GPIO_LEV0 && address <= VC_GPIO_LEV1) {
+		/* TODO */
+		printf("Address %d value %d\n", address, value);
+		//assert(0 && "GPIO_LEVx not implemented!\n");
+		(void)emul;
+		(void)address;
+		(void)value;
+	} else if (address == VC_GPIO_PUD && address <= VC_GPIO_PUDCLK1) {
+		/* TODO */
+		printf("Address %d value %d\n", address, value);
+		//assert(0 && "GPIO_PUD & GPIOPUDCLKx not implemented!\n");
+		(void)emul;
+		(void)address;
+		(void)value;
 	} else {
 		/* TODO */
-		assert(0 && "Not implemented!\n");
+		printf("Address %x value %d\n", address, value);
+		//assert(0 && "Not implemented!\n");
 		(void)emul;
 		(void)address;
 		(void)value;

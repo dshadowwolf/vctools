@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "Could not open the bootcode file!\n");
 			return -1;
 		}
-		vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000000);
+		vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
 	}
 	/* start the emulator */
 	/* TODO */

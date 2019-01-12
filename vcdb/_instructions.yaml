@@ -218,7 +218,7 @@ function_lists:
         code: |
           void btst(int d, int32_t a, int32_t b) {
               int32_t tmp_sr = get_reg(sr);
-              tmp_sr &= ~0xf
+              tmp_sr &= ~0xf;
               tmp_sr |= 0xa;
               if (a & (1 << b)) {
                   tmp_sr &= ~0xa;
@@ -513,33 +513,39 @@ function_lists:
 
 instructions:
   # 16-bit instructions
+  - name: bkpt
+    pattern: 0000 0000 0000 0000
+    code: |
+      error:("TBD");
   - name: nop
     pattern: 0000 0000 0000 0001
-  - name: wait
+    code: |
+      error("TBD");
+  - name: wait # sleep
     pattern: 0000 0000 0000 0010
   - name: user
     pattern: 0000 0000 0000 0011
-  - name: enable
+  - name: enable # ei
     pattern: 0000 0000 0000 0100
     code: |
       set_reg(sr, get_reg(sr) | (1 << 30));
-  - name: disable
+  - name: disable # di
     pattern: 0000 0000 0000 0101
     code: |
       set_reg(sr, get_reg(sr) | ~(1 << 30));
-  - name: clr
+  - name: clr # cbclr
     pattern: 0000 0000 0000 0110
     code: |
       set_reg(sr, get_reg(sr) & ~0x30);
-  - name: inc
+  - name: inc # cbadd1
     pattern: 0000 0000 0000 0111
     code: |
       set_reg(sr, ((get_reg(sr) & 0x30) + 0x10) & 0x30);
-  - name: chg
+  - name: chg # cbadd2
     pattern: 0000 0000 0000 1000
     code: |
       set_reg(sr, get_reg(sr) ^ 0x20);
-  - name: dec
+  - name: dec # cbadd3
     pattern: 0000 0000 0000 1001
     code: |
       set_reg(sr, ((get_reg(sr) & 0x30) - 0x10) & 0x30);
@@ -558,25 +564,25 @@ instructions:
     pattern: 0000 0000 010 Rd:5
     code: |
       set_reg(pc, get_reg(Rd));
-  - name: b Rd
+  - name: b Rd # bl Rd
     pattern: 0000 0000 011 Rd:5
     code: |
       set_reg(lr, get_reg(pc) + 2);
       set_reg(pc, get_reg(Rd));
-  - name: tbb Rd
+  - name: tbb Rd # switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
       error("TBD");
-  - name: tbb Rd
+  - name: tbb Rd # switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |
       error("TBD");
-  - name: mov Rd, cpuid
+  - name: mov Rd, cpuid # version Rd
     pattern: 0000 0000 111 Rd:5
     code: |
       // TODO: compute the proper coreid
       set_reg(Rd, 0x04000104);
-  - name: swi imm
+  - name: swi imm # swi u
     pattern: 0000 0001 11 imm:6
     code: |
       interrupt(0x20 + (imm & 31), "swi");

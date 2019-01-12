@@ -14,25 +14,25 @@ desc: |
   OTP over serial: https://gist.github.com/3972820.
 registers:
   0x0:
-    type: UNKNOWN
+    name: OTP_BOOTMODE_REG
   0x4:
-    type: UNKNOWN
+    name: OTP_CONFIG_REG
   0x8:
-    type: UNKNOWN
+    name: OTP_CTRL_LOW_REG
   0xc:
-    type: UNKNOWN
+    name: OTP_CTRL_HIGH_REG
   0x10:
-    type: UNKNOWN
+    name: OTP_STATUS_REG
   0x14:
-    type: UNKNOWN
+    name: OTP_BITSEL_REG
   0x18:
-    type: UNKNOWN
+    name: OTP_DATA_REG
   0x1c:
-    type: UNKNOWN
+    name: OTP_ADDR_REG
   0x20:
-    type: UNKNOWN
+    name: OTP_WRITE_DATA_READ_REG
   0x24:
-    type: UNKNOWN
+    name: OTP_INIT_STATUS_REG
 types:
   UNKNOWN:
     name: UNKNOWN
