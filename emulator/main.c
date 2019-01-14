@@ -17,6 +17,9 @@ extern void initStackWindow(struct bcm2835_emul *emul);
 extern void updateStackWindow();
 extern void initMessagesWindow(struct bcm2835_emul *emul);
 extern void commandMSG(int key);
+extern void memScrollUp();
+extern void memScrollDown();
+extern void print_log(const char *fmt, ...);
 
 int load_file(struct bcm2835_emul *emul,
               const char *filename,
@@ -134,6 +137,7 @@ int main(int argc, char **argv) {
 	}
 	/* start the emulator */
 	/* TODO */
+	int paused = 0, step = 0;
 	    initscr();
   start_color();
   init_pair(0, COLOR_WHITE, COLOR_BLACK);
@@ -151,9 +155,11 @@ int main(int argc, char **argv) {
   initMemoryWindow(emul, 'r');
   initStackWindow(emul);
   initMessagesWindow(emul);
-	for (i = 0; i < 10000; i++) {
+	for (;;) {
 	  //		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
+	  if(paused==0 && step == 0) {
 		vc4_emul_step(emul->vc4);
+	  }
 		updateRegisterWindow();
 		updateMemoryWindow();
 		updateStackWindow();
@@ -161,9 +167,60 @@ int main(int argc, char **argv) {
 
 		int key = getch();
 		switch( key ) {
-		case KEY_EXIT:
 		case KEY_F(1):
 		  goto exit;
+		case KEY_F(2):
+		  if(paused) {
+		    paused = 0;
+		    timeout(0);
+		  } else {
+		    paused = 1;
+		    timeout(-1);
+		  }
+		  break;
+		case KEY_F(3):
+		  if(step == 0) step = 1;
+		  break;
+		case KEY_F(4):
+		  if(paused == 0 && step) vc4_emul_step(emul->vc4);
+		  break;
+		case KEY_F(5):
+		  print_log("RESET for single-step!\n");
+		  step = 1;
+		  emul->vc4 = vc4_emul_init(emul);
+		  memory_init(emul);
+		  if (mmc_init(emul, sdcard_file) != 0) {
+		    print_log("Error: Cannot initialize MMC.\n");
+		    return -1;
+		  }
+		  aux_init(emul);
+		  otp_init(emul);
+		  gpio_init(emul);
+		  timer_init(emul);
+		  cm_init(emul);
+		  inte_init(emul);
+		  /* load the boot code into memory */
+		  if (rom_file != NULL) {
+		    if (load_file(emul, rom_file, 0x60000000) != 0) {
+		      print_log("Could not open the bootrom file!\n");
+		      return -1;
+		    }
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x60000000);
+		  }
+		  if (bootcode_file != NULL) {
+		    if (load_file(emul, bootcode_file, 0x80000000) != 0) {
+		      print_log("Could not open the bootcode file!\n");
+		      return -1;
+		    }
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
+		  }
+		  break;
+		case KEY_PPAGE:
+		  memScrollDown();
+		  break;
+		case KEY_NPAGE:
+		  memScrollUp();
+		  break;
 		case KEY_UP:
 		case KEY_DOWN:
 		  commandMSG(key);
@@ -175,9 +232,8 @@ int main(int argc, char **argv) {
 	for(;;) {
 	  cmd = getch();
 	  switch( cmd ) {
-	  case KEY_EXIT:
 	  case KEY_F(1):
-	    break;
+	    goto exit;
 	  case KEY_UP:
 	  case KEY_DOWN:
 	    commandMSG(cmd);

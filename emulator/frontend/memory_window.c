@@ -47,10 +47,13 @@ static void print_memline(unsigned int addr_start, int line) {
   wattroff(mywin, COLOR_PAIR(2)|A_BOLD);
 }
 
+static int32_t scroll_offset = 0;
+
 void updateMemoryWindow() {
   int addrBase = vc4_emul_get_scalar_reg(emul_copy->vc4, 24);
   addrBase |= 0x0FFF;
   addrBase ^= 0x0FFF;
+  addrBase += scroll_offset*16;
   
   wattron(mywin, A_BOLD|COLOR_PAIR(BASE_GREEN));
   for(int i = 0; i < 32; i++) {
@@ -74,4 +77,12 @@ void initMemoryWindow(struct bcm2835_emul *emu, char w) {
   updateMemoryWindow();
   refresh();
   wrefresh(mywin);
+}
+
+void memScrollUp() {
+  scroll_offset++;
+}
+
+void memScrollDown() {
+  scroll_offset--;
 }
