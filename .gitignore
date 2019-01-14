@@ -1,0 +1,8 @@
+*.pyc
+*.o
+*~
+\#*\#
+bcm2835_emul
+vc4_emul.c
+vc4_emul.h
+vcregs.h
