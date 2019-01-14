@@ -215,6 +215,46 @@ int main(int argc, char **argv) {
 		    }
 		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
 		  }
+		  updateRegisterWindow();
+		  updateMemoryWindow();
+		  updateStackWindow();
+		  refresh();
+		  break;
+		case KEY_F(6):
+		  print_log("RESET - machine paused, press F2 to unpause\n");
+		  paused = 1;
+		  timeout(-1);
+		  emul->vc4 = vc4_emul_init(emul);
+		  memory_init(emul);
+		  if (mmc_init(emul, sdcard_file) != 0) {
+		    print_log("Error: Cannot initialize MMC.\n");
+		    return -1;
+		  }
+		  aux_init(emul);
+		  otp_init(emul);
+		  gpio_init(emul);
+		  timer_init(emul);
+		  cm_init(emul);
+		  inte_init(emul);
+		  /* load the boot code into memory */
+		  if (rom_file != NULL) {
+		    if (load_file(emul, rom_file, 0x60000000) != 0) {
+		      print_log("Could not open the bootrom file!\n");
+		      return -1;
+		    }
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x60000000);
+		  }
+		  if (bootcode_file != NULL) {
+		    if (load_file(emul, bootcode_file, 0x80000000) != 0) {
+		      print_log("Could not open the bootcode file!\n");
+		      return -1;
+		    }
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
+		  }
+		  updateRegisterWindow();
+		  updateMemoryWindow();
+		  updateStackWindow();
+		  refresh();
 		  break;
 		case KEY_PPAGE:
 		  memScrollDown();
