@@ -180,6 +180,7 @@ int main(int argc, char **argv) {
 		  break;
 		case KEY_F(3):
 		  if(step == 0) step = 1;
+		  else step = 0;
 		  break;
 		case KEY_F(4):
 		  if(paused == 0 && step) vc4_emul_step(emul->vc4);
@@ -228,18 +229,6 @@ int main(int argc, char **argv) {
 		
 	}
 
-	int cmd;
-	for(;;) {
-	  cmd = getch();
-	  switch( cmd ) {
-	  case KEY_F(1):
-	    goto exit;
-	  case KEY_UP:
-	  case KEY_DOWN:
-	    commandMSG(cmd);
-	  };
-	};	  
-	
  exit:
 	curs_set(base_state);
 	endwin();
