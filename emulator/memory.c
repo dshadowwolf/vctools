@@ -10,6 +10,8 @@
 
 #define DRAM_SIZE (256 * 1024 * 1024)
 
+void print_log(const char *fmt, ...);
+
 struct device_region {
 	uint32_t address;
 	uint32_t size;
@@ -78,7 +80,7 @@ uint32_t vc4_emul_load(void *user_data,
 				if (address >= devices[i].address &&
 						address <= devices[i].address + devices[i].size) {
 					uint32_t value = devices[i].load(emul, address);
-					printf("MMIO(R, 4) %08x => %08x\n", address, value);
+					print_log("MMIO(R, 4) %08x => %08x\n", address, value);
 					return value;
 				}
 			}
@@ -87,7 +89,7 @@ uint32_t vc4_emul_load(void *user_data,
 		vc4_emul_interrupt(emul->vc4, 0, "Invalid load address.");
 	}
 	value &= 0xffffffff >> ((4 - size) * 8);
-	/*printf("load %08x %08x\n", address, value);*/
+	/*print_log("load %08x %08x\n", address, value);*/
 	return value;
 }
 
@@ -98,7 +100,7 @@ void vc4_emul_store(void *user_data,
 	struct bcm2835_emul *emul = user_data;
 	char *dest;
 	unsigned int i;
-	printf("store %08x %08x\n", address, value);
+	print_log("store %08x %08x\n", address, value);
 	if (is_in_region(address, size, 0x60000000, 0x60008800)) {
 		dest = emul->bootram + (address & 0xffff);
 	} else if (is_in_region(address & 0x3fffffff, size, 0x0, DRAM_SIZE)) {
@@ -109,7 +111,7 @@ void vc4_emul_store(void *user_data,
 			for (i = 0; i < DEVICE_COUNT; i++) {
 				if (address >= devices[i].address &&
 						address <= devices[i].address + devices[i].size) {
-					printf("MMIO(W, 4) %08x <= %08x\n", address, value);
+					print_log("MMIO(W, 4) %08x <= %08x\n", address, value);
 					return devices[i].store(emul, address, value);
 				}
 			}

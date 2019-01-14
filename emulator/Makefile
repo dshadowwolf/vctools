@@ -1,5 +1,5 @@
 
-CFLAGS = -g -Wall -Wextra
+CFLAGS = -g -Wall -Wextra -I/usr/include/cdk
 CFLAGS_VC4_EMUL = -g
 
 all: bcm2835_emul
@@ -7,8 +7,9 @@ all: bcm2835_emul
 bcm2835_emul: main.o vc4_emul.o memory.o devices/mmc.o devices/aux.o \
               devices/otp.o devices/gpio.o devices/timer.o devices/cm.o \
               devices/inte.o frontend/registers_window.o \
-              frontend/memory_window.o frontend/stack_window.o
-	gcc -o $@ $^ $(CFLAGS) -lm -lncurses
+              frontend/memory_window.o frontend/stack_window.o \
+              frontend/messages_window.o
+	gcc -o $@ $^ $(CFLAGS) -lm -lncurses -lcdk
 
 vc4_emul.o: vc4_emul.c
 	gcc -c -o $@ $^ $(CFLAGS_VC4_EMUL)

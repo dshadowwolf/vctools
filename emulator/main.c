@@ -15,6 +15,8 @@ extern void initMemoryWindow(struct bcm2835_emul *emul, char w);
 extern void updateMemoryWindow();
 extern void initStackWindow(struct bcm2835_emul *emul);
 extern void updateStackWindow();
+extern void initMessagesWindow(struct bcm2835_emul *emul);
+extern void commandMSG(int key);
 
 int load_file(struct bcm2835_emul *emul,
               const char *filename,
@@ -143,11 +145,12 @@ int main(int argc, char **argv) {
   cbreak();
   keypad(stdscr, TRUE);         /* I need that nifty F1         */
   noecho();
+  int base_state = curs_set(0);
   timeout(0);
   initRegisterWindow(emul);
   initMemoryWindow(emul, 'r');
   initStackWindow(emul);
-  
+  initMessagesWindow(emul);
 	for (i = 0; i < 10000; i++) {
 	  //		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
 		vc4_emul_step(emul->vc4);
@@ -155,9 +158,37 @@ int main(int argc, char **argv) {
 		updateMemoryWindow();
 		updateStackWindow();
 		refresh();
-		if( getch() == KEY_F(1) ) break;
+
+		int key = getch();
+		switch( key ) {
+		case KEY_EXIT:
+		case KEY_F(1):
+		  goto exit;
+		case KEY_UP:
+		case KEY_DOWN:
+		  commandMSG(key);
+		};
+		
 	}
+
+	int cmd;
+	for(;;) {
+	  cmd = getch();
+	  switch( cmd ) {
+	  case KEY_EXIT:
+	  case KEY_F(1):
+	    break;
+	  case KEY_UP:
+	  case KEY_DOWN:
+	    commandMSG(cmd);
+	  };
+	};	  
+	
+ exit:
+	curs_set(base_state);
 	endwin();
+
+	printf("exited with PC: 0x%08X\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
 	return 0;
 }
 

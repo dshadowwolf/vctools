@@ -12,7 +12,11 @@
 #define BASE_NORMAL 0
 #define BLUE_HIGH   1
 #define BASE_GREEN  2
-#define BASE_WHITE  3
+#define BLUE_WHITE  3
 #define WARNINGS    4
+
+#define TITLE A_BOLD|COLOR_PAIR(BLUE_HIGH)
+#define HEXDISP A_BOLD|COLOR_PAIR(BLUE_WHITE)
+#define REGDISP A_BOLD|COLOR_PAIR(BASE_GREEN)
 
 #endif

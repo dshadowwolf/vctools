@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+void print_log(const char *fmt, ...);
 
 void aux_init(struct bcm2835_emul *emul) {
 	/* TODO */
@@ -24,9 +25,9 @@ uint32_t aux_load(struct bcm2835_emul *emul, uint32_t address) {
 void aux_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 	if (address == VC_AUX_MU_IO_REG) {
 		if (isprint(value & 0xff)) {
-			printf("UART \'%c\'\n", value & 0xff);
+			print_log("UART \'%c\'\n", value & 0xff);
 		} else {
-			printf("UART 0x%02x\n", value & 0xff);
+			print_log("UART 0x%02x\n", value & 0xff);
 		}
 	} else {
 		/* TODO */
