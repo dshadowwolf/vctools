@@ -7,6 +7,14 @@
 #include <string.h>
 #include <getopt.h>
 #include <ctype.h>
+#include <ncurses.h>
+
+extern void initRegisterWindow(struct bcm2835_emul *emul);
+extern void updateRegisterWindow();
+extern void initMemoryWindow(struct bcm2835_emul *emul, char w);
+extern void updateMemoryWindow();
+extern void initStackWindow(struct bcm2835_emul *emul);
+extern void updateStackWindow();
 
 int load_file(struct bcm2835_emul *emul,
               const char *filename,
@@ -124,10 +132,32 @@ int main(int argc, char **argv) {
 	}
 	/* start the emulator */
 	/* TODO */
+	    initscr();
+  start_color();
+  init_pair(0, COLOR_WHITE, COLOR_BLACK);
+  init_pair(1, COLOR_BLUE, COLOR_BLACK);
+  init_pair(2, COLOR_GREEN, COLOR_BLACK);
+  init_pair(3, COLOR_WHITE, COLOR_BLUE);
+  init_pair(4, COLOR_BLACK, COLOR_RED);
+  
+  cbreak();
+  keypad(stdscr, TRUE);         /* I need that nifty F1         */
+  noecho();
+  timeout(0);
+  initRegisterWindow(emul);
+  initMemoryWindow(emul, 'r');
+  initStackWindow(emul);
+  
 	for (i = 0; i < 10000; i++) {
-		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
+	  //		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
 		vc4_emul_step(emul->vc4);
+		updateRegisterWindow();
+		updateMemoryWindow();
+		updateStackWindow();
+		refresh();
+		if( getch() == KEY_F(1) ) break;
 	}
+	endwin();
 	return 0;
 }
 
