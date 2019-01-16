@@ -219,9 +219,9 @@ function_lists:
           void btst(int d, int32_t a, int32_t b) {
               int32_t tmp_sr = get_reg(sr);
               tmp_sr &= ~0xf;
-              tmp_sr |= 0xa;
+              tmp_sr |= 0x8;
               if (a & (1 << b)) {
-                  tmp_sr &= ~0xa;
+                  tmp_sr &= ~0x8;
               }
               set_reg(sr, tmp_sr);
           }
