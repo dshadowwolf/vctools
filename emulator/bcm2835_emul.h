@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "devices/a2w.h"
 #include "devices/cm.h"
 #include "devices/gpio.h"
 #include "devices/inte.h"
@@ -17,6 +18,7 @@ struct bcm2835_emul {
 	char *dram;
 	char *bootram;
 
+	struct a2w_data a2w;
 	struct cm_data cm;
 	struct gpio_data gpio;
 	struct inte_data inte;
@@ -51,6 +53,10 @@ void timer_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 void cm_init(struct bcm2835_emul *emul);
 uint32_t cm_load(struct bcm2835_emul *emul, uint32_t address);
 void cm_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
+
+void a2w_init(struct bcm2835_emul *emul);
+uint32_t a2w_load(struct bcm2835_emul *emul, uint32_t address);
+void a2w_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 
 void inte_init(struct bcm2835_emul *emul);
 uint32_t inte_load(struct bcm2835_emul *emul, uint32_t address);

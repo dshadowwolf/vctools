@@ -26,6 +26,7 @@ static const struct device_region devices[] = {
 	{ VC_GPIO__ADDRESS, VC_GPIO__SIZE, gpio_load, gpio_store },
 	{ VC_TIMER__ADDRESS, VC_TIMER__SIZE, timer_load, timer_store },
 	{ VC_CM__ADDRESS, VC_CM__SIZE, cm_load, cm_store },
+	{ VC_A2W__ADDRESS, VC_A2W__SIZE, a2w_load, a2w_store },
 	{ VC_INTE__ADDRESS, VC_INTE__SIZE, inte_load, inte_store },
 };
 

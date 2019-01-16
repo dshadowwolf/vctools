@@ -119,6 +119,7 @@ int main(int argc, char **argv) {
 	gpio_init(emul);
 	timer_init(emul);
 	cm_init(emul);
+	a2w_init(emul);
 	inte_init(emul);
 	/* load the boot code into memory */
 	if (rom_file != NULL) {
@@ -199,6 +200,7 @@ int main(int argc, char **argv) {
 		  gpio_init(emul);
 		  timer_init(emul);
 		  cm_init(emul);
+		  a2w_init(emul);
 		  inte_init(emul);
 		  /* load the boot code into memory */
 		  if (rom_file != NULL) {
@@ -235,6 +237,7 @@ int main(int argc, char **argv) {
 		  gpio_init(emul);
 		  timer_init(emul);
 		  cm_init(emul);
+		  a2w_init(emul);
 		  inte_init(emul);
 		  /* load the boot code into memory */
 		  if (rom_file != NULL) {
