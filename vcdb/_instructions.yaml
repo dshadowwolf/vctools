@@ -220,7 +220,7 @@ function_lists:
               int32_t tmp_sr = get_reg(sr);
               tmp_sr &= ~0xf;
               tmp_sr |= 0x8;
-              if (a & (1 << b)) {
+              if (!(a & (1 << b))) {
                   tmp_sr &= ~0x8;
               }
               set_reg(sr, tmp_sr);
