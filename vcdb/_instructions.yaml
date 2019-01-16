@@ -516,11 +516,11 @@ instructions:
   - name: bkpt
     pattern: 0000 0000 0000 0000
     code: |
-      error:("TBD");
+      print_log("Breakpoint at 0x%08X", get_reg(31)); 
   - name: nop
     pattern: 0000 0000 0000 0001
     code: |
-      error("TBD");
+      print_log("NOP at 0x%08X", get_reg(31));
   - name: wait # sleep
     pattern: 0000 0000 0000 0010
   - name: user
