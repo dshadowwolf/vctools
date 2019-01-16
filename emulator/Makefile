@@ -4,11 +4,12 @@ CFLAGS_VC4_EMUL = -g
 
 all: bcm2835_emul
 
-bcm2835_emul: main.o vc4_emul.o memory.o devices/mmc.o devices/aux.o \
+ bcm2835_emul: main.o vc4_emul.o memory.o devices/mmc.o devices/aux.o \
+              devices/mult.o \
               devices/otp.o devices/gpio.o devices/timer.o devices/cm.o \
-              devices/a2w.o devices/inte.o frontend/registers_window.o \
-              frontend/memory_window.o frontend/stack_window.o \
-              frontend/messages_window.o
+              devices/a2w.o devices/inte.o devices/sdco.o devices/pm.o \
+	      frontend/registers_window.o frontend/memory_window.o \
+	      frontend/stack_window.o frontend/messages_window.o
 	gcc -o $@ $^ $(CFLAGS) -lm -lncurses -lcdk
 
 vc4_emul.o: vc4_emul.c

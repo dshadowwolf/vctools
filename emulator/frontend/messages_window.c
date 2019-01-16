@@ -10,11 +10,13 @@ static struct bcm2835_emul *emul_copy;
 static CDKSWINDOW *scroller;
 static CDKSCREEN *screen;
 
+const int HEIGHT = 30;
+
 void print_log(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
-  char target[4096];
-  vsnprintf(target, 4096, fmt, args);
+  char target[8192];
+  vsnprintf(target, 8192, fmt, args);
   va_end(args);
   
   addCDKSwindow(scroller, target, BOTTOM);
@@ -25,11 +27,11 @@ void print_log(const char *fmt, ...) {
 
 void initMessagesWindow(struct bcm2835_emul *emu) {
   emul_copy = emu;
-  mywin = newwin(7, 133, 35, 0);
+  mywin = newwin(HEIGHT, 133, 35, 0);
   screen = initCDKScreen(mywin);
   
   box(mywin, ACS_VLINE, ACS_HLINE);
-  scroller = newCDKSwindow(screen, 36, 1, 5, 131, NULL, 512, FALSE, FALSE);
+  scroller = newCDKSwindow(screen, 36, 1, HEIGHT + 2, 131, NULL, 512, FALSE, FALSE);
   drawCDKSwindow (scroller, ObjOf (scroller)->box);
   refresh();
   wrefresh(mywin);

@@ -5,10 +5,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "devices/a2w.h"
-#include "devices/cm.h"
-#include "devices/gpio.h"
+#include "devices/mult.h"
 #include "devices/inte.h"
+#include "devices/pm.h"
+#include "devices/cm.h"
+#include "devices/a2w.h"
+#include "devices/gpio.h"
+#include "devices/otp.h"
+#include "devices/sdco.h"
 
 struct vc4_emul;
 
@@ -18,10 +22,15 @@ struct bcm2835_emul {
 	char *dram;
 	char *bootram;
 
-	struct a2w_data a2w;
-	struct cm_data cm;
-	struct gpio_data gpio;
+	struct mult_data mult;
 	struct inte_data inte;
+//	struct timer_data timer;
+	struct pm_data pm;
+ 	struct cm_data cm;
+	struct a2w_data a2w;
+	struct gpio_data gpio;
+	struct otp_data otp;
+	struct sdco_data sdco;
 };
 
 void memory_init(struct bcm2835_emul *emul);
@@ -29,6 +38,14 @@ void memory_fill(struct bcm2835_emul *emul,
                  uint32_t address,
                  const void *data,
                  size_t size);
+
+void mult_init(struct bcm2835_emul *emul);
+uint32_t mult_load(struct bcm2835_emul *emul, uint32_t address);
+void mult_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
+
+void pm_init(struct bcm2835_emul *emul);
+uint32_t pm_load(struct bcm2835_emul *emul, uint32_t address);
+void pm_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 
 int mmc_init(struct bcm2835_emul *emul, const char *sdcard_file);
 uint32_t mmc_load(struct bcm2835_emul *emul, uint32_t address);
@@ -58,9 +75,17 @@ void a2w_init(struct bcm2835_emul *emul);
 uint32_t a2w_load(struct bcm2835_emul *emul, uint32_t address);
 void a2w_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 
+void a2w_init(struct bcm2835_emul *emul);
+uint32_t a2w_load(struct bcm2835_emul *emul, uint32_t address);
+void a2w_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
+
 void inte_init(struct bcm2835_emul *emul);
 uint32_t inte_load(struct bcm2835_emul *emul, uint32_t address);
 void inte_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
+
+void sdco_init(struct bcm2835_emul *emul);
+uint32_t sdco_load(struct bcm2835_emul *emul, uint32_t address);
+void sdco_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 
 #endif
 
