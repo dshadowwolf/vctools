@@ -10,6 +10,7 @@ include_file = """
 
 #include <stdint.h>
 
+extern void print_log(const char *fmt, ...);
 struct vc4_emul;
 
 /**
