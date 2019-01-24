@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <string.h>
 #include <malloc.h>
+#include <stdbool.h>
 
 extern void print_log(const char *fmt, ...);
 
@@ -28,7 +29,7 @@ void otp_init(struct bcm2835_emul *emul) {
 	emul->otp.otp_memory[0x1b] = 0x00002727;
 	emul->otp.otp_memory[0x1c] = 0xe9782f6a;
 	emul->otp.otp_memory[0x1d] = 0x1687d095;
-	
+	emul->otp.awake = false;
 }
 
 uint32_t otp_load(struct bcm2835_emul *emul, uint32_t address) {
@@ -36,7 +37,11 @@ uint32_t otp_load(struct bcm2835_emul *emul, uint32_t address) {
   work &= 0x000000FF;
   work /= 4; 
   print_log("otp_load address: %x", address);
-  assert(work > 9 && "Unknown OTP Register!\n");
+  
+  if(work > 9) {
+    assert(0 && "Unknown OTP Register!\n");
+  }
+
   return emul->otp.registers[work];
 }
 
@@ -46,9 +51,9 @@ void otp_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   work /= 4;
   
   print_log("otp_store address: %x", address);
-  assert(work > 9 && "Unknown OTP Register!\n");
-  
-  emul->otp.registers[work] = value;
+  if(work > 9) {
+    assert(0 && "Unknown OTP Register!\n");
+  }
   
   if (address == VC_OTP0_OTP_BOOTMODE_REG) {
     print_log("BOOTMODE -> 0x%08X", value);
@@ -72,5 +77,6 @@ void otp_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   } else if (address == VC_OTP0_OTP_INIT_STATUS_REG) {
     print_log("init status -> 0x%08X", value);
   }
+  emul->otp.registers[work] = value;
 }
 
