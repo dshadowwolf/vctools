@@ -219,9 +219,9 @@ function_lists:
           void btst(int d, int32_t a, int32_t b) {
               int32_t tmp_sr = get_reg(sr);
               tmp_sr &= ~0xf;
-              tmp_sr |= 0x8;
+              tmp_sr |= 0xa;
               if (!(a & (1 << b))) {
-                  tmp_sr &= ~0x8;
+                  tmp_sr &= ~0xa;
               }
               set_reg(sr, tmp_sr);
           }
@@ -581,7 +581,7 @@ instructions:
     pattern: 0000 0000 111 Rd:5
     code: |
       // TODO: compute the proper coreid
-      set_reg(Rd, 0x04000104);
+      set_reg(Rd, 0x04000140);
   - name: swi imm # swi u
     pattern: 0000 0001 11 imm:6
     code: |
