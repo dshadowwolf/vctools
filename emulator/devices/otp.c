@@ -16,7 +16,19 @@ void otp_init(struct bcm2835_emul *emul) {
 	memset(emul->otp.otp_memory, 0, 0x80*sizeof(uint32_t));
 	emul->otp.otp_memory[0x10] = 0x00280000;
 	emul->otp.otp_memory[0x11] = 0x1020000a;
-	emul->otp.otp_memory[0x12] = 0x1020000a;
+	emul->otp.otp_memory[0x12] = 0x1020000a;	
+	emul->otp.otp_memory[0x13] = 0xffffffff;
+	emul->otp.otp_memory[0x14] = 0xffffffff;
+	emul->otp.otp_memory[0x15] = 0xffffffff;
+	emul->otp.otp_memory[0x16] = 0xffffffff;
+	emul->otp.otp_memory[0x17] = 0xffffffff;
+	emul->otp.otp_memory[0x18] = 0xffffffff;
+	emul->otp.otp_memory[0x19] = 0xffffffff;
+	emul->otp.otp_memory[0x1a] = 0xffffffff;
+	emul->otp.otp_memory[0x1b] = 0x00002727;
+	emul->otp.otp_memory[0x1c] = 0xe9782f6a;
+	emul->otp.otp_memory[0x1d] = 0x1687d095;
+	
 }
 
 uint32_t otp_load(struct bcm2835_emul *emul, uint32_t address) {
