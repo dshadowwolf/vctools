@@ -4,7 +4,7 @@
 
 #include <assert.h>
 #include <string.h>
-
+extern void print_log(const char *fmt, ...);
 static const uint32_t clock_address[] = {
 	VC_CM_VPU_CTL,
 	VC_CM_H264_CTL,
@@ -42,7 +42,9 @@ uint32_t cm_load(struct bcm2835_emul *emul, uint32_t address) {
 			return emul->cm.clocks[i].divisor;
 		}
 	}
-//	assert(0 && "Unknown CM register!\n");
+	//	assert(0 && "Unknown CM register!\n");
+	print_log("Unknown CM register 0x%08X\n", address); 
+	return 0;
 }
 void cm_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 	int i;
