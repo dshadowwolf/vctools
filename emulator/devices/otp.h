@@ -5,7 +5,7 @@
 
 struct otp_data {
   uint32_t registers[6];
-  uint32_t *otp_memory
+  uint32_t *otp_memory;
 };
 
 #endif

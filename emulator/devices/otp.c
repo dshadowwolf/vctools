@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <malloc.h>
 
 extern void print_log(const char *fmt, ...);
 static const uint32_t base_values[0x80] = { 
