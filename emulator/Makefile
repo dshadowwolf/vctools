@@ -10,7 +10,7 @@ all: bcm2835_emul
               devices/a2w.o devices/inte.o devices/sdco.o devices/pm.o \
 	      frontend/registers_window.o frontend/memory_window.o \
 	      frontend/stack_window.o frontend/messages_window.o
-	gcc -o $@ $^ $(CFLAGS) -lm -lncurses -lcdk
+	gcc -o $@ $^ $(CFLAGS) -lm -lcdk -lncurses
 
 vc4_emul.o: vc4_emul.c
 	gcc -c -o $@ $^ $(CFLAGS_VC4_EMUL)
