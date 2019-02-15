@@ -108,6 +108,7 @@ struct vc4_emul {
 
 struct vc4_emul *vc4_emul_init(void *user_data) {
     struct vc4_emul *emul = calloc(1, sizeof(struct vc4_emul));
+    emul->scalar_regs[25] = 0x600087AC;
     emul->user_data = user_data;
     return emul;
 }
