@@ -16,8 +16,8 @@ uint32_t inte_load(struct bcm2835_emul *emul, uint32_t address) {
 	if (address == VC_INTE_UNK_0x800) {
 		return 0;
 	}
-	print_log("INTE Address: %x", address);
-	assert(0 && "Not implemented!\n");
+	print_log("INTE Address: %08x\n", address);
+	assert(0 && "INTE Not implemented!\n");
 	(void)emul;
 	(void)address;
 }
@@ -29,8 +29,8 @@ void inte_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 		return;
 	} else {
 		/* TODO */
-		print_log("INTE Store Address: %x, Value: %x", address, value);
-		assert(0 && "Not implemented!\n");
+		print_log("INTE Store Address: %08x, Value: %08x\n", address, value);
+		assert(0 && "INTE Not implemented!\n");
 	}
 }
 

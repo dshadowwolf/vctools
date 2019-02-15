@@ -145,14 +145,15 @@ uint32_t vc4_emul_load(void *user_data,
 				if (address >= devices[i].address &&
 						address <= devices[i].address + devices[i].size) {
 					uint32_t value = devices[i].load(emul, address);
-//					print_log("MMIO(R, 4) %08x => %08x\n", address, value);
+					print_log("MMIO(R, 4) %08x => %08x\n", address, value);
 					return value;
 				}
 			}
 		}
 		/* TODO: interrupt number? */
-//		print_log("address was: %x, size was %x", address, size);
-		vc4_emul_interrupt(emul->vc4, 0, "Invalid load address.");
+		char message[36];
+		sprintf(message, "Invalid load address: 0x%08x\n", address);
+		vc4_emul_interrupt(emul->vc4, 0, message);
 	}
 	value &= 0xffffffff >> ((4 - size) * 8);
 	/*print_log("load %08x %08x\n", address, value);*/
@@ -166,7 +167,7 @@ void vc4_emul_store(void *user_data,
 	struct bcm2835_emul *emul = user_data;
 	char *dest;
 	unsigned int i;
-//	print_log("store %08x %08x\n", address, value);
+	print_log("store %08x %08x\n", address, value);
 	if (is_in_region(address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END)) {
 		dest = emul->bootram + (address & SIZE_64KB);
 	} else if (is_in_region(address & SIZE_1GB, size, 0x0, DRAM_SIZE)) {
@@ -177,7 +178,7 @@ void vc4_emul_store(void *user_data,
 			for (i = 0; i < DEVICE_COUNT; i++) {
 				if (address >= devices[i].address &&
 						address <= devices[i].address + devices[i].size) {
-//					print_log("MMIO(W, 4) %08x <= %08x\n", address, value);
+					print_log("MMIO(W, 4) %08x <= %08x\n", address, value);
 					return devices[i].store(emul, address, value);
 				}
 			}

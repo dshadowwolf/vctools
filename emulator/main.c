@@ -170,7 +170,7 @@ int main(int argc, char **argv) {
   initStackWindow(emul);
   initMessagesWindow(emul, log_file);
 	for (;;) {
-	  //		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
+          print_log("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
 	  if(paused==0 && step == 0) {
 		vc4_emul_step(emul->vc4);
 	  }

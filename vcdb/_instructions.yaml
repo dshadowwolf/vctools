@@ -576,11 +576,11 @@ instructions:
   - name: tbb Rd # switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
-      error("switch.b Rd TBD");
+      error("switch.b Rd not yet implemented");
   - name: tbb Rd # switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |
-      error(" switch Rd TBD");
+      error(" switch Rd not yet implemented");
   - name: mov Rd, cpuid # version Rd
     pattern: 0000 0000 111 Rd:5
     code: |
@@ -736,7 +736,7 @@ instructions:
       if (condition_passed(cond, get_reg(sr))) {
           if (Ra == pc) {
               /* TODO: this should be a normal interrupt */
-              error("tried to modifiy pc");
+              error("Tried to modifiy pc");
           } else {
               set_reg(Rd, load(get_reg(Ra) + size(format) * get_reg(Rb), format));
           }
@@ -997,11 +997,11 @@ instructions:
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 1 imm:6
     code: |
-      error("Not Yet Implemented");
+      error("count Rd, imm not Yet Implemented");
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 00 Rb:5
     code: |
-      error("Not Yet Implemented");
+      error("count Rd, imm not Yet Implemented");
   - name: subscale Rd, Ra, imm shl 1
     pattern: 1100 0110 001 Rd:5 Ra:5 1110 1 imm:6
     code: |

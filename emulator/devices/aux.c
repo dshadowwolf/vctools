@@ -18,7 +18,7 @@ uint32_t aux_load(struct bcm2835_emul *emul, uint32_t address) {
 	} else {
 		print_log("AUX load %08x\n", address);
 		/* TODO */
-		assert(0 && "Not implemented!\n");
+		assert(0 && "Unknown AUX Register!\n");
 		(void)emul;
 	}
 }
@@ -43,8 +43,8 @@ void aux_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   } else if (address == VC_AUX_MU_BAUD_REG) {
   } else {
     /* TODO */
-    print_log("AUX store %x, %x", address, value);
-    //assert(0 && "Not implemented!\n");
+    print_log("AUX Store Address: 0x%08x, 0x%08x", address, value);
+    assert(0 && "Unknown AUX Register!\n");
     (void)emul;
   }
 }

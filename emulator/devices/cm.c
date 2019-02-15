@@ -69,7 +69,7 @@ uint32_t cm_load(struct bcm2835_emul *emul, uint32_t address) {
 			return emul->cm.clocks[i].divisor;
 		}
 	}
-	print_log("Unknown CM register 0x%08X\n", address); 
+	print_log("CM Load Address: 0x%08x\n", address); 
 	assert(0 && "Unknown CM register!\n");
 	return 0;
 }
@@ -101,7 +101,7 @@ void cm_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 			return;
 		}
 	}
-	print_log("Address: %x (%d)", address, address);
+	print_log("CM Store Address: 0x%08x, 0x%08x\n", address, value);
 	assert(0 && "Unknown CM register!\n");
 }
 

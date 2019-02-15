@@ -52,12 +52,13 @@ uint32_t otp_load(struct bcm2835_emul *emul, uint32_t address) {
   uint32_t work = address;
   work &= 0x000000FF;
   work /= 4; 
-//  print_log("otp_load address: %x", address);
+  print_log("otp_load address: %08x\n", address);
   
   if(work > 9) {
     assert(0 && "Unknown OTP Register!\n");
   }
 
+  print_log("What we got: 0x%08x\n", emul->otp.registers[work]);
   return emul->otp.registers[work];
 }
 
@@ -66,33 +67,33 @@ void otp_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   work &= 0x000000FF;
   work /= 4;
   
-//  print_log("otp_store address: %x", address);
+  print_log("otp_store address: %x, value: %x\n", address, value);
   if(work > 9) {
     assert(0 && "Unknown OTP Register!\n");
   }
 
 /*  
   if (address == VC_OTP0_OTP_BOOTMODE_REG) {
-    print_log("BOOTMODE -> 0x%08X", value);
+    print_log("BOOTMODE -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_CONFIG_REG) {
-    print_log("control -> 0x%08X", value);
+    print_log("control -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_CTRL_LOW_REG) {
-    print_log("control low -> 0x%08X", value);
+    print_log("control low -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_CTRL_HIGH_REG) {
-    print_log("control high -> 0x%08X", value);
+    print_log("control high -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_STATUS_REG) {
-    print_log("status -> 0x%08X", value);
+    print_log("status -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_BITSEL_REG) {
-    print_log("bitsel -> 0x%08X", value);
+    print_log("bitsel -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_DATA_REG) {
-    print_log("data -> 0x%08X", value);
+    print_log("data -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_ADDR_REG) {
-    print_log("addr -> 0x%08X", value);
+    print_log("addr -> 0x%08X\n", value);
     emul->otp.registers[6] = emul->otp.otp_memory[value];
   } else if (address == VC_OTP0_OTP_WRITE_DATA_READ_REG) {
-    print_log("write data read -> 0x%08X", value);
+    print_log("write data read -> 0x%08X\n", value);
   } else if (address == VC_OTP0_OTP_INIT_STATUS_REG) {
-    print_log("init status -> 0x%08X", value);
+    print_log("init status -> 0x%08X\n", value);
   }
 */
   emul->otp.registers[work] = value;
