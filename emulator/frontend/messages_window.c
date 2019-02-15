@@ -43,7 +43,7 @@ print_log (const char *fmt, ...) {
 
   addCDKSwindow (scroller, target, BOTTOM);
   fputs (target, logfile);
-  fsync (fileno (logfile));
+  fflush (logfile);
   //  box(mywin, ACS_VLINE, ACS_HLINE);
   wrefresh (mywin);
 }
