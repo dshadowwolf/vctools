@@ -127,9 +127,9 @@ void vc4_emul_exception(struct vc4_emul *emul,
                         const char *reason) {
     uint16_t instr;
     int i;
-    printf("Exception %d: %s\\n", interrupt, reason);
+    print_log("Exception %d: %s\\n", interrupt, reason);
     for (i = 0; i < 32; i++) {
-        printf("  r%d = %08x\\n", i, emul->scalar_regs[i]);
+        print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
     }
 
     siglongjmp(emul->exception_handler, interrupt + 1);
@@ -139,9 +139,9 @@ void vc4_emul_interrupt(struct vc4_emul *emul,
                         unsigned int interrupt,
                         const char *reason) {
 	int i;
-	printf("Interrupt %d: %s\\n", interrupt, reason);
+	print_log("Interrupt %d: %s\\n", interrupt, reason);
 	for (i = 0; i < 32; i++) {
-		printf("  r%d = %08x\\n", i, emul->scalar_regs[i]);
+		print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
 	}
 
     /* TODO */
@@ -208,7 +208,7 @@ static void set_reg(struct vc4_emul *emul, int reg, uint32_t value) {
     if (reg == 31) {
         emul->pc_changed = 1;
     }
-    /*printf("r%d <= %08x\\n", reg, value);*/
+    /*print_log("r%d <= %08x\\n", reg, value);*/
     emul->scalar_regs[reg] = value;
 }
 #define get_reg(reg) get_reg(emul, reg)
@@ -343,7 +343,7 @@ void vc4_emul_step(struct vc4_emul *emul) {
     if (exception_index != 0) {
         uint32_t ivt = vc4_emul_get_ivt_address(emul->user_data);
         uint32_t int_stack = emul->scalar_regs[28];
-        printf("Exception %d\\n", exception_index);
+        print_log("Exception %d\\n", exception_index);
         /* increment pc */
         instr[0] = load(get_reg(pc), HALFWORD);
         set_reg(pc, get_reg(pc) + 2);

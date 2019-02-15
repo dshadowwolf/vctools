@@ -15,7 +15,7 @@ extern void initMemoryWindow(struct bcm2835_emul *emul, char w);
 extern void updateMemoryWindow();
 extern void initStackWindow(struct bcm2835_emul *emul);
 extern void updateStackWindow();
-extern void initMessagesWindow(struct bcm2835_emul *emul);
+extern void initMessagesWindow(struct bcm2835_emul *emul, const char *fileName);
 extern void commandMSG(int key);
 extern void memScrollUp();
 extern void memScrollDown();
@@ -58,11 +58,12 @@ int main(int argc, char **argv) {
 	const char *sdcard_file = NULL;
 	const char *rom_file = NULL;
 	const char *bootcode_file = NULL;
-
+	char *log_file = NULL;
+	
 	int serial_port = -1;
 
 	/* parse the command line arguments */
-	while ((option = getopt(argc, argv, "c:s:r:b:h")) != -1) {
+	while ((option = getopt(argc, argv, "c:s:r:b:hl:")) != -1) {
 		switch (option) {
 			case 'h':
 				printf(help, argv[0]);
@@ -79,6 +80,9 @@ int main(int argc, char **argv) {
 			case 'b':
 				bootcode_file = optarg;
 				break;
+		        case 'l':
+			        log_file = optarg;
+			        break;
 			case '?':
 				if (strchr("csrbh", optopt) != NULL) {
 					fprintf(stderr, "Option -%c requires an argument.\n",
@@ -106,6 +110,7 @@ int main(int argc, char **argv) {
 		printf(help, argv[0]);
 		return -1;
 	}
+	
 	/* create the emulator */
 	struct bcm2835_emul *emul = calloc(1, sizeof(struct bcm2835_emul));
 	emul->vc4 = vc4_emul_init(emul);
@@ -136,6 +141,11 @@ int main(int argc, char **argv) {
 		}
 		vc4_emul_set_scalar_reg(emul->vc4, 31, DRAM_BASE_ADDRESS);
 	}
+	if(log_file == NULL) {
+	  log_file = malloc(sizeof(char) * (strlen(bootcode_file)+9));
+	  memset(log_file, 0, sizeof(char) * (strlen(bootcode_file)+9));
+	  sprintf(log_file, "%s.log.txt", bootcode_file);
+	}
 	/* start the emulator */
 	/* TODO */
 	int paused = 0, step = 0;
@@ -155,7 +165,7 @@ int main(int argc, char **argv) {
   initRegisterWindow(emul);
   initMemoryWindow(emul, 'r');
   initStackWindow(emul);
-  initMessagesWindow(emul);
+  initMessagesWindow(emul, log_file);
 	for (;;) {
 	  //		printf("step: %08x\n", vc4_emul_get_scalar_reg(emul->vc4, 31));
 	  if(paused==0 && step == 0) {

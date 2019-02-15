@@ -9,6 +9,7 @@ static WINDOW *mywin;
 static struct bcm2835_emul *emul_copy;
 static CDKSWINDOW *scroller;
 static CDKSCREEN *screen;
+static FILE *logfile;
 
 const int HEIGHT = 30;
 
@@ -20,12 +21,14 @@ void print_log(const char *fmt, ...) {
   va_end(args);
   
   addCDKSwindow(scroller, target, BOTTOM);
+  fprintf(logfile, "%s", target);
   
   //  box(mywin, ACS_VLINE, ACS_HLINE);
   wrefresh(mywin);
 }
 
-void initMessagesWindow(struct bcm2835_emul *emu) {
+void initMessagesWindow(struct bcm2835_emul *emu, const char *filename) {
+  logfile = fopen(filename, "w");
   emul_copy = emu;
   mywin = newwin(HEIGHT, 133, 35, 0);
   screen = initCDKScreen(mywin);
