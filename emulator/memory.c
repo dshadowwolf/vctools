@@ -183,8 +183,8 @@ void vc4_emul_store(void *user_data,
 			}
 		}
 		/* TODO: interrupt number? */
-		char message[32];
-		sprintf(message, "Invalid store address: %i\n", address);
+		char message[36];
+		sprintf(message, "Invalid store address: 0x%08x\n", address);
 		vc4_emul_interrupt(emul->vc4, 0, message);
 	}
 	switch (size) {
