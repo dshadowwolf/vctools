@@ -7,17 +7,17 @@
 #include <malloc.h>
 #include <stdbool.h>
 
-extern void print_log ( const char *fmt, ... );
+extern void print_log (const char *fmt, ...);
 
 void
-otp_init ( struct bcm2835_emul *emul ) {
+otp_init (struct bcm2835_emul *emul) {
   /*
    * TODO 
    */
-  memset ( &emul->otp, 0, sizeof ( emul->otp ) );
+  memset (&emul->otp, 0, sizeof (emul->otp));
   emul->otp.registers[0] = 0x1020000A;
-  emul->otp.otp_memory = malloc ( sizeof ( uint32_t ) * 0x80 );
-  memset ( emul->otp.otp_memory, 0, 0x80 * sizeof ( uint32_t ) );
+  emul->otp.otp_memory = malloc (sizeof (uint32_t) * 0x80);
+  memset (emul->otp.otp_memory, 0, 0x80 * sizeof (uint32_t));
   emul->otp.otp_memory[0x10] = 0x00280000;  // 16 - M - OTP_CONTROL_ROW
   emul->otp.otp_memory[0x11] = 0x1220000a;  // 17 - M - Bootmode Register
   emul->otp.otp_memory[0x12] = 0x1220000a;  // 18 - M - Bootmode Register (Copy)
@@ -52,31 +52,31 @@ otp_init ( struct bcm2835_emul *emul ) {
 }
 
 uint32_t
-otp_load ( struct bcm2835_emul *emul, uint32_t address ) {
+otp_load (struct bcm2835_emul *emul, uint32_t address) {
   uint32_t work = address;
 
   work &= 0x000000FF;
   work /= 4;
-  print_log ( "otp_load address: %08x\n", address );
+  print_log ("otp_load address: %08x\n", address);
 
-  if ( work > 9 ) {
-    assert ( 0 && "Unknown OTP Register!\n" );
+  if (work > 9) {
+    assert (0 && "Unknown OTP Register!\n");
   }
 
-  print_log ( "What we got: 0x%08x\n", emul->otp.registers[work] );
+  print_log ("What we got: 0x%08x\n", emul->otp.registers[work]);
   return emul->otp.registers[work];
 }
 
 void
-otp_store ( struct bcm2835_emul *emul, uint32_t address, uint32_t value ) {
+otp_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   uint32_t work = address;
 
   work &= 0x000000FF;
   work /= 4;
 
-  print_log ( "otp_store address: %x, value: %x\n", address, value );
-  if ( work > 9 ) {
-    assert ( 0 && "Unknown OTP Register!\n" );
+  print_log ("otp_store address: %x, value: %x\n", address, value);
+  if (work > 9) {
+    assert (0 && "Unknown OTP Register!\n");
   }
 
 /*  

@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string.h>
 
-extern void print_log ( const char *fmt, ... );
+extern void print_log (const char *fmt, ...);
 
 static const uint32_t clock_address[] = {
   VC_CM_GNRIC_CTL,
@@ -21,9 +21,9 @@ static const uint32_t clock_address[] = {
   VC_CM_DSI0E_CTL,
   VC_CM_DSI0P_CTL,
   VC_CM_DPI_CTL,
-  VC_CM_GP_CTL ( 0 ),
-  VC_CM_GP_CTL ( 1 ),
-  VC_CM_GP_CTL ( 2 ),
+  VC_CM_GP_CTL (0),
+  VC_CM_GP_CTL (1),
+  VC_CM_GP_CTL (2),
   VC_CM_HSM_CTL,
   VC_CM_OTP_CTL,
   VC_CM_PCM_CTL,
@@ -50,63 +50,63 @@ static const uint32_t clock_address[] = {
 };
 
 void
-cm_init ( struct bcm2835_emul *emul ) {
-  memset ( &emul->cm, 0, sizeof ( emul->cm ) );
+cm_init (struct bcm2835_emul *emul) {
+  memset (&emul->cm, 0, sizeof (emul->cm));
 }
 
 uint32_t
-cm_load ( struct bcm2835_emul *emul, uint32_t address ) {
+cm_load (struct bcm2835_emul *emul, uint32_t address) {
   int i;
 
-  if ( address == VC_CM_PLLC ) {
+  if (address == VC_CM_PLLC) {
     return emul->cm.pllc;
-  } else if ( address == VC_CM_PLLD ) {
+  } else if (address == VC_CM_PLLD) {
     return emul->cm.plld;
-  } else if ( address == VC_CM_LOCK ) {
+  } else if (address == VC_CM_LOCK) {
     return emul->cm.lock;
   }
-  for ( i = 0; i < CLOCK_COUNT; i++ ) {
-    if ( address == clock_address[i] ) {
+  for (i = 0; i < CLOCK_COUNT; i++) {
+    if (address == clock_address[i]) {
       return emul->cm.clocks[i].control;
     }
-    if ( address == clock_address[i] + 4 ) {
+    if (address == clock_address[i] + 4) {
       return emul->cm.clocks[i].divisor;
     }
   }
-  print_log ( "CM Load Address: 0x%08x\n", address );
-  assert ( 0 && "Unknown CM register!\n" );
+  print_log ("CM Load Address: 0x%08x\n", address);
+  assert (0 && "Unknown CM register!\n");
   return 0;
 }
 
 void
-cm_store ( struct bcm2835_emul *emul, uint32_t address, uint32_t value ) {
+cm_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   int i;
 
   /*
    * all registers need the password field 
    */
-  if ( ( value >> 24 ) != 0x5a ) {
+  if ((value >> 24) != 0x5a) {
     return;
   }
-  if ( address == VC_CM_PLLC ) {
+  if (address == VC_CM_PLLC) {
     emul->cm.pllc = value;
     return;
-  } else if ( address == VC_CM_PLLD ) {
+  } else if (address == VC_CM_PLLD) {
     emul->cm.plld = value;
     return;
-  } else if ( address == VC_CM_LOCK ) {
+  } else if (address == VC_CM_LOCK) {
     emul->cm.lock = value;
     return;
   }
-  for ( i = 0; i < CLOCK_COUNT; i++ ) {
-    if ( address == clock_address[i] ) {
+  for (i = 0; i < CLOCK_COUNT; i++) {
+    if (address == clock_address[i]) {
       /*
        * TODO 
        */
       emul->cm.clocks[i].control = value;
       return;
     }
-    if ( address == clock_address[i] + 4 ) {
+    if (address == clock_address[i] + 4) {
       /*
        * TODO 
        */
@@ -114,6 +114,6 @@ cm_store ( struct bcm2835_emul *emul, uint32_t address, uint32_t value ) {
       return;
     }
   }
-  print_log ( "CM Store Address: 0x%08x, 0x%08x\n", address, value );
-  assert ( 0 && "Unknown CM register!\n" );
+  print_log ("CM Store Address: 0x%08x, 0x%08x\n", address, value);
+  assert (0 && "Unknown CM register!\n");
 }

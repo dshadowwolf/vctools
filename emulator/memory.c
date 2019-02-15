@@ -14,14 +14,14 @@
 #define SIZE_64KB 0xffff
 #define SIZE_1GB 0x3fffffff
 
-void print_log ( const char *fmt, ... );
+void print_log (const char *fmt, ...);
 
 struct device_region {
   uint32_t address;
   uint32_t size;
-    uint32_t ( *load ) ( struct bcm2835_emul * emul, uint32_t address );
-  void ( *store ) ( struct bcm2835_emul * emul, uint32_t address,
-                    uint32_t value );
+    uint32_t (*load) (struct bcm2835_emul * emul, uint32_t address);
+  void (*store) (struct bcm2835_emul * emul, uint32_t address,
+                 uint32_t value);
 };
 
 static const struct device_region devices[] = {
@@ -98,8 +98,8 @@ static const struct device_region devices[] = {
 #define DEVICE_COUNT (sizeof(devices) / sizeof(devices[0]))
 
 static int
-is_in_region ( uint32_t address, uint32_t size, uint32_t start, uint32_t end ) {
-  if ( address < start || ( uint64_t ) address + size > end ) {
+is_in_region (uint32_t address, uint32_t size, uint32_t start, uint32_t end) {
+  if (address < start || (uint64_t) address + size > end) {
     return 0;
   } else {
     return 1;
@@ -107,53 +107,51 @@ is_in_region ( uint32_t address, uint32_t size, uint32_t start, uint32_t end ) {
 }
 
 void
-memory_init ( struct bcm2835_emul *emul ) {
-  emul->dram = malloc ( DRAM_SIZE );
+memory_init (struct bcm2835_emul *emul) {
+  emul->dram = malloc (DRAM_SIZE);
   /*
    * ROM and bootram (actually just cache?) are stored here 
    */
-  emul->bootram = malloc ( BOOTROM_SIZE );
+  emul->bootram = malloc (BOOTROM_SIZE);
 }
 
 void
-memory_fill ( struct bcm2835_emul *emul,
-              uint32_t address, const void *data, size_t size ) {
-  if ( is_in_region
-       ( address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END ) ) {
-    char *dest = emul->bootram + ( address - BOOTROM_BASE_ADDRESS );
+memory_fill (struct bcm2835_emul *emul,
+             uint32_t address, const void *data, size_t size) {
+  if (is_in_region (address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END)) {
+    char *dest = emul->bootram + (address - BOOTROM_BASE_ADDRESS);
 
-    memcpy ( dest, data, size );
-  } else if ( is_in_region ( address & SIZE_1GB, size, 0x0, DRAM_SIZE ) ) {
-    char *dest = emul->dram + ( address & SIZE_1GB );
+    memcpy (dest, data, size);
+  } else if (is_in_region (address & SIZE_1GB, size, 0x0, DRAM_SIZE)) {
+    char *dest = emul->dram + (address & SIZE_1GB);
 
-    memcpy ( dest, data, size );
+    memcpy (dest, data, size);
   } else {
-    assert ( 0 && "memory_fill: Invalid memory area!" );
+    assert (0 && "memory_fill: Invalid memory area!");
   }
 }
 
 uint32_t
-vc4_emul_load ( void *user_data, uint32_t address, int size ) {
+vc4_emul_load (void *user_data, uint32_t address, int size) {
   struct bcm2835_emul *emul = user_data;
   uint32_t value;
   unsigned int i;
 
-  if ( is_in_region
-       ( address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END ) ) {
-    value = *( uint32_t * ) ( emul->bootram + ( address & SIZE_64KB ) );
-  } else if ( is_in_region ( address & SIZE_1GB, size, 0x0, DRAM_SIZE ) ) {
-    value = *( uint32_t * ) ( emul->dram + ( address & SIZE_1GB ) );
+  if (is_in_region (address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END)) {
+    value = *(uint32_t *) (emul->bootram + (address & SIZE_64KB));
+  } else if (is_in_region (address & SIZE_1GB, size, 0x0, DRAM_SIZE)) {
+    value = *(uint32_t *) (emul->dram + (address & SIZE_1GB));
   } else {
     /*
      * device registers 
      */
-    if ( size == 4 && ( address & 3 ) == 0 ) {
-      for ( i = 0; i < DEVICE_COUNT; i++ ) {
-        if ( address >= devices[i].address &&
-             address <= devices[i].address + devices[i].size ) {
-          uint32_t value = devices[i].load ( emul, address );
+    if (size == 4 && (address & 3) == 0) {
+      for (i = 0; i < DEVICE_COUNT; i++) {
+        if (address >= devices[i].address &&
+            address <= devices[i].address + devices[i].size) {
+          uint32_t value = devices[i].load (emul, address);
 
-          print_log ( "MMIO(R, 4) %08x => %08x\n", address, value );
+          print_log ("MMIO(R, 4) %08x => %08x\n", address, value);
           return value;
         }
       }
@@ -163,10 +161,10 @@ vc4_emul_load ( void *user_data, uint32_t address, int size ) {
      */
     char message[36];
 
-    sprintf ( message, "Invalid load address: 0x%08x\n", address );
-    vc4_emul_interrupt ( emul->vc4, 0, message );
+    sprintf (message, "Invalid load address: 0x%08x\n", address);
+    vc4_emul_interrupt (emul->vc4, 0, message);
   }
-  value &= 0xffffffff >> ( ( 4 - size ) * 8 );
+  value &= 0xffffffff >> ((4 - size) * 8);
   /*
    * print_log("load %08x %08x\n", address, value);
    */
@@ -174,27 +172,26 @@ vc4_emul_load ( void *user_data, uint32_t address, int size ) {
 }
 
 void
-vc4_emul_store ( void *user_data, uint32_t address, int size, uint32_t value ) {
+vc4_emul_store (void *user_data, uint32_t address, int size, uint32_t value) {
   struct bcm2835_emul *emul = user_data;
   char *dest;
   unsigned int i;
 
-  print_log ( "store %08x %08x\n", address, value );
-  if ( is_in_region
-       ( address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END ) ) {
-    dest = emul->bootram + ( address & SIZE_64KB );
-  } else if ( is_in_region ( address & SIZE_1GB, size, 0x0, DRAM_SIZE ) ) {
-    dest = emul->dram + ( address & SIZE_1GB );
+  print_log ("store %08x %08x\n", address, value);
+  if (is_in_region (address, size, BOOTROM_BASE_ADDRESS, BOOTROM_ADDRESS_END)) {
+    dest = emul->bootram + (address & SIZE_64KB);
+  } else if (is_in_region (address & SIZE_1GB, size, 0x0, DRAM_SIZE)) {
+    dest = emul->dram + (address & SIZE_1GB);
   } else {
     /*
      * device registers 
      */
-    if ( size == 4 && ( address & 3 ) == 0 ) {
-      for ( i = 0; i < DEVICE_COUNT; i++ ) {
-        if ( address >= devices[i].address &&
-             address <= devices[i].address + devices[i].size ) {
-          print_log ( "MMIO(W, 4) %08x <= %08x\n", address, value );
-          return devices[i].store ( emul, address, value );
+    if (size == 4 && (address & 3) == 0) {
+      for (i = 0; i < DEVICE_COUNT; i++) {
+        if (address >= devices[i].address &&
+            address <= devices[i].address + devices[i].size) {
+          print_log ("MMIO(W, 4) %08x <= %08x\n", address, value);
+          return devices[i].store (emul, address, value);
         }
       }
     }
@@ -203,20 +200,20 @@ vc4_emul_store ( void *user_data, uint32_t address, int size, uint32_t value ) {
      */
     char message[36];
 
-    sprintf ( message, "Invalid store address: 0x%08x\n", address );
-    vc4_emul_interrupt ( emul->vc4, 0, message );
+    sprintf (message, "Invalid store address: 0x%08x\n", address);
+    vc4_emul_interrupt (emul->vc4, 0, message);
   }
-  switch ( size ) {
+  switch (size) {
   case 1:
-    *( uint8_t * ) dest = value;
+    *(uint8_t *) dest = value;
     break;
   case 2:
-    *( uint16_t * ) dest = value;
+    *(uint16_t *) dest = value;
     break;
   case 4:
-    *( uint32_t * ) dest = value;
+    *(uint32_t *) dest = value;
     break;
   default:
-    assert ( 0 && "Invalid store size." );
+    assert (0 && "Invalid store size.");
   }
 }
