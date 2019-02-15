@@ -30,7 +30,7 @@ void print_log(const char *fmt, ...) {
     buff[mark++] = strdup(target);
     return;
   } else if(mark > 0) {
-    for(int i = 0; i < mark; i++) {
+    for(unsigned int i = 0; i < mark; i++) {
       addCDKSwindow(scroller, buff[i], BOTTOM);
     }
     mark = 0;
