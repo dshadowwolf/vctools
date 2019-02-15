@@ -8,6 +8,7 @@
 #include <getopt.h>
 #include <ctype.h>
 #include <ncurses.h>
+#include <libgen.h>
 
 extern void initRegisterWindow (struct bcm2835_emul *emul);
 extern void updateRegisterWindow ();
@@ -153,12 +154,12 @@ main (int argc, char **argv) {
     char *tmp;
 
     if (bootcode_file != NULL)
-      tmp = strdup (bootcode_file);
+      tmp = strdup (basename (bootcode_file));
     else if (rom_file != NULL)
-      tmp = strdup (rom_file);
+      tmp = strdup (basename (rom_file));
     log_file = malloc (sizeof (char) * (strlen (tmp) + 9));
     memset (log_file, 0, sizeof (char) * (strlen (tmp) + 9));
-    sprintf (log_file, "%s.log.txt", bootcode_file);
+    sprintf (log_file, "%s.log.txt", tmp);
   }
   /*
    * start the emulator 
