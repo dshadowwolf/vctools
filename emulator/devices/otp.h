@@ -17,4 +17,3 @@ struct otp_data {
 };
 
 #endif
-

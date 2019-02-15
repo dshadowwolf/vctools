@@ -6,4 +6,3 @@ struct sdco_data {
 };
 
 #endif
-

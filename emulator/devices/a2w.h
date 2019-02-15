@@ -6,4 +6,3 @@ struct a2w_data {
 };
 
 #endif
-

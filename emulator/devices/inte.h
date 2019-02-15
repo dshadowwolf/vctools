@@ -3,8 +3,7 @@
 #define DEVICES_INTE_H_INCLUDED
 
 struct inte_data {
-	uint32_t ivt_address;
+  uint32_t ivt_address;
 };
 
 #endif
-

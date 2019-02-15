@@ -6,4 +6,3 @@ struct pm_data {
 };
 
 #endif
-

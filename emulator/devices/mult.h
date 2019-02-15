@@ -6,4 +6,3 @@ struct mult_data {
 };
 
 #endif
-
