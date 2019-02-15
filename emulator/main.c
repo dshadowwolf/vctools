@@ -154,9 +154,10 @@ main (int argc, char **argv) {
     char *tmp;
 
     if (bootcode_file != NULL)
-      tmp = strdup (basename (bootcode_file));
+      tmp = strdup (bootcode_file);
     else if (rom_file != NULL)
-      tmp = strdup (basename (rom_file));
+      tmp = strdup (rom_file);
+    tmp = basename(tmp);
     log_file = malloc (sizeof (char) * (strlen (tmp) + 9));
     memset (log_file, 0, sizeof (char) * (strlen (tmp) + 9));
     sprintf (log_file, "%s.log.txt", tmp);
