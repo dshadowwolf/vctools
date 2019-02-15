@@ -86,7 +86,7 @@ void cm_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 		emul->cm.plld = value;
 		return;
 	} else if (address == VC_CM_LOCK) {
-		emul->cm.lock == value;
+		emul->cm.lock = value;
 		return;
 	}
 	for (i = 0; i < CLOCK_COUNT; i++) {
