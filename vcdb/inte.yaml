@@ -42,6 +42,8 @@ registers:
     type: UNKNOWN
   0x44:
     type: UNKNOWN
+  0x800:
+    type: UNKNOWN
 types:
   UNKNOWN:
     name: UNKNOWN

@@ -523,8 +523,12 @@ instructions:
       //print_log("NOP at 0x%08X", get_reg(31));
   - name: wait # sleep
     pattern: 0000 0000 0000 0010
+    code: |
+      //print_log("Sleep at 0x%08X", get_reg(31));
   - name: user
     pattern: 0000 0000 0000 0011
+    code: |
+      //print_log("User at 0x%08X", get_reg(31));
   - name: enable # ei
     pattern: 0000 0000 0000 0100
     code: |
@@ -572,11 +576,11 @@ instructions:
   - name: tbb Rd # switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
-      error("TBD");
+      error("switch.b Rd TBD");
   - name: tbb Rd # switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |
-      error("TBD");
+      error(" switch Rd TBD");
   - name: mov Rd, cpuid # version Rd
     pattern: 0000 0000 111 Rd:5
     code: |
@@ -680,6 +684,7 @@ instructions:
     pattern: 011 op:4 imm:5 Rd:4
     code: |
       scalar_op(op * 2, Rd, get_reg(Rd), imm);
+
   # 32-bit branch instructions
   - name: addcmpb<cond> Rd, Ra, Rs, 2*offset + pc
     pattern: 1000 cond:4 Ra:4 Rd:4 00 Rs:4 offset:10

@@ -267,6 +267,7 @@ int32_t float_to_int(float x) {
 /* fatal errors */
 static void error(struct vc4_emul *emul, const char *reason) {
     /* TODO */
+    print_log(reason);
     assert(0 && "Not implemented!");
 }
 #define error(reason) error(emul, reason)

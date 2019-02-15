@@ -13,6 +13,10 @@ static FILE *logfile;
 
 const int HEIGHT = 30;
 
+void cleanup() {
+  if(logfile) fclose(logfile);
+}
+
 void print_log(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
@@ -21,8 +25,8 @@ void print_log(const char *fmt, ...) {
   va_end(args);
   
   addCDKSwindow(scroller, target, BOTTOM);
-  fprintf(logfile, "%s", target);
-  
+  fputs(target, logfile);
+  fsync(fileno(logfile));
   //  box(mywin, ACS_VLINE, ACS_HLINE);
   wrefresh(mywin);
 }
@@ -38,6 +42,7 @@ void initMessagesWindow(struct bcm2835_emul *emu, const char *filename) {
   drawCDKSwindow (scroller, ObjOf (scroller)->box);
   refresh();
   wrefresh(mywin);
+  atexit(cleanup);
 }
 
 void commandMSG(int key) {

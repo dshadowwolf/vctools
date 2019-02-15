@@ -35,6 +35,14 @@ uint32_t a2w_load(struct bcm2835_emul *emul, uint32_t address) {
 }
 void a2w_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
 	if (address == VC_A2W_PLLC_DIG0) {
+	} else if (address == VC_A2W_PLLC_DIG0) {
+	} else if (address == VC_A2W_PLLC_DIG1) {
+	} else if (address == VC_A2W_PLLC_DIG2) {
+	} else if (address == VC_A2W_PLLC_DIG3) {
+	} else if (address == VC_A2W_PLLC_ANA0) {
+	} else if (address == VC_A2W_PLLC_ANA1) {
+	} else if (address == VC_A2W_PLLC_ANA2) {
+	} else if (address == VC_A2W_PLLC_ANA3) {
 	} else if (address == VC_A2W_PLLC_MULT2) {
 	} else if (address == VC_A2W_PLLD_MULT2) {
 	} else if (address == VC_A2W_XOSC_CTRL) {

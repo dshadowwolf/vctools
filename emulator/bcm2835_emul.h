@@ -196,10 +196,6 @@ void i2cspislv_init(struct bcm2835_emul *emul);
 uint32_t i2cspislv_load(struct bcm2835_emul *emul, uint32_t address);
 void i2cspislv_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
 
-void a2w_init(struct bcm2835_emul *emul);
-uint32_t a2w_load(struct bcm2835_emul *emul, uint32_t address);
-void a2w_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
-
 void aux_init(struct bcm2835_emul *emul);
 uint32_t aux_load(struct bcm2835_emul *emul, uint32_t address);
 void aux_store(struct bcm2835_emul *emul, uint32_t address, uint32_t value);
