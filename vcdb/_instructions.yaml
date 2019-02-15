@@ -680,7 +680,6 @@ instructions:
     pattern: 011 op:4 imm:5 Rd:4
     code: |
       scalar_op(op * 2, Rd, get_reg(Rd), imm);
-
   # 32-bit branch instructions
   - name: addcmpb<cond> Rd, Ra, Rs, 2*offset + pc
     pattern: 1000 cond:4 Ra:4 Rd:4 00 Rs:4 offset:10
@@ -886,12 +885,182 @@ instructions:
               set_reg(Rd, to_int64(get_reg(Ra)) / to_int64(sign_extend_6(imm)));
           }
       }
+  - name: add<cond> Rd, Ra, Rb shl 5 
+    pattern: 1100 0101 100 Rd:5 Ra:5 cond:4 00 Rb:5
+    code: |
+      if (condition_passed(cond, get_reg(sr))) {
+          set_reg(Rd, get_reg(Ra) + (get_reg(Rb) << 5));
+      }
+  - name: add<cond> Rd, Ra, Rb shl 8 
+    pattern: 1100 0101 101 Rd:5 Ra:5 cond:4 00 Rb:5
+    code: |
+      if (condition_passed(cond, get_reg(sr))) {
+          set_reg(Rd, get_reg(Ra) + (get_reg(Rb) << 6));
+      }
+  - name: add<cond> Rd, Ra, Rb shl 8 
+    pattern: 1100 0101 110 Rd:5 Ra:5 cond:4 00 Rb:5
+    code: |
+      if (condition_passed(cond, get_reg(sr))) {
+          set_reg(Rd, get_reg(Ra) + (get_reg(Rb) << 7));
+      }
   - name: add<cond> Rd, Ra, Rb shl 8 
     pattern: 1100 0101 111 Rd:5 Ra:5 cond:4 00 Rb:5
     code: |
       if (condition_passed(cond, get_reg(sr))) {
           set_reg(Rd, get_reg(Ra) + (get_reg(Rb) << 8));
       }
+  - name: adds Rd, Ra, imm
+    pattern: 1100 0101 000 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) + imm));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: adds Rd, Ra, Rb
+    pattern: 1100 0101 000 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) + get_reg(Rb)));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: subs Rd, Ra, imm
+    pattern: 1100 0101 001 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) - imm));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: subs Rd, Ra, Rb
+    pattern: 1100 0101 001 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) - get_reg(Rb)));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: shls Rd, Ra, imm
+    pattern: 1100 0101 010 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) << imm));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: shls Rd, Ra, Rb
+    pattern: 1100 0101 010 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Ra) << get_reg(Rb)));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: clipsh Rd, Ra, imm
+    pattern: 1100 0101 011 Rd:5 0 0000 1100 1 imm:6
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fff, MAX(-0x8000, x)))
+      set_reg(Rd, saturate(imm));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: clipsh Rd, Rb
+    pattern: 1100 0101 011 Rd:5 0 0000 1100 00 Rb:5
+    code: |
+      #define MIN(x, y) (((x)>(y))?y:x)
+      #define MAX(x, y) (((x)>(y))?x:y)
+      #define saturate(x) (MIN(0x7fffffff, MAX(-0x80000000, x)))
+      set_reg(Rd, saturate(get_reg(Rb)));
+      #undef saturate
+      #undef MAX
+      #undef MIN
+  - name: count Rd, imm
+    pattern: 1100 0110 000 Rd:5 0 0000 1100 1 imm:6
+    code: |
+      error("Not Yet Implemented");
+  - name: count Rd, imm
+    pattern: 1100 0110 000 Rd:5 0 0000 1100 00 Rb:5
+    code: |
+      error("Not Yet Implemented");
+  - name: subscale Rd, Ra, imm shl 1
+    pattern: 1100 0110 001 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 1));
+  - name: subscale Rd, Ra, imm shl 2
+    pattern: 1100 0110 010 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 2));
+  - name: subscale Rd, Ra, imm shl 3
+    pattern: 1100 0110 011 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 3));
+  - name: subscale Rd, Ra, imm shl 4
+    pattern: 1100 0110 100 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 4));
+  - name: subscale Rd, Ra, imm shl 5
+    pattern: 1100 0110 101 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 5));
+  - name: subscale Rd, Ra, imm shl 6
+    pattern: 1100 0110 110 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 6));
+  - name: subscale Rd, Ra, imm shl 7
+    pattern: 1100 0110 111 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 7));
+  - name: subscale Rd, Ra, imm shl 8
+    pattern: 1100 0111 000 Rd:5 Ra:5 1100 1 imm:6
+    code: |
+      set_reg(Rd, get_reg(Ra) - (imm << 8));
+  - name: subscale Rd, Ra, Rb shl 1
+    pattern: 1100 0110 001 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 1));
+  - name: subscale Rd, Ra, Rb shl 2
+    pattern: 1100 0110 010 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 2));
+  - name: subscale Rd, Ra, Rb shl 3
+    pattern: 1100 0110 011 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 3));
+  - name: subscale Rd, Ra, Rb shl 4
+    pattern: 1100 0110 100 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 4));
+  - name: subscale Rd, Ra, Rb shl 5
+    pattern: 1100 0110 101 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 5));
+  - name: subscale Rd, Ra, Rb shl 6
+    pattern: 1100 0110 110 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 6));
+  - name: subscale Rd, Ra, Rb shl 7
+    pattern: 1100 0110 111 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 7));
+  - name: subscale Rd, Ra, Rb shl 8
+    pattern: 1100 0111 000 Rd:5 Ra:5 1100 00 Rb:5
+    code: |
+      set_reg(Rd, get_reg(Ra) - (get_reg(Rb) << 8));
 
   # floating point instructions
   - name: <fop><cond> Rd, Ra, Rb
