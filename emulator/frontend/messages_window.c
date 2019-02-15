@@ -10,6 +10,8 @@ static struct bcm2835_emul *emul_copy;
 static CDKSWINDOW *scroller;
 static CDKSCREEN *screen;
 static FILE *logfile;
+static const char* buff[1024];
+static unsigned int mark = 0;
 
 const int HEIGHT = 30;
 
@@ -23,6 +25,16 @@ void print_log(const char *fmt, ...) {
   char target[8192];
   vsnprintf(target, 8192, fmt, args);
   va_end(args);
+
+  if(scroller == NULL) {
+    buff[mark++] = strdup(target);
+    return;
+  } else if(mark > 0) {
+    for(int i = 0; i < mark; i++) {
+      addCDKSwindow(scroller, buff[i], BOTTOM);
+    }
+    mark = 0;
+  }
   
   addCDKSwindow(scroller, target, BOTTOM);
   fputs(target, logfile);

@@ -142,8 +142,11 @@ int main(int argc, char **argv) {
 		vc4_emul_set_scalar_reg(emul->vc4, 31, DRAM_BASE_ADDRESS);
 	}
 	if(log_file == NULL) {
-	  log_file = malloc(sizeof(char) * (strlen(bootcode_file)+9));
-	  memset(log_file, 0, sizeof(char) * (strlen(bootcode_file)+9));
+	  char *tmp;
+	  if(bootcode_file != NULL) tmp = strdup(bootcode_file);
+	  else if(rom_file != NULL) tmp = strdup(rom_file);
+	  log_file = malloc(sizeof(char) * (strlen(tmp)+9));
+	  memset(log_file, 0, sizeof(char) * (strlen(tmp)+9));
 	  sprintf(log_file, "%s.log.txt", bootcode_file);
 	}
 	/* start the emulator */
