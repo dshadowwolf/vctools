@@ -11,8 +11,8 @@ desc: |
   mostly unknown. The core clock affects at least execution speed on the
   videocore processor and the speed of the mini uart.
 arrays:
-  0x8:
-    name: VPU
+  0x0:
+    name: GNRIC
     length: 1
     stride: 0x8
     block: &CLOCK_CTL
@@ -25,17 +25,32 @@ arrays:
           name: CTL
           brief: Clock Control
           type: CTL
-
         0x4:
           name: DIV
           brief: Clock Divisor
           type: DIV
+  0x8:
+    name: VPU
+    length: 1
+    block: *CLOCK_CTL
+  0x10:
+    name: SYS
+    length: 1
+    block: *CLOCK_CTL
+  0x18:
+    name: PERIA
+    length: 1
+    block: *CLOCK_CTL
+  0x20:
+    name: PERII
+    length: 1
+    block: *CLOCK_CTL
   0x28:
     name: H264
     length: 1
     block: *CLOCK_CTL
   0x30:
-    name: UNK_0x30
+    name: ISP
     length: 1
     block: *CLOCK_CTL
   0x38:
@@ -43,11 +58,23 @@ arrays:
     length: 1
     block: *CLOCK_CTL
   0x40:
-    name: CAM0_LP
+    name: CAM0
+    length: 1
+    block: *CLOCK_CTL
+  0x48:
+    name: CAM1
+    length: 1
+    block: *CLOCK_CTL
+  0x50:
+    name: CCP2
     length: 1
     block: *CLOCK_CTL
   0x58:
-    name: DSI0_ESC/DSI1_ESC
+    name: DSI0E
+    length: 1
+    block: *CLOCK_CTL
+  0x60:
+    name: DSI0P
     length: 1
     block: *CLOCK_CTL
   0x68:
@@ -64,7 +91,7 @@ arrays:
     length: 1
     block: *CLOCK_CTL
   0x90:
-    name: ISP
+    name: OTP
     length: 1
     block: *CLOCK_CTL
   0x98:
@@ -85,7 +112,19 @@ arrays:
     stride: 0x8
     block: *CLOCK_CTL
   0xc0:
-    name: eMMC
+    name: TCNT
+    length: 1
+    block: *CLOCK_CTL
+  0xc8:
+    name: TEC
+    length: 1
+    block: *CLOCK_CTL
+  0xd0:
+    name: TD0
+    length: 1
+    block: *CLOCK_CTL
+  0xd8:
+    name: TD1
     length: 1
     block: *CLOCK_CTL
   0xe0:
@@ -93,7 +132,7 @@ arrays:
     length: 1
     block: *CLOCK_CTL
   0xe8:
-    name: TIME
+    name: TIMER
     length: 1
     block: *CLOCK_CTL
   0xf0:
@@ -104,21 +143,43 @@ arrays:
     name: VEC
     length: 1
     block: *CLOCK_CTL
-  0x190:
-    name: UNK_0x190
+#  0x114:
+#    name: LOCK
+#    length: 2
+  0x148:
+    name: BURST
     length: 1
     block: *CLOCK_CTL
-#   0x1a8:
-#     name: UNK_0x1a8
-#     length: 1
-#     stride: 0x8
-#     block: *CLOCK_CTL
+  0x158:
+    name: DSI1E
+    length: 1
+    block: *CLOCK_CTL
+  0x160:
+    name: DSI1P
+    length: 1
+    block: *CLOCK_CTL
+  0x168:
+    name: DFT
+    length: 1
+    block: *CLOCK_CTL
+  0x190:
+    name: PULSE
+    length: 1
+    block: *CLOCK_CTL
+  0x1a8:
+    name: SDC
+    length: 1
+    block: *CLOCK_CTL
   0x1b0:
     name: ARM
     length: 1
     block: *CLOCK_CTL
+  0x1b8:
+    name: AVEO
+    length: 1
+    block: *CLOCK_CTL
   0x1c0:
-    name: UNK_0x1c0
+    name: EMMC
     length: 1
     block: *CLOCK_CTL
 

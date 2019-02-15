@@ -44,7 +44,7 @@ Where <options> can contain the following:\n\
     -h          Prints this help.\n\
     -c IMAGE    Specifies the SD card image to be used.\n\
     -s PORT     Creates a local TCP server at PORT for uart data.\n\
-    -r ROMFILE  Specifies a bootrom file which is placed at 0x60004000.\n\
+    -r ROMFILE  Specifies a bootrom file which is placed at 0x60000000.\n\
     -b BOOTCODE Specifies a bootcode.bin file which is placed at 0x80000000.\n\
 At least either bootrom or bootcode.bin is necessary.\n\
 If a bootcode.bin file is specified, execution starts with this file. \
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 	if (rom_file == NULL && bootcode_file == NULL) {
-		fprintf(stderr, "Error: Cannot boot without bootrom and bootcode.\n");
+		fprintf(stderr, "Error: Cannot boot without bootrom or bootcode.\n");
 		printf(help, argv[0]);
 		return -1;
 	}
@@ -123,18 +123,18 @@ int main(int argc, char **argv) {
 	inte_init(emul);
 	/* load the boot code into memory */
 	if (rom_file != NULL) {
-		if (load_file(emul, rom_file, 0x60000000) != 0) {
+		if (load_file(emul, rom_file, BOOTROM_BASE_ADDRESS) != 0) {
 			fprintf(stderr, "Could not open the bootrom file!\n");
 			return -1;
 		}
-		vc4_emul_set_scalar_reg(emul->vc4, 31, 0x60000000);
+		vc4_emul_set_scalar_reg(emul->vc4, 31, BOOTROM_BASE_ADDRESS);
 	}
 	if (bootcode_file != NULL) {
-		if (load_file(emul, bootcode_file, 0x80000000) != 0) {
+		if (load_file(emul, bootcode_file, DRAM_BASE_ADDRESS) != 0) {
 			fprintf(stderr, "Could not open the bootcode file!\n");
 			return -1;
 		}
-		vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
+		vc4_emul_set_scalar_reg(emul->vc4, 31, DRAM_BASE_ADDRESS);
 	}
 	/* start the emulator */
 	/* TODO */
@@ -204,18 +204,18 @@ int main(int argc, char **argv) {
 		  inte_init(emul);
 		  /* load the boot code into memory */
 		  if (rom_file != NULL) {
-		    if (load_file(emul, rom_file, 0x60000000) != 0) {
+		    if (load_file(emul, rom_file, BOOTROM_BASE_ADDRESS) != 0) {
 		      print_log("Could not open the bootrom file!\n");
 		      return -1;
 		    }
-		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x60000000);
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, BOOTROM_BASE_ADDRESS);
 		  }
 		  if (bootcode_file != NULL) {
-		    if (load_file(emul, bootcode_file, 0x80000000) != 0) {
+		    if (load_file(emul, bootcode_file, DRAM_BASE_ADDRESS) != 0) {
 		      print_log("Could not open the bootcode file!\n");
 		      return -1;
 		    }
-		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, DRAM_BASE_ADDRESS);
 		  }
 		  updateRegisterWindow();
 		  updateMemoryWindow();
@@ -241,18 +241,18 @@ int main(int argc, char **argv) {
 		  inte_init(emul);
 		  /* load the boot code into memory */
 		  if (rom_file != NULL) {
-		    if (load_file(emul, rom_file, 0x60000000) != 0) {
+		    if (load_file(emul, rom_file, BOOTROM_BASE_ADDRESS) != 0) {
 		      print_log("Could not open the bootrom file!\n");
 		      return -1;
 		    }
-		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x60000000);
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, BOOTROM_BASE_ADDRESS);
 		  }
 		  if (bootcode_file != NULL) {
-		    if (load_file(emul, bootcode_file, 0x80000000) != 0) {
+		    if (load_file(emul, bootcode_file, DRAM_BASE_ADDRESS) != 0) {
 		      print_log("Could not open the bootcode file!\n");
 		      return -1;
 		    }
-		    vc4_emul_set_scalar_reg(emul->vc4, 31, 0x80000200);
+		    vc4_emul_set_scalar_reg(emul->vc4, 31, DRAM_BASE_ADDRESS);
 		  }
 		  updateRegisterWindow();
 		  updateMemoryWindow();

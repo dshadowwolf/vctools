@@ -35,20 +35,36 @@ arrays:
         Registers to control a PLL
       registers:
         0x0:
-          name: MULT
+          name: DIG0
           brief: PLL Multiplier
           type: MULT
         0x4:
+          name: DIG1
+          type: MULT
         0x8:
+          name: DIG2
+          type: MULT
         0xc:
+          name: DIG3
+          type: MULT
         0x10:
+          name: ANA0
+          type: MULT
         0x14:
+          name: ANA1
+          type: MULT
         0x18:
+          name: ANA2
+          type: MULT
         0x1c:
+          name: ANA3
+          type: MULT
         0x100:
           name: MULT2
           brief: PLL Multiplier 2 (?)
           type: MULT
+        0x110:
+          name: ANA_SCSS
         0x200:
           name: MULT_FRACT
           brief: Fractional Part
@@ -56,6 +72,8 @@ arrays:
             Fractional part of the PLL multiplier - the resulting multiplier is
             MULT + MULT_FRACT / 0x100000.
           type: MULT_FRACT
+        0x210:
+          name: ANA_SSCL
   0x40:
     name: PLLD
     length: 1

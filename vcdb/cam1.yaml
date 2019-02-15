@@ -1,0 +1,6 @@
+---
+name: CAM1
+brief: Camera Serial Interface
+size: 0x1000
+desc: >
+  TBD

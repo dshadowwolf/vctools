@@ -2,6 +2,10 @@
 #ifndef DEVICES_CM_H_INCLUDED
 #define DEVICES_CM_H_INCLUDED
 
+#define VC_CM_PLLC (VC_CM__ADDRESS + 0x108)
+#define VC_CM_PLLD (VC_CM__ADDRESS + 0x10c)
+#define VC_CM_LOCK (VC_CM__ADDRESS + 0x114)
+
 struct cm_clock_info {
 	uint32_t divisor;
 	uint32_t control;
@@ -33,6 +37,9 @@ enum {
 };
 
 struct cm_data {
+	uint32_t pllc;
+	uint32_t plld;
+	uint32_t lock;
 	struct cm_clock_info clocks[CLOCK_COUNT];
 };
 

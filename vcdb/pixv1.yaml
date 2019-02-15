@@ -1,6 +1,6 @@
 ---
-name: PIXV
+name: PIXV1
 brief: Pixelvalue
-size: 0x2000
+size: 0x1000
 desc: >
   TBD

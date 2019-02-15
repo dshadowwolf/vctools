@@ -3,10 +3,16 @@ name: GPIO
 brief: General Purpose IO
 size: 0x1000
 desc: >
-  TBD
+  The GPIO peripheral has three dedicated interrupt lines. These lines are triggered by the
+  setting of bits in the event detect status register. Each bank has it's own interrupt line with the
+  third line shared between all bits.
+  The Alternate function table also has the pull state (pull-up/pull-down) which is applied after
+  a power down.
 registers:
   0x0:
     name: FSEL0
+    access: rw
+    brief: GPIO Function Select 0
     bits:
       29-27: &FSEL9
         name: FSEL9
@@ -14,202 +20,284 @@ registers:
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 9 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 9 is an ouput
           2:
             name: SPI0_MISO
+            desc: GPIO Pin 9 takes alternate function 
           3:
             name: SD1
+            desc: GPIO Pin 9 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 9 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 9 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 9 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 9 takes alternate function 
       26-24: &FSEL8
         name: FSEL8
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 8 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 8 is an ouput
           2:
             name: SPI0_CE0_N
+            desc: GPIO Pin 8 takes alternate function 
           3:
             name: SD0
+            desc: GPIO Pin 8 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 8 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 8 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 8 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 8 takes alternate function 
       23-21: &FSEL7
         name: FSEL7
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 7 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 7 is an ouput
           2:
             name: SPI0_CE1_N 
+            desc: GPIO Pin 7 takes alternate function 
           3:
             name: SWE_N
+            desc: GPIO Pin 7 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 7 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 7 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 7 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 7 takes alternate function 
       20-18: &FSEL6
         name: FSEL6
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 6 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 6 is an ouput
           2:
             name: GPCLK2
+            desc: GPIO Pin 6 takes alternate function 
           3:
             name: SOE_N
+            desc: GPIO Pin 6 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 6 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 6 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 6 takes alternate function 
           7:
             name: ARM_RTCK
+            desc: GPIO Pin 6 takes alternate function 
       17-15: &FSEL5
         name: FSEL5
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 5 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 5 is an ouput
           2:
             name: GPCLK1
+            desc: GPIO Pin 5 takes alternate function 
           3:
             name: SA0
+            desc: GPIO Pin 5 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 5 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 5 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 5 takes alternate function 
           7:
             name: ARM_TDO
+            desc: GPIO Pin 5 takes alternate function 
       14-12: &FSEL4
         name: FSEL4
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 4 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 4 is an ouput
           2:
             name: GPCLK0
+            desc: GPIO Pin 4 takes alternate function 
           3:
             name: SA1
+            desc: GPIO Pin 4 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 4 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 4 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 4 takes alternate function 
           7:
             name: ARM_TDI
+            desc: GPIO Pin 4 takes alternate function 
       11-9: &FSEL3
         name: FSEL3
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 3 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 3 is an ouput
           2:
             name: SCL1
+            desc: GPIO Pin 3 takes alternate function 
           3:
             name: SA2
+            desc: GPIO Pin 3 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 3 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 3 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 3 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 3 takes alternate function 
       8-6: &FSEL2
         name: FSEL2
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 2 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 2 is an ouput
           2:
             name: SDA1
+            desc: GPIO Pin 2 takes alternate function 
           3:
             name: SA3
+            desc: GPIO Pin 2 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 2 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 2 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 2 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 2 takes alternate function 
       5-3: &FSEL1
         name: FSEL1
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 1 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 1 is an ouput
           2:
             name: SCL0
+            desc: GPIO Pin 1 takes alternate function 
           3:
             name: SA4
+            desc: GPIO Pin 1 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 1 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 1 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 1 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 1 takes alternate function 
       2-0: &FSEL0
         name: FSEL0
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 0 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 0 is an ouput
           2:
             name: SDA0
+            desc: GPIO Pin 0 takes alternate function 
           3:
             name: SA5
+            desc: GPIO Pin 0 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 0 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 0 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 0 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 0 takes alternate function 
   0x4:
     name: FSEL1
+    access: rw
+    brief: GPIO Function Select 1
     bits:
       29-27: &FSEL19
         name: FSEL19
@@ -217,223 +305,2697 @@ registers:
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 19 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 19 is an ouput
           2:
             name: PCM_FS
+            desc: GPIO Pin 19 takes alternate function 
           3:
             name: SD11
+            desc: GPIO Pin 19 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 19 takes alternate function 
           5:
             name: BSCSL_SCL
+            desc: GPIO Pin 19 takes alternate function 
           6:
             name: SPI1_MISO
+            desc: GPIO Pin 19 takes alternate function 
           7:
             name: PWM1
+            desc: GPIO Pin 19 takes alternate function 
       26-24: &FSEL18
         name: FSEL18
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 18 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 18 is an ouput
           2:
             name: PCM_CLK
+            desc: GPIO Pin 18 takes alternate function 
           3:
             name: SD10
+            desc: GPIO Pin 18 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 18 takes alternate function 
           5:
             name: BCSCL_SDA
+            desc: GPIO Pin 18 takes alternate function 
           6:
             name: SPI1_CE0_N
+            desc: GPIO Pin 18 takes alternate function 
           7:
             name: PWM0
+            desc: GPIO Pin 18 takes alternate function 
       23-21: &FSEL17
         name: FSEL17
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 17 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 17 is an ouput
           2:
             name: AUX0
+            desc: GPIO Pin 17 takes alternate function 
           3:
             name: SD9
+            desc: GPIO Pin 17 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 17 takes alternate function 
           5:
             name: RTS0
+            desc: GPIO Pin 17 takes alternate function 
           6:
             name: SPI1_CE1_N
+            desc: GPIO Pin 17 takes alternate function 
           7:
             name: RTS1
+            desc: GPIO Pin 17 takes alternate function 
       20-18: &FSEL16
         name: FSEL16
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 16 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 16 is an ouput
           2:
             name: AUX0
+            desc: GPIO Pin 16 takes alternate function 
           3:
             name: SD8
+            desc: GPIO Pin 16 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 16 takes alternate function 
           5:
             name: CTS0
+            desc: GPIO Pin 16 takes alternate function 
           6:
             name: SPI1_CE2_N
+            desc: GPIO Pin 16 takes alternate function 
           7:
             name: CTS1
+            desc: GPIO Pin 16 takes alternate function 
       17-15: &FSEL15
         name: FSEL15
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 15 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 15 is an output
           2:
             name: RXD0
+            desc: GPIO Pin 15 takes alternate function 
           3:
             name: SD7
+            desc: GPIO Pin 15 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 15 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 15 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 15 takes alternate function 
           7:
             name: RXD1
+            desc: GPIO Pin 15 takes alternate function 
       14-12: &FSEL14
         name: FSEL14
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 14 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 14 is an ouput
           2:
             name: TXD0
+            desc: GPIO Pin 14 takes alternate function 
           3:
             name: SD6
+            desc: GPIO Pin 14 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 14 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 14 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 14 takes alternate function 
           7:
             name: TXD1
+            desc: GPIO Pin 14 takes alternate function 
       11-9: &FSEL13
         name: FSEL13
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 13 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 13 is an output
           2:
             name: PWM1
+            desc: GPIO Pin 13 takes alternate function 
           3:
             name: SD5
+            desc: GPIO Pin 13 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 13 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 13 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 13 takes alternate function 
           7:
             name: ARM_TCK
+            desc: GPIO Pin 13 takes alternate function 
       8-6: &FSEL12
         name: FSEL12
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 12 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 12 is an output
           2:
             name: PWM0
+            desc: GPIO Pin 12 takes alternate function 
           3:
             name: SD4
+            desc: GPIO Pin 12 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 12 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 12 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 12 takes alternate function 
           7:
             name: ARM_TMS
+            desc: GPIO Pin 12 takes alternate function 
       5-3: &FSEL11
         name: FSEL11
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 11 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 11 is an output
           2:
             name: SPI0_SCLK
+            desc: GPIO Pin 11 takes alternate function 
           3:
             name: SD2
+            desc: GPIO Pin 11 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 11 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 11 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 11 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 11 takes alternate function 
       2-0: &FSEL10
         name: FSEL10
         access: rw
         values:
           0:
             name: INPUT
+            desc: GPIO Pin 10 is an input
           1:
             name: OUTPUT
+            desc: GPIO Pin 10 is an output
           2:
             name: SPI0_MOSI
+            desc: GPIO Pin 10 takes alternate function 
           3:
             name: SD2
+            desc: GPIO Pin 10 takes alternate function 
           4:
             name: AUX2
+            desc: GPIO Pin 10 takes alternate function 
           5:
             name: AUX3
+            desc: GPIO Pin 10 takes alternate function 
           6:
             name: AUX4
+            desc: GPIO Pin 10 takes alternate function 
           7:
             name: AUX5
+            desc: GPIO Pin 10 takes alternate function 
   0x8:
     name: FSEL2
+    access: rw
+    brief: GPIO Function Select 2
+    bits:
+      29-27: &FSEL29
+        name: FSEL29
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 29 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 29 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 29 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 29 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 29 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 29 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 29 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 29 takes alternate function 5
+      26-24: &FSEL28
+        name: FSEL28
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 28 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 28 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 28 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 28 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 28 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 28 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 28 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 28 takes alternate function 5
+      23-21: &FSEL27
+        name: FSEL27
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 27 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 27 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 27 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 27 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 27 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 27 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 27 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 27 takes alternate function 5
+      20-18: &FSEL26
+        name: FSEL26
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 26 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 26 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 26 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 26 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 26 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 26 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 26 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 26 takes alternate function 5
+      17-15: &FSEL25
+        name: FSEL25
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 25 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 25 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 25 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 25 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 25 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 25 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 25 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 25 takes alternate function 5
+      14-12: &FSEL24
+        name: FSEL24
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 24 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 24 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 24 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 24 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 24 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 24 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 24 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 24 takes alternate function 5
+      11-9: &FSEL23
+        name: FSEL23
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 23 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 23 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 23 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 23 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 23 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 23 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 23 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 23 takes alternate function 5
+      8-6: &FSEL22
+        name: FSEL22
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 22 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 22 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 22 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 22 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 22 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 22 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 22 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 22 takes alternate function 5
+      5-3: &FSEL21
+        name: FSEL21
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 21 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 21 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 21 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 21 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 21 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 21 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 21 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 21 takes alternate function 5
+      2-0: &FSEL20
+        name: FSEL20
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 20 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 20 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 20 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 20 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 20 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 20 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 20 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 20 takes alternate function 5
   0xc:
     name: FSEL3
+    access: rw
+    brief: GPIO Function Select 3
+    bits:
+      29-27: &FSEL39
+        name: FSEL39
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 39 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 39 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 39 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 39 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 39 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 39 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 39 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 39 takes alternate function 5
+      26-24: &FSEL38
+        name: FSEL38
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 38 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 38 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 38 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 38 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 38 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 38 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 38 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 38 takes alternate function 5
+      23-21: &FSEL37
+        name: FSEL37
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 37 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 37 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 37 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 37 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 37 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 37 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 37 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 37 takes alternate function 5
+      20-18: &FSEL36
+        name: FSEL36
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 36 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 36 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 36 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 36 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 36 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 36 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 36 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 36 takes alternate function 5
+      17-15: &FSEL35
+        name: FSEL35
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 35 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 35 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 35 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 35 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 35 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 35 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 35 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 35 takes alternate function 5
+      14-12: &FSEL34
+        name: FSEL34
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 34 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 34 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 34 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 34 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 34 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 34 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 34 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 34 takes alternate function 5
+      11-9: &FSEL33
+        name: FSEL33
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 33 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 33 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 33 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 33 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 33 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 33 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 33 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 33 takes alternate function 5
+      8-6: &FSEL32
+        name: FSEL32
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 32 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 32 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 32 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 32 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 32 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 32 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 32 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 32 takes alternate function 5
+      5-3: &FSEL31
+        name: FSEL31
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 31 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 31 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 31 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 31 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 31 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 31 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 31 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 31 takes alternate function 5
+      2-0: &FSEL30
+        name: FSEL30
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 30 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 30 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 30 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 30 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 30 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 30 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 30 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 30 takes alternate function 5
   0x10:
     name: FSEL4
+    access: rw
+    brief: GPIO Function Select 4
+    bits:
+      29-27: &FSEL49
+        name: FSEL49
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 49 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 49 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 49 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 49 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 49 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 49 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 49 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 49 takes alternate function 5
+      26-24: &FSEL48
+        name: FSEL48
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 48 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 48 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 48 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 48 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 48 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 48 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 48 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 48 takes alternate function 5
+      23-21: &FSEL47
+        name: FSEL47
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 47 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 47 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 47 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 47 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 47 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 47 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 47 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 47 takes alternate function 5
+      20-18: &FSEL46
+        name: FSEL46
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 46 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 46 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 46 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 46 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 46 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 46 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 46 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 46 takes alternate function 5
+      17-15: &FSEL45
+        name: FSEL45
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 45 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 45 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 45 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 45 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 45 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 45 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 45 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 45 takes alternate function 5
+      14-12: &FSEL44
+        name: FSEL44
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 44 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 44 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 44 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 44 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 44 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 44 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 44 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 44 takes alternate function 5
+      11-9: &FSEL43
+        name: FSEL43
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 43 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 43 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 43 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 43 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 43 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 43 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 43 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 43 takes alternate function 5
+      8-6: &FSEL42
+        name: FSEL42
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 42 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 42 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 42 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 42 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 42 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 42 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 42 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 42 takes alternate function 5
+      5-3: &FSEL41
+        name: FSEL41
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 41 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 41 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 41 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 41 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 41 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 41 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 41 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 41 takes alternate function 5
+      2-0: &FSEL40
+        name: FSEL40
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 40 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 40 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 40 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 40 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 40 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 40 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 40 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 40 takes alternate function 5
   0x14:
     name: FSEL5
+    access: rw
+    brief: GPIO Function Select 5
+    bits:
+      11-9: &GPFSEL53
+        name: FSEL53
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 53 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 53 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 53 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 53 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 53 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 53 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 53 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 53 takes alternate function 5
+      8-6: &FSEL52
+        name: FSEL52
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 52 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 52 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 52 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 52 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 52 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 52 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 52 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 52 takes alternate function 5
+      5-3: &FSEL51
+        name: FSEL51
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 51 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 51 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 51 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 51 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 51 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 51 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 51 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 51 takes alternate function 5
+      2-0: &FSEL50
+        name: FSEL50
+        access: rw
+        values:
+          0:
+            name: INPUT
+            desc: GPIO Pin 50 is an input
+          1:
+            name: OUTPUT
+            desc: GPIO Pin 50 is an output
+          2:
+            name: AUX0
+            desc: GPIO Pin 50 takes alternate function 0
+          3:
+            name: AUX1
+            desc: GPIO Pin 50 takes alternate function 1
+          4:
+            name: AUX2
+            desc: GPIO Pin 50 takes alternate function 2
+          5:
+            name: AUX3
+            desc: GPIO Pin 50 takes alternate function 3
+          6:
+            name: AUX4
+            desc: GPIO Pin 50 takes alternate function 4
+          7:
+            name: AUX5
+            desc: GPIO Pin 50 takes alternate function 5
   0x1c:
     name: SET0
+    access: w
+    brief: GPIO Pin Output Set 0
+    bits:
+      31-0: &GPSET0
+        name: SET0
+        access: rw
+        values:
+          0:
+            name: SET0
+            desc: Set GPIO Pin 0
+          1:
+            name: SET1
+            desc: Set GPIO Pin 1
+          2:
+            name: SET2
+            desc: Set GPIO Pin 2
+          3:
+            name: SET3
+            desc: Set GPIO Pin 3
+          4:
+            name: SET4
+            desc: Set GPIO Pin 
+          5:
+            name: SET5
+            desc: Set GPIO Pin 
+          6:
+            name: SET6
+            desc: Set GPIO Pin 
+          7:
+            name: SET7
+            desc: Set GPIO Pin 
+          8:
+            name: SET8
+            desc: Set GPIO Pin 
+          9:
+            name: SET9
+            desc: Set GPIO Pin 
+          10:
+            name: SET10
+            desc: Set GPIO Pin 
+          11:
+            name: SET11
+            desc: Set GPIO Pin 
+          12:
+            name: SET12
+            desc: Set GPIO Pin 
+          13:
+            name: SET13
+            desc: Set GPIO Pin 
+          14:
+            name: SET14
+            desc: Set GPIO Pin 
+          15:
+            name: SET15
+            desc: Set GPIO Pin 
+          16:
+            name: SET16
+            desc: Set GPIO Pin 
+          17:
+            name: SET17
+            desc: Set GPIO Pin 
+          18:
+            name: SET18
+            desc: Set GPIO Pin 
+          19:
+            name: SET19
+            desc: Set GPIO Pin 
+          20:
+            name: SET20
+            desc: Set GPIO Pin 
+          21:
+            name: SET21
+            desc: Set GPIO Pin 
+          22:
+            name: SET22
+            desc: Set GPIO Pin 
+          23:
+            name: SET23
+            desc: Set GPIO Pin 
+          24:
+            name: SET24
+            desc: Set GPIO Pin 
+          25:
+            name: SET25
+            desc: Set GPIO Pin 
+          26:
+            name: SET26
+            desc: Set GPIO Pin 
+          27:
+            name: SET27
+            desc: Set GPIO Pin 
+          28:
+            name: SET28
+            desc: Set GPIO Pin 
+          29:
+            name: SET29
+            desc: Set GPIO Pin 
+          30:
+            name: SET30
+            desc: Set GPIO Pin 
+          31:
+            name: SET31
+            desc: Set GPIO Pin 
   0x20:
     name: SET1
+    access: w
+    brief: GPIO Pin Output Set 1
+    bits:
+      31-0: &SET1
+        name: SET1
+        access: rw
+        values:
+          0:
+            name: SET32
+            desc: Set GPIO Pin 
+          1:
+            name: SET33
+            desc: Set GPIO Pin 
+          2:
+            name: SET34
+            desc: Set GPIO Pin 
+          3:
+            name: SET35
+            desc: Set GPIO Pin 
+          4:
+            name: SET36
+            desc: Set GPIO Pin 
+          5:
+            name: SET37
+            desc: Set GPIO Pin 
+          6:
+            name: SET38
+            desc: Set GPIO Pin 
+          7:
+            name: SET39
+            desc: Set GPIO Pin 
+          8:
+            name: SET40
+            desc: Set GPIO Pin 
+          9:
+            name: SET41
+            desc: Set GPIO Pin 
+          10:
+            name: SET42
+            desc: Set GPIO Pin 
+          11:
+            name: SET43
+            desc: Set GPIO Pin 
+          12:
+            name: SET44
+            desc: Set GPIO Pin 
+          13:
+            name: SET45
+            desc: Set GPIO Pin 
+          14:
+            name: SET46
+            desc: Set GPIO Pin 
+          15:
+            name: SET47
+            desc: Set GPIO Pin 
+          16:
+            name: SET48
+            desc: Set GPIO Pin 
+          17:
+            name: SET49
+            desc: Set GPIO Pin 
+          18:
+            name: SET50
+            desc: Set GPIO Pin 
+          19:
+            name: SET51
+            desc: Set GPIO Pin 
+          20:
+            name: SET52
+            desc: Set GPIO Pin 
+          21:
+            name: SET53
+            desc: Set GPIO Pin 
   0x28:
     name: CLR0
+    access: w
+    brief: GPIO Pin Output Clear 0
+    bits:
+      31-0: &GPCLR0
+        name: CLR0
+        access: rw
+        values:
+          0:
+            name: CLR0
+            desc: Clear GPIO Pin 
+          1:
+            name: CLR1
+            desc: Clear GPIO Pin 
+          2:
+            name: CLR2
+            desc: Clear GPIO Pin 
+          3:
+            name: CLR3
+            desc: Clear GPIO Pin 
+          4:
+            name: CLR4
+            desc: Clear GPIO Pin 
+          5:
+            name: CLR5
+            desc: Clear GPIO Pin 
+          6:
+            name: CLR6
+            desc: Clear GPIO Pin 
+          7:
+            name: CLR7
+            desc: Clear GPIO Pin 
+          8:
+            name: CLR8
+            desc: Clear GPIO Pin 
+          9:
+            name: CLR9
+            desc: Clear GPIO Pin 
+          10:
+            name: CLR10
+            desc: Clear GPIO Pin 
+          11:
+            name: CLR11
+            desc: Clear GPIO Pin 
+          12:
+            name: CLR12
+            desc: Clear GPIO Pin 
+          13:
+            name: CLR13
+            desc: Clear GPIO Pin 
+          14:
+            name: CLR14
+            desc: Clear GPIO Pin 
+          15:
+            name: CLR15
+            desc: Clear GPIO Pin 
+          16:
+            name: CLR16
+            desc: Clear GPIO Pin 
+          17:
+            name: CLR17
+            desc: Clear GPIO Pin 
+          18:
+            name: CLR18
+            desc: Clear GPIO Pin 
+          19:
+            name: CLR19
+            desc: Clear GPIO Pin 
+          20:
+            name: CLR20
+            desc: Clear GPIO Pin 
+          21:
+            name: CLR21
+            desc: Clear GPIO Pin 
+          22:
+            name: CLR22
+            desc: Clear GPIO Pin 
+          23:
+            name: CLR23
+            desc: Clear GPIO Pin 
+          24:
+            name: CLR24
+            desc: Clear GPIO Pin 
+          25:
+            name: CLR25
+            desc: Clear GPIO Pin 
+          26:
+            name: CLR26
+            desc: Clear GPIO Pin 
+          27:
+            name: CLR27
+            desc: Clear GPIO Pin 
+          28:
+            name: CLR28
+            desc: Clear GPIO Pin 
+          29:
+            name: CLR29
+            desc: Clear GPIO Pin 
+          30:
+            name: CLR30
+            desc: Clear GPIO Pin 
+          31:
+            name: CLR31
+            desc: Clear GPIO Pin 
   0x2c:
     name: CLR1
+    access: w
+    brief: GPIO Pin Output Clear 1
+    bits:
+      31-0: &GPCLR1
+        name: CLR1
+        access: rw
+        values:
+          0:
+            name: CLR32
+            desc: Clear GPIO Pin 
+          1:
+            name: CLR33
+            desc: Clear GPIO Pin 
+          2:
+            name: CLR34
+            desc: Clear GPIO Pin 
+          3:
+            name: CLR35
+            desc: Clear GPIO Pin 
+          4:
+            name: CLR36
+            desc: Clear GPIO Pin 
+          5:
+            name: CLR37
+            desc: Clear GPIO Pin 
+          6:
+            name: CLR38
+            desc: Clear GPIO Pin 
+          7:
+            name: CLR39
+            desc: Clear GPIO Pin 
+          8:
+            name: CLR40
+            desc: Clear GPIO Pin 
+          9:
+            name: CLR41
+            desc: Clear GPIO Pin 
+          10:
+            name: CLR42
+            desc: Clear GPIO Pin 
+          11:
+            name: CLR43
+            desc: Clear GPIO Pin 
+          12:
+            name: CLR44
+            desc: Clear GPIO Pin 
+          13:
+            name: CLR45
+            desc: Clear GPIO Pin 
+          14:
+            name: CLR46
+            desc: Clear GPIO Pin 
+          15:
+            name: CLR47
+            desc: Clear GPIO Pin 
+          16:
+            name: CLR48
+            desc: Clear GPIO Pin 
+          17:
+            name: CLR49
+            desc: Clear GPIO Pin 
+          18:
+            name: CLR50
+            desc: Clear GPIO Pin 
+          19:
+            name: CLR51
+            desc: Clear GPIO Pin 
+          20:
+            name: CLR52
+            desc: Clear GPIO Pin 
+          21:
+            name: CLR53
+            desc: Clear GPIO Pin 
   0x34:
     name: LEV0
+    access: r
+    brief: GPIO Pin Level 0
+    bits:
+      31-0: &GPLEV0
+        name: LEV0
+        access: rw
+        values:
+          0:
+            name: LEV0
+          1:
+            name: LEV1
+          2:
+            name: LEV2
+          3:
+            name: LEV3
+          4:
+            name: LEV4
+          5:
+            name: LEV5
+          6:
+            name: LEV6
+          7:
+            name: LEV7
+          8:
+            name: LEV8
+          9:
+            name: LEV9
+          10:
+            name: LEV10
+          11:
+            name: LEV11
+          12:
+            name: LEV12
+          13:
+            name: LEV13
+          14:
+            name: LEV14
+          15:
+            name: LEV15
+          16:
+            name: LEV16
+          17:
+            name: LEV17
+          18:
+            name: LEV18
+          19:
+            name: LEV19
+          20:
+            name: LEV20
+          21:
+            name: LEV21
+          22:
+            name: LEV22
+          23:
+            name: LEV23
+          24:
+            name: LEV24
+          25:
+            name: LEV25
+          26:
+            name: LEV26
+          27:
+            name: LEV27
+          28:
+            name: LEV28
+          29:
+            name: LEV29
+          30:
+            name: LEV30
+          31:
+            name: LEV31
   0x38:
     name: LEV1
+    access: r
+    brief: GPIO Pin Level 1
+    bits:
+      31-0: &LEV1
+        name: LEV1
+        access: rw
+        values:
+          0:
+            name: LEV32
+          1:
+            name: LEV33
+          2:
+            name: LEV34
+          3:
+            name: LEV35
+          4:
+            name: LEV36
+          5:
+            name: LEV37
+          6:
+            name: LEV38
+          7:
+            name: LEV39
+          8:
+            name: LEV40
+          9:
+            name: LEV41
+          10:
+            name: LEV42
+          11:
+            name: LEV43
+          12:
+            name: LEV44
+          13:
+            name: LEV45
+          14:
+            name: LEV46
+          15:
+            name: LEV47
+          16:
+            name: LEV48
+          17:
+            name: LEV49
+          18:
+            name: LEV50
+          19:
+            name: LEV51
+          20:
+            name: LEV52
+          21:
+            name: LEV53
+  0x40:
+    name: EDS0
+    access: rw
+    brief: GPIO Pin Event Detect Status 0
+    bits:
+      31-0: &GPEDS0
+        name: EDS0
+        access: rw
+        values:
+          0:
+            name: EDS0
+          1:
+            name: EDS1
+          2:
+            name: EDS2
+          3:
+            name: EDS3
+          4:
+            name: EDS4
+          5:
+            name: EDS5
+          6:
+            name: EDS6
+          7:
+            name: EDS7
+          8:
+            name: EDS8
+          9:
+            name: EDS9
+          10:
+            name: EDS10
+          11:
+            name: EDS11
+          12:
+            name: EDS12
+          13:
+            name: EDS13
+          14:
+            name: EDS14
+          15:
+            name: EDS15
+          16:
+            name: EDS16
+          17:
+            name: EDS17
+          18:
+            name: EDS18
+          19:
+            name: EDS19
+          20:
+            name: EDS20
+          21:
+            name: EDS21
+          22:
+            name: EDS22
+          23:
+            name: EDS23
+          24:
+            name: EDS24
+          25:
+            name: EDS25
+          26:
+            name: EDS26
+          27:
+            name: EDS27
+          28:
+            name: EDS28
+          29:
+            name: EDS29
+          30:
+            name: EDS30
+          31:
+            name: EDS31
+  0x44:
+    name: EDS1
+    access: rw
+    brief: GPIO Pin Event Detect Status 1
+    bits:
+      31-0: &EDS1
+        name: EDS1
+        access: rw
+        values:
+          0:
+            name: EDS32
+          1:
+            name: EDS33
+          2:
+            name: EDS34
+          3:
+            name: EDS35
+          4:
+            name: EDS36
+          5:
+            name: EDS37
+          6:
+            name: EDS38
+          7:
+            name: EDS39
+          8:
+            name: EDS40
+          9:
+            name: EDS41
+          10:
+            name: EDS42
+          11:
+            name: EDS43
+          12:
+            name: EDS44
+          13:
+            name: EDS45
+          14:
+            name: EDS46
+          15:
+            name: EDS47
+          16:
+            name: EDS48
+          17:
+            name: EDS49
+          18:
+            name: EDS50
+          19:
+            name: EDS51
+          20:
+            name: EDS52
+          21:
+            name: EDS53
+  0x4c:
+    name: REN0
+    access: rw
+    brief: GPIO Pin Rising Edge Detect Enable 0
+    bits:
+      31-0: &GPREN0
+        name: REN0
+        access: rw
+        values:
+          0:
+            name: REN0
+          1:
+            name: REN1
+          2:
+            name: REN2
+          3:
+            name: REN3
+          4:
+            name: REN4
+          5:
+            name: REN5
+          6:
+            name: REN6
+          7:
+            name: REN7
+          8:
+            name: REN8
+          9:
+            name: REN9
+          10:
+            name: REN10
+          11:
+            name: REN11
+          12:
+            name: REN12
+          13:
+            name: REN13
+          14:
+            name: REN14
+          15:
+            name: REN15
+          16:
+            name: REN16
+          17:
+            name: REN17
+          18:
+            name: REN18
+          19:
+            name: REN19
+          20:
+            name: REN20
+          21:
+            name: REN21
+          22:
+            name: REN22
+          23:
+            name: REN23
+          24:
+            name: REN24
+          25:
+            name: REN25
+          26:
+            name: REN26
+          27:
+            name: REN27
+          28:
+            name: REN28
+          29:
+            name: REN29
+          30:
+            name: REN30
+          31:
+            name: REN31
+  0x50:
+    name: REN1
+    access: rw
+    brief: GPIO Pin Rising Edge Detect Enable 1
+    bits:
+      31-0: &REN1
+        name: REN1
+        access: rw
+        values:
+          0:
+            name: REN32
+          1:
+            name: REN33
+          2:
+            name: REN34
+          3:
+            name: REN35
+          4:
+            name: REN36
+          5:
+            name: REN37
+          6:
+            name: REN38
+          7:
+            name: REN39
+          8:
+            name: REN40
+          9:
+            name: REN41
+          10:
+            name: REN42
+          11:
+            name: REN43
+          12:
+            name: REN44
+          13:
+            name: REN45
+          14:
+            name: REN46
+          15:
+            name: REN47
+          16:
+            name: REN48
+          17:
+            name: REN49
+          18:
+            name: REN50
+          19:
+            name: REN51
+          20:
+            name: REN52
+          21:
+            name: REN53
+  0x58:
+    name: FEN0
+    access: rw
+    brief: GPIO Pin Falling Edge Detect Enable 0
+    bits:
+      31-0: &FEN0
+        name: FEN0
+        access: rw
+        values:
+          0:
+            name: FEN0
+          1:
+            name: FEN1
+          2:
+            name: FEN2
+          3:
+            name: FEN3
+          4:
+            name: FEN4
+          5:
+            name: FEN5
+          6:
+            name: FEN6
+          7:
+            name: FEN7
+          8:
+            name: FEN8
+          9:
+            name: FEN9
+          10:
+            name: FEN10
+          11:
+            name: FEN11
+          12:
+            name: FEN12
+          13:
+            name: FEN13
+          14:
+            name: FEN14
+          15:
+            name: FEN15
+          16:
+            name: FEN16
+          17:
+            name: FEN17
+          18:
+            name: FEN18
+          19:
+            name: FEN19
+          20:
+            name: FEN20
+          21:
+            name: FEN21
+          22:
+            name: FEN22
+          23:
+            name: FEN23
+          24:
+            name: FEN24
+          25:
+            name: FEN25
+          26:
+            name: FEN26
+          27:
+            name: FEN27
+          28:
+            name: FEN28
+          29:
+            name: FEN29
+          30:
+            name: FEN30
+          31:
+            name: FEN31
+  0x5c:
+    name: FEN1
+    access: rw
+    brief: GPIO Pin Falling Edge Detect Enable 1
+    bits:
+      31-0: &FEN1
+        name: FEN1
+        access: rw
+        values:
+          0:
+            name: FEN32
+          1:
+            name: FEN33
+          2:
+            name: FEN34
+          3:
+            name: FEN35
+          4:
+            name: FEN36
+          5:
+            name: FEN37
+          6:
+            name: FEN38
+          7:
+            name: FEN39
+          8:
+            name: FEN40
+          9:
+            name: FEN41
+          10:
+            name: FEN42
+          11:
+            name: FEN43
+          12:
+            name: FEN44
+          13:
+            name: FEN45
+          14:
+            name: FEN46
+          15:
+            name: FEN47
+          16:
+            name: FEN48
+          17:
+            name: FEN49
+          18:
+            name: FEN50
+          19:
+            name: FEN51
+          20:
+            name: FEN52
+          21:
+            name: FEN53
+  0x64:
+    name: HEN0
+    access: rw
+    brief: GPIO Pin High Detect Enable 0
+    bits:
+      31-0: &HEN0
+        name: HEN0
+        access: rw
+        values:
+          0:
+            name: HEN0
+          1:
+            name: HEN1
+          2:
+            name: HEN2
+          3:
+            name: HEN3
+          4:
+            name: HEN4
+          5:
+            name: HEN5
+          6:
+            name: HEN6
+          7:
+            name: HEN7
+          8:
+            name: HEN8
+          9:
+            name: HEN9
+          10:
+            name: HEN10
+          11:
+            name: HEN11
+          12:
+            name: HEN12
+          13:
+            name: HEN13
+          14:
+            name: HEN14
+          15:
+            name: HEN15
+          16:
+            name: HEN16
+          17:
+            name: HEN17
+          18:
+            name: HEN18
+          19:
+            name: HEN19
+          20:
+            name: HEN20
+          21:
+            name: HEN21
+          22:
+            name: HEN22
+          23:
+            name: HEN23
+          24:
+            name: HEN24
+          25:
+            name: HEN25
+          26:
+            name: HEN26
+          27:
+            name: HEN27
+          28:
+            name: HEN28
+          29:
+            name: HEN29
+          30:
+            name: HEN30
+          31:
+            name: HEN31
+  0x68:
+    name: HEN1
+    access: rw
+    brief: GPIO Pin High Detect Enable 1
+    bits:
+      31-0: &HEN1
+        name: HEN1
+        access: rw
+        values:
+          0:
+            name: HEN32
+          1:
+            name: HEN33
+          2:
+            name: HEN34
+          3:
+            name: HEN35
+          4:
+            name: HEN36
+          5:
+            name: HEN37
+          6:
+            name: HEN38
+          7:
+            name: HEN39
+          8:
+            name: HEN40
+          9:
+            name: HEN41
+          10:
+            name: HEN42
+          11:
+            name: HEN43
+          12:
+            name: HEN44
+          13:
+            name: HEN45
+          14:
+            name: HEN46
+          15:
+            name: HEN47
+          16:
+            name: HEN48
+          17:
+            name: HEN49
+          18:
+            name: HEN50
+          19:
+            name: HEN51
+          20:
+            name: HEN52
+          21:
+            name: HEN53
+  0x70:
+    name: LEN0
+    access: rw
+    brief: GPIO Pin Low Detect Enable 0
+    bits:
+      31-0: &LEN0
+        name: LEN0
+        access: rw
+        values:
+          0:
+            name: LEN0
+          1:
+            name: LEN1
+          2:
+            name: LEN2
+          3:
+            name: LEN3
+          4:
+            name: LEN4
+          5:
+            name: LEN5
+          6:
+            name: LEN6
+          7:
+            name: LEN7
+          8:
+            name: LEN8
+          9:
+            name: LEN9
+          10:
+            name: LEN10
+          11:
+            name: LEN11
+          12:
+            name: LEN12
+          13:
+            name: LEN13
+          14:
+            name: LEN14
+          15:
+            name: LEN15
+          16:
+            name: LEN16
+          17:
+            name: LEN17
+          18:
+            name: LEN18
+          19:
+            name: LEN19
+          20:
+            name: LEN20
+          21:
+            name: LEN21
+          22:
+            name: LEN22
+          23:
+            name: LEN23
+          24:
+            name: LEN24
+          25:
+            name: LEN25
+          26:
+            name: LEN26
+          27:
+            name: LEN27
+          28:
+            name: LEN28
+          29:
+            name: LEN29
+          30:
+            name: LEN30
+          31:
+            name: LEN31
+  0x74:
+    name: LEN1
+    access: rw
+    brief: GPIO Pin Low Detect Enable 1
+    bits:
+      31-0: &LEN1
+        name: LEN1
+        access: rw
+        values:
+          0:
+            name: LEN32
+          1:
+            name: LEN33
+          2:
+            name: LEN34
+          3:
+            name: LEN35
+          4:
+            name: LEN36
+          5:
+            name: LEN37
+          6:
+            name: LEN38
+          7:
+            name: LEN39
+          8:
+            name: LEN40
+          9:
+            name: LEN41
+          10:
+            name: LEN42
+          11:
+            name: LEN43
+          12:
+            name: LEN44
+          13:
+            name: LEN45
+          14:
+            name: LEN46
+          15:
+            name: LEN47
+          16:
+            name: LEN48
+          17:
+            name: LEN49
+          18:
+            name: LEN50
+          19:
+            name: LEN51
+          20:
+            name: LEN52
+          21:
+            name: LEN53
+  0x7c:
+    name: AREN0
+    access: rw
+    brief: GPIO Pin Async. Rising Edge Detect 0
+    bits:
+      31-0: &AREN0
+        name: AREN0
+        access: rw
+        values:
+          0:
+            name: AREN0
+          1:
+            name: AREN1
+          2:
+            name: AREN2
+          3:
+            name: AREN3
+          4:
+            name: AREN4
+          5:
+            name: AREN5
+          6:
+            name: AREN6
+          7:
+            name: AREN7
+          8:
+            name: AREN8
+          9:
+            name: AREN9
+          10:
+            name: AREN10
+          11:
+            name: AREN11
+          12:
+            name: AREN12
+          13:
+            name: AREN13
+          14:
+            name: AREN14
+          15:
+            name: AREN15
+          16:
+            name: AREN16
+          17:
+            name: AREN17
+          18:
+            name: AREN18
+          19:
+            name: AREN19
+          20:
+            name: AREN20
+          21:
+            name: AREN21
+          22:
+            name: AREN22
+          23:
+            name: AREN23
+          24:
+            name: AREN24
+          25:
+            name: AREN25
+          26:
+            name: AREN26
+          27:
+            name: AREN27
+          28:
+            name: AREN28
+          29:
+            name: AREN29
+          30:
+            name: AREN30
+          31:
+            name: AREN31
+  0x80:
+    name: AREN1
+    access: rw
+    brief: GPIO Pin Async. Rising Edge Detect 1
+    bits:
+      31-0: &AREN1
+        name: AREN1
+        access: rw
+        values:
+          0:
+            name: AREN32
+          1:
+            name: AREN33
+          2:
+            name: AREN34
+          3:
+            name: AREN35
+          4:
+            name: AREN36
+          5:
+            name: AREN37
+          6:
+            name: AREN38
+          7:
+            name: AREN39
+          8:
+            name: AREN40
+          9:
+            name: AREN41
+          10:
+            name: AREN42
+          11:
+            name: AREN43
+          12:
+            name: AREN44
+          13:
+            name: AREN45
+          14:
+            name: AREN46
+          15:
+            name: AREN47
+          16:
+            name: AREN48
+          17:
+            name: AREN49
+          18:
+            name: AREN50
+          19:
+            name: AREN51
+          20:
+            name: AREN52
+          21:
+            name: AREN53
+  0x88:
+    name: AFEN0
+    access: rw
+    brief: GPIO Pin Async. Falling Edge Detect 0
+    bits:
+      31-0: &AFEN0
+        name: AFEN0
+        access: rw
+        values:
+          0:
+            name: AFEN0
+            brief: 
+          1:
+            name: AFEN1
+            brief: 
+          2:
+            name: AFEN2
+            brief: 
+          3:
+            name: AFEN3
+            brief: 
+          4:
+            name: AFEN4
+            brief: 
+          5:
+            name: AFEN5
+            brief: 
+          6:
+            name: AFEN6
+            brief: 
+          7:
+            name: AFEN7
+            brief: 
+          8:
+            name: AFEN8
+            brief: 
+          9:
+            name: AFEN9
+            brief: 
+          10:
+            name: AFEN10
+            brief: 
+          11:
+            name: AFEN11
+            brief: 
+          12:
+            name: AFEN12
+            brief: 
+          13:
+            name: AFEN13
+            brief: 
+          14:
+            name: AFEN14
+            brief: 
+          15:
+            name: AFEN15
+            brief: 
+          16:
+            name: AFEN16
+            brief: 
+          17:
+            name: AFEN17
+            brief: 
+          18:
+            name: AFEN18
+            brief: 
+          19:
+            name: AFEN19
+            brief: 
+          20:
+            name: AFEN20
+            brief: 
+          21:
+            name: AFEN21
+            brief: 
+          22:
+            name: AFEN22
+            brief: 
+          23:
+            name: AFEN23
+            brief: 
+          24:
+            name: AFEN24
+            brief: 
+          25:
+            name: AFEN25
+            brief: 
+          26:
+            name: AFEN26
+            brief: 
+          27:
+            name: AFEN27
+            brief: 
+          28:
+            name: AFEN28
+            brief: 
+          29:
+            name: AFEN29
+            brief: 
+          30:
+            name: AFEN30
+            brief: 
+          31:
+            name: AFEN31
+            brief: 
+  0x8c:
+    name: AFEN1
+    access: rw
+    brief: GPIO Pin Async. Falling Edge Detect 1
+    bits:
+      31-0: &AFEN1
+        name: AFEN1
+        access: rw
+        values:
+          0:
+            name: AFEN32
+            brief: 
+          1:
+            name: AFEN33
+            brief: 
+          2:
+            name: AFEN34
+            brief: 
+          3:
+            name: AFEN35
+            brief: 
+          4:
+            name: AFEN36
+            brief: 
+          5:
+            name: AFEN37
+            brief: 
+          6:
+            name: AFEN38
+            brief: 
+          7:
+            name: AFEN39
+            brief: 
+          8:
+            name: AFEN40
+            brief: 
+          9:
+            name: AFEN41
+            brief: 
+          10:
+            name: AFEN42
+            brief: 
+          11:
+            name: AFEN43
+            brief: 
+          12:
+            name: AFEN44
+            brief: 
+          13:
+            name: AFEN45
+            brief: 
+          14:
+            name: AFEN46
+            brief: 
+          15:
+            name: AFEN47
+            brief: 
+          16:
+            name: AFEN48
+            brief: 
+          17:
+            name: AFEN49
+            brief: 
+          18:
+            name: AFEN50
+            brief: 
+          19:
+            name: AFEN51
+            brief: 
+          20:
+            name: AFEN52
+            brief: 
+          21:
+            name: AFEN53
+            brief: 
   0x94:
     name: PUD
+    access: rw
+    brief: GPIO Pin Pull-up/down Enable
   0x98:
     name: PUDCLK0
+    access: rw
+    brief: GPIO Pin Pull-up/down Enable Clock 0
+    #    bits:
+    #      31-0: $PUDCLKn
+    #        name: PUDCLKn
+    #        access: rw
+        #        values:
+        #          0: No Effect
+        #          1: Assert Clock on line (n)
   0x9c:
     name: PUDCLK1
+    access: rw
+    brief: GPIO Pin Pull-up/down Enable Clock 1
+    #    bits:
+    #      31-0: $PUDCLKn
+      #        name: PUDCLKn
+      #        access: rw
+      #        values:
+      #          0: No Effect
+      #          1: Assert Clock on line (n)

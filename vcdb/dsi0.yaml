@@ -1,5 +1,5 @@
 ---
-name: DSI
+name: DSI0
 brief: Display Serial Interface
 size: 0x1000
 desc: >

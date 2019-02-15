@@ -20,6 +20,8 @@ blocks:
     file: mphi.yaml
   0x7000:
     file: dma.yaml
+  0x8000:
+    file: nu.yaml
   0x9000:
     file: arba.yaml
   0xa000:
@@ -49,11 +51,15 @@ blocks:
   0x205000:
     file: bsc0.yaml
   0x206000:
-    file: pixv.yaml
+    file: pixv0.yaml
+  0x207000:
+    file: pixv1.yaml
   0x208000:
     file: dpi.yaml
   0x209000:
-    file: dsi.yaml
+    file: dsi0.yaml
+  0x20b000:
+    file: tb.yaml
   0x20c000:
     file: pwm0.yaml
   0x20d000:
@@ -67,25 +73,53 @@ blocks:
   0x211000:
     file: cpg.yaml
   0x212000:
-    file: unk212000.yaml
+    file: ts.yaml
   0x213000:
     file: avsp.yaml
   0x214000:
-    file: unk214000.yaml
+    file: i2cspislv.yaml
   0x215000:
     file: aux0.yaml
+  0x240000:
+    file: aveout.yaml
   0x300000:
     file: emmc.yaml
   0x400000:
     file: ddrv.yaml
   0x600000:
     file: smi.yaml
+  0x700000:
+    file: dsi1.yaml
+  0x800000:
+    file: cam0.yaml
+  0x801000:
+    file: cam1.yaml
+  0x802000:
+    file: cmi.yaml
   0x804000:
     file: bsc1.yaml
   0x805000:
     file: bsc2.yaml
+  0x806000:
+    file: vec.yaml
+  0x807000:
+    file: pixv2.yaml
+  0x808000:
+    file: hd.yaml
+  0x809000:
+    file: hdcp.yaml
+  0x80a000:
+    file: piarbctl.yaml
+  0x902000:
+    file: hdmi.yaml
+  0x910000:
+    file: avein.yaml
   0x980000:
     file: usb.yaml
+  0xa00000:
+    file: isp.yaml
+  0xc00000:
+    file: v3d.yaml
   0xe00000:
     file: sdco.yaml
   0xe01000:
@@ -97,8 +131,12 @@ blocks:
   0xe05000:
     file: dma15.yaml
   0xe06000:
-    file: unke06000.yaml
+    file: aphycsr.yaml
   0xe07000:
     file: dcrc.yaml
   0xe08000:
     file: axip.yaml
+  0xf000000:
+    file: h264.yaml
+  0xf100000:
+    file: vce.yaml

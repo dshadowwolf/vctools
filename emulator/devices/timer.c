@@ -7,11 +7,14 @@
 extern void print_log(const char *fmt, ...);
 void timer_init(struct bcm2835_emul *emul) {
 	/* TODO */
+
 	(void)emul;
 }
 uint32_t timer_load(struct bcm2835_emul *emul, uint32_t address) {
 	/* TODO */
 	if (address == VC_TIMER_CLO) {
+		return 0;
+		print_log("Timer Free Running counter low requested");
 	} else {
 		print_log("Address: %x (%d):", address, address);
 		assert(0 && "Not implemented!\n");

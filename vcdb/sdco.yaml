@@ -5,6 +5,9 @@ size: 0x1000
 desc: >
   TBD
 registers:
+  0x00:
+    name: CS
+    brief: CS
   0x3c:
     name: LOCK_LOW
     brief: Lowest address of locked memory region. (?)

@@ -4,7 +4,7 @@ CFLAGS_VC4_EMUL = -g
 
 all: bcm2835_emul
 
- bcm2835_emul: main.o vc4_emul.o memory.o devices/mmc.o devices/aux.o \
+bcm2835_emul: main.o vc4_emul.o memory.o devices/mmc.o devices/aux.o \
               devices/mult.o \
               devices/otp.o devices/gpio.o devices/timer.o devices/cm.o \
               devices/a2w.o devices/inte.o devices/sdco.o devices/pm.o \
@@ -29,6 +29,6 @@ vcregs.h:
 
 clean:
 	-rm -f bcm2835_emul
-	-rm -f *.o devices/*.o
+	-rm -f *.o devices/*.o frontend/*.o
 	-rm -f vc4_emul.h vc4_emul.c vcregs.h
 
