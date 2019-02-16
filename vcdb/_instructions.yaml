@@ -996,8 +996,17 @@ instructions:
       #undef MIN
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 1 imm:6
-    code: |
-      error("count Rd, imm not Yet Implemented");
+    code: | {
+      unsigned int t = imm;
+      unsigned int c = 0;
+
+      while (t > 0) {
+        c += (t % 2);
+        t >>= 1;
+      }
+
+      set_reg(Rd, c);
+      }
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 00 Rb:5
     code: |
