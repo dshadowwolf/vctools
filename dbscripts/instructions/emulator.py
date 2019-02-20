@@ -136,19 +136,6 @@ void vc4_emul_exception(struct vc4_emul *emul,
     siglongjmp(emul->exception_handler, interrupt + 1);
 }
 
-void vc4_emul_interrupt(struct vc4_emul *emul,
-                        unsigned int interrupt,
-                        const char *reason) {
-	int i;
-	print_log("Interrupt %d: %s\\n", interrupt, reason);
-	for (i = 0; i < 32; i++) {
-		print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
-	}
-
-    /* TODO */
-    assert(0 && "Not implemented.");
-}
-
 void vc4_emul_set_scalar_reg(struct vc4_emul *emul, int reg, uint32_t value) {
 	assert(reg >= 0 && reg < 32);
 	emul->scalar_regs[reg] = value;
@@ -314,6 +301,29 @@ static void store(struct vc4_emul *emul,
 }
 #define load(address, format) load(emul, address, format)
 #define store(address, format, value) store(emul, address, format, value)
+
+void vc4_emul_interrupt(struct vc4_emul *emul,
+                        unsigned int interrupt,
+                        const char *reason) {
+	int i;
+	print_log("Interrupt %d: %s\\n", interrupt, reason);
+	for (i = 0; i < 32; i++) {
+		print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
+	}
+        uint32_t ivt = vc4_emul_get_ivt_address(emul->user_data);
+        uint32_t int_stack = emul->scalar_regs[28];
+        store(int_stack - 4, WORD, get_reg(pc));
+        store(int_stack - 8, WORD, get_reg(sr));
+        emul->scalar_regs[28] = int_stack - 8;
+
+        set_reg(pc, load(ivt + (interrupt - 1) * 4, WORD));
+        set_reg(sr, get_reg(sr) | (1 << 30));
+
+    /* TODO */
+//    assert(0 && "Not implemented.");
+}
+
+
 /* push/pop */
 static void push(struct vc4_emul *emul, uint32_t value) {
     set_reg(sp, get_reg(sp) - 4);

@@ -220,7 +220,7 @@ function_lists:
               int32_t tmp_sr = get_reg(sr);
               tmp_sr &= ~0xf;
               tmp_sr |= 0xa;
-              if (!(a & (1 << b))) {
+              if (a & (1 << b)) {
                   tmp_sr &= ~0xa;
               }
               set_reg(sr, tmp_sr);
@@ -996,7 +996,7 @@ instructions:
       #undef MIN
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 1 imm:6
-    code: | {
+    code: |
       unsigned int t = imm;
       unsigned int c = 0;
 
@@ -1006,7 +1006,6 @@ instructions:
       }
 
       set_reg(Rd, c);
-      }
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 00 Rb:5
     code: |
