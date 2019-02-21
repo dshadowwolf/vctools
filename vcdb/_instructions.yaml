@@ -560,6 +560,18 @@ instructions:
       uint32_t new_sr = pop();
       set_reg(pc, pop());
       set_reg(sr, new_sr);
+  - name: unknown_10 // Mentioned in bootrom, bootcode.bin
+    pattern: 0000 0000 0001 0000
+    code: |
+      error("Unknown Instruction 0x010\n");
+  - name: unknown_14 # Mentioned in bootrom
+    pattern: 0000 0000 0001 0100
+    code: |
+      error("Unknown Instruction 0x014\n");
+  - name: unknown_17 # Mentioned in bootrom
+    pattern: 0000 0000 0001 0111
+    code: |
+      error("Unknown Instruction 0x017\n");
   - name: swi Rd
     pattern: 0000 0000 001 Rd:5
     code: |
@@ -576,16 +588,41 @@ instructions:
   - name: tbb Rd # switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
-      error("switch.b Rd not yet implemented");
+      error("switch.b Rd not yet implemented\n");
   - name: tbb Rd # switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |
-      error(" switch Rd not yet implemented");
+      error("switch Rd not yet implemented\n");
+  - name: unknown_c0_df #0xc9 & 0xd4 mentioned in bootcode.bin
+    pattern: 0000 0000 110 Rd:5
+    code: |
+      error("Unknown Instruction between 0x0C0 and 0xDF\n");
   - name: mov Rd, cpuid # version Rd
     pattern: 0000 0000 111 Rd:5
     code: |
       // TODO: compute the proper coreid
-      set_reg(Rd, 0x04000140);
+      set_reg(Rd, 0x04010140);
+  - name: unknown_100_12f # 0x100, 0x101, 0x110 & 0x112 mentioned in bootrom
+    pattern: 0000 0001 000 Rd:5
+    code: |
+      error("Unknown Instruction between 0x100 and 0x12F\n");
+
+  - name: unknown_140_15f
+    pattern: 0000 0001 010 Rd:5
+    code: |
+      error("Unknown Instruction between 0x140 and 0x15F\n");
+  - name: unknown_160_17f
+    pattern: 0000 0001 011 Rd:5
+    code: |
+      error("Unknown Instruction between 0x160 and 0x17F\n");
+  - name: unknown_180_19f # 0x18f mentioned in bootcode.bin
+    pattern: 0000 0001 100 Rd:5
+    code: |
+      error("Unknown Instruction between 0x180 and 0x19F\n");
+  - name: unknown_1a0_1bf
+    pattern: 0000 0001 101 Rd:5
+    code: |
+      error("Unknown Instruction between 0x1A0 and 0x1BF\n");
   - name: swi imm # swi u
     pattern: 0000 0001 11 imm:6
     code: |
@@ -736,7 +773,7 @@ instructions:
       if (condition_passed(cond, get_reg(sr))) {
           if (Ra == pc) {
               /* TODO: this should be a normal interrupt */
-              error("Tried to modifiy pc");
+              error("Tried to modifiy pc\n");
           } else {
               set_reg(Rd, load(get_reg(Ra) + size(format) * get_reg(Rb), format));
           }
@@ -1009,7 +1046,7 @@ instructions:
   - name: count Rd, imm
     pattern: 1100 0110 000 Rd:5 0 0000 1110 00 Rb:5
     code: |
-      error("count Rd, imm not Yet Implemented");
+      error("count Rd, imm not Yet Implemented\n");
   - name: subscale Rd, Ra, imm shl 1
     pattern: 1100 0110 001 Rd:5 Ra:5 1110 1 imm:6
     code: |
@@ -1158,3 +1195,23 @@ instructions:
     pattern: 1110 11 Rs:5 Rd:5 imm1:16 imm2:16
     code: |
       set_reg(Rd, get_reg(Rs) + ((imm2 << 16) | imm1));
+# Temporary Hacks
+# vector 48
+  - name: vector48memory
+    pattern: 1111 00 offset1:21 offset2:21
+    code: |
+      print_log("vector48 memory operations are not implemented!\n");
+  - name: vector48data
+    pattern: 1111 01 offset1:21 offset2:21
+    code: |
+      print_log("vector48 data operations are not implemented!\n");
+# vector80 
+  - name: vector80memory
+    pattern: 1111 10 offset1:32 offset2:32 offset3:10
+    code: |
+      print_log("vector80 memory operations are not implemented!\n");
+  - name: vector80data
+    pattern: 1111 11 offset1:32 offset2:32 offset3:10
+    code: |
+      print_log("vector80 data operations are not implemented!\n");
+

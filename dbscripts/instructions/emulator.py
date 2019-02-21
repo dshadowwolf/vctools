@@ -256,7 +256,7 @@ int32_t float_to_int(float x) {
 static void error(struct vc4_emul *emul, const char *reason) {
     /* TODO */
     print_log(reason);
-    assert(0 && "Not implemented!");
+    assert(0 && "Not implemented!\\n");
 }
 #define error(reason) error(emul, reason)
 /* memory access functions */
@@ -295,7 +295,7 @@ static void store(struct vc4_emul *emul,
     int format_size = size(format);
     if (address & (format_size - 1)) {
         /* TODO: exception number? */
-        interrupt(0, "load: invalid alignment.");
+        interrupt(0, "load: invalid alignment.\\n");
     }
     vc4_emul_store(emul->user_data, address, format_size, value);
 }
@@ -320,7 +320,7 @@ void vc4_emul_interrupt(struct vc4_emul *emul,
         set_reg(sr, get_reg(sr) | (1 << 30));
 
     /* TODO */
-//    assert(0 && "Not implemented.");
+//    assert(0 && "Not implemented.\\n");
 }
 
 
@@ -346,7 +346,7 @@ typedef void (*instruction_function)(struct vc4_emul *emul, uint16_t *instr);
 
 step_function = """
 void vc4_emul_step(struct vc4_emul *emul) {
-    uint16_t instr[3];
+    uint16_t instr[5];
     uint32_t old_pc;
     uint32_t old_sr = emul->scalar_regs[25];
     int instr_size = 2;
@@ -363,6 +363,11 @@ void vc4_emul_step(struct vc4_emul *emul) {
             set_reg(pc, get_reg(pc) + 2);
             if (instr[0] > 0xe000) {
                 set_reg(pc, get_reg(pc) + 2);
+                if (instr[0] > 0xf000) {
+                    if (instr[0] > 0xf800) {
+                        set_reg(pc, get_reg(pc) + 4);
+                    }
+                }
             }
         }
         /* push pc and sr onto the stack */
@@ -379,14 +384,41 @@ void vc4_emul_step(struct vc4_emul *emul) {
     emul->pc_changed = 0;
     old_pc = get_reg(pc);
     instr[0] = load(get_reg(pc), HALFWORD);
-    if (instr[0] & 0x8000) {
+    if (instr[0] & 0x8000) { // Was 0x8000 or higher
+        if ((instr[0] >= 0xe000) && (instr[0] < 0xf000)) { // Was between 0xe000 and 0xefff
+            instr[1] = load(get_reg(pc) + 2, HALFWORD); // Programmers Manual says these should be the other way round.
+            instr[2] = load(get_reg(pc) + 4, HALFWORD); // ""
+            instr_size = 6;
+            print_log("instr0 was a scalar48\\n");
+        } else { /* instr[0] is 80 - df */ // Was 0x8000 - 0xffff, but not between 0xe000 and 0xefff
+            instr[1] = load(get_reg(pc) + 2, HALFWORD);
+            if (instr[0] < 0xe000) { // Was 0x8000 - 0xdfff
+                instr_size = 4;
+                print_log("instr0 was a scalar32\\n");
+            } else { // Was 0xf000-0xffff
+                instr[2] = load(get_reg(pc) + 4, HALFWORD);
+                if (instr[0] >= 0xf800) { // Was 0xf8000
+                    instr[3] = load(get_reg(pc) + 6, HALFWORD);
+                    instr[4] = load(get_reg(pc) + 8, HALFWORD);
+                    instr_size = 10;
+                    print_log("instr0 was a vector80\\n");
+                } else {
+                    instr_size = 6;
+                    print_log("instr0 was a vector48\\n");
+                }
+            }
+        }
+    } else {
+        print_log("instr0 was a scalar16\\n");
+    }
+    /*if (instr[0] & 0x8000) {
         instr[1] = load(get_reg(pc) + 2, HALFWORD);
         instr_size = 4;
         if (instr[0] > 0xe000) {
             instr[2] = load(get_reg(pc) + 4, HALFWORD);
             instr_size = 6;
         }
-    }
+    }*/
     /* switch r25 to r28 if necessary */
     /* TODO */
     /* decode and execute the instruction */
