@@ -7,3 +7,9 @@ vc4_emul.c
 vc4_emul.h
 vcregs.h
 *.bin
+*.project
+.project
+*.exe
+*.stackdump
+*.log.txt
+*.log
