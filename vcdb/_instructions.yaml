@@ -585,10 +585,12 @@ instructions:
     code: |
       set_reg(lr, get_reg(pc) + 2);
       set_reg(pc, get_reg(Rd));
-  - name: tbb Rd # switch.b Rd
+  - name: switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
-      error("switch.b Rd not yet implemented\n");
+        uint32_t original_pc = get_reg(pc);
+        int32_t base = sign_extend(load(original_pc+Rd, BYTE), 8);
+        set_reg(pc, 2*base);
   - name: tbb Rd # switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |

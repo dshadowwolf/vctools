@@ -148,7 +148,7 @@ vc4_emul_load (void *user_data, uint32_t address, int size) {
     if (size == 4 && (address & 3) == 0) {
       for (i = 0; i < DEVICE_COUNT; i++) {
         if (address >= devices[i].address &&
-            address <= devices[i].address + devices[i].size) {
+            address <= devices[i].address + (devices[i].size - 1)) {
           uint32_t value = devices[i].load (emul, address);
 
           print_log ("MMIO(R, 4) %08x => %08x\n", address, value);
@@ -189,7 +189,7 @@ vc4_emul_store (void *user_data, uint32_t address, int size, uint32_t value) {
     if (size == 4 && (address & 3) == 0) {
       for (i = 0; i < DEVICE_COUNT; i++) {
         if (address >= devices[i].address &&
-            address <= devices[i].address + devices[i].size) {
+            address <= devices[i].address + (devices[i].size - 1 )) {
           print_log ("MMIO(W, 4) %08x <= %08x\n", address, value);
           return devices[i].store (emul, address, value);
         }
