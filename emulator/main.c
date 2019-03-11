@@ -64,12 +64,12 @@ main (int argc, char **argv) {
   const char *bootcode_file = NULL;
   char *log_file = NULL;
 
-  int serial_port = -1;
+  //int serial_port = -1;
 
   /*
    * parse the command line arguments 
    */
-  while ((option = getopt (argc, argv, "c:s:r:b:hl:")) != -1) {
+  while ((option = getopt (argc, argv, "c:s:r:b:h:l")) != -1) {
     switch (option) {
     case 'h':
       printf (help, argv[0]);
@@ -78,7 +78,7 @@ main (int argc, char **argv) {
       sdcard_file = optarg;
       break;
     case 's':
-      serial_port = atoi (optarg);
+      //serial_port = atoi (optarg);
       break;
     case 'r':
       rom_file = optarg;
@@ -148,7 +148,7 @@ main (int argc, char **argv) {
       fprintf (stderr, "Could not open the bootcode file!\n");
       return -1;
     }
-    vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS);
+    vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS + 0x200);
   }
   if (log_file == NULL) {
     char *tmp;
@@ -253,7 +253,7 @@ main (int argc, char **argv) {
           print_log ("Could not open the bootcode file!\n");
           return -1;
         }
-        vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS);
+        vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS + 0x200);
       }
       updateRegisterWindow ();
       updateMemoryWindow ();
@@ -292,7 +292,7 @@ main (int argc, char **argv) {
           print_log ("Could not open the bootcode file!\n");
           return -1;
         }
-        vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS);
+        vc4_emul_set_scalar_reg (emul->vc4, 31, DRAM_BASE_ADDRESS + 0x200);
       }
       updateRegisterWindow ();
       updateMemoryWindow ();

@@ -3,3 +3,11 @@ name: DCRC
 size: 0x1000
 desc: >
   TBD
+registers:
+  0x18:
+    name: GLBL_MSTR_DLL_LOCK_STAT
+    brief: GLBL_MSTR_DLL_LOCK_STAT
+  0x5c:
+    name: DQ_PVT_COMP_STATUS
+    brief: DQ_PVT_COMP_STATUS
+

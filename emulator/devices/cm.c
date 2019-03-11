@@ -18,6 +18,7 @@ static const uint32_t clock_address[] = {
   VC_CM_V3D_CTL,
   VC_CM_CAM0_CTL,
   VC_CM_CAM1_CTL,
+  VC_CM_CCP2_CTL,
   VC_CM_DSI0E_CTL,
   VC_CM_DSI0P_CTL,
   VC_CM_DPI_CTL,
@@ -63,10 +64,23 @@ cm_load (struct bcm2835_emul *emul, uint32_t address) {
   } else if (address == VC_CM_PLLD) {
     return emul->cm.plld;
   } else if (address == VC_CM_LOCK) {
-    return emul->cm.lock;
+    return 0;
+    //return emul->cm.lock;
+  } else if (address == VC_CM_OSCCOUNT) {
+    return emul->cm.osccount;
   }
-  for (i = 0; i < CLOCK_COUNT; i++) {
+  if (address == VC_CM_SDC_CTL) {
+    if (emul->cm.clocks[36].control & 0x00020000) { // CM_SDCTL_UPDATE_SET
+      print_log("UPDATE_SET\n");
+      return 0x5a010080;
+    } else if (emul->cm.clocks[36].control & 0xfffdffff) { // CM_SDCTL_UPDATE_CLR
+      print_log("UPDATE_CLEAR\n");
+      return 0x5a000080;
+    }
+  }
+  for (i = 0; i < 39; i++) {
     if (address == clock_address[i]) {
+      return 0x5a010080;
       return emul->cm.clocks[i].control;
     }
     if (address == clock_address[i] + 4) {
@@ -74,7 +88,6 @@ cm_load (struct bcm2835_emul *emul, uint32_t address) {
     }
   }
   print_log ("CM Load Address: 0x%08x\n", address);
-  assert (0 && "Unknown CM register!\n");
   return 0;
 }
 
@@ -97,8 +110,11 @@ cm_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   } else if (address == VC_CM_LOCK) {
     emul->cm.lock = value;
     return;
+  } else if (address == VC_CM_OSCCOUNT) {
+    emul->cm.osccount = value;
+    return;
   }
-  for (i = 0; i < CLOCK_COUNT; i++) {
+  for (i = 0; i < 39; i++) {
     if (address == clock_address[i]) {
       /*
        * TODO 
@@ -115,5 +131,4 @@ cm_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
     }
   }
   print_log ("CM Store Address: 0x%08x, 0x%08x\n", address, value);
-  assert (0 && "Unknown CM register!\n");
 }

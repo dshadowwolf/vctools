@@ -30,11 +30,9 @@ a2w_load (struct bcm2835_emul *emul, uint32_t address) {
   } else if (address == VC_A2W_XOSC_CTRL) {
   } else {
     print_log ("A2W Load Address: 0x%08x\n", address);
-    assert (0 && "Unknown A2W register!\n");
   }
   return 0;
   (void) emul;
-  (void) address;
 }
 
 void
@@ -57,10 +55,7 @@ a2w_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   } else if (address == VC_A2W_PLLx_DIV) {
   } else {
     print_log ("A2W Store Address: 0x%08x, 0x%08x\n", address, value);
-    assert (0 && "Unknown A2W register!\n");
   }
   return;
   (void) emul;
-  (void) address;
-  (void) value;
 }

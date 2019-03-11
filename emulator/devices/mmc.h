@@ -1,4 +1,8 @@
 #pragma once
+
+struct mmc_data {
+};
+
 /*
  * This file is covered under the GPLv2 (and only the GPLv2) as it contains contents
  * from the Linux Kernel (versions 4.20.14 and 5.0.0)

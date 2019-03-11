@@ -10,6 +10,8 @@ include_file = """
 
 #include <stdint.h>
 
+#include "vc4_registers.h"
+
 extern void print_log(const char *fmt, ...);
 struct vc4_emul;
 
@@ -88,6 +90,7 @@ file_header = """
  */
 
 #include "vc4_emul.h"
+#include "vc4_registers.h"
 
 #include <stdlib.h>
 #include <setjmp.h>
@@ -98,7 +101,7 @@ file_header = """
 struct vc4_emul {
     void *user_data;
 
-    uint32_t scalar_regs[32];
+    uint32_t scalar_regs[MAX_REGISTER];
     int pc_changed;
 
     uint32_t ivt;
@@ -108,7 +111,7 @@ struct vc4_emul {
 
 struct vc4_emul *vc4_emul_init(void *user_data) {
     struct vc4_emul *emul = calloc(1, sizeof(struct vc4_emul));
-    emul->scalar_regs[25] = 0x600087AC;
+    emul->scalar_regs[REGISTER_SP] = 0x600087AC;
     emul->user_data = user_data;
     return emul;
 }
@@ -129,7 +132,7 @@ void vc4_emul_exception(struct vc4_emul *emul,
     uint16_t instr;
     int i;
     print_log("Exception %d: %s\\n", interrupt, reason);
-    for (i = 0; i < 32; i++) {
+    for (i = MIN_REGISTER; i < MAX_REGISTER; i++) {
         print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
     }
 
@@ -137,11 +140,11 @@ void vc4_emul_exception(struct vc4_emul *emul,
 }
 
 void vc4_emul_set_scalar_reg(struct vc4_emul *emul, int reg, uint32_t value) {
-	assert(reg >= 0 && reg < 32);
+	assert(reg >= MIN_REGISTER && reg < MAX_REGISTER);
 	emul->scalar_regs[reg] = value;
 }
 uint32_t vc4_emul_get_scalar_reg(struct vc4_emul *emul, int reg) {
-	assert(reg >= 0 && reg < 32);
+	assert(reg >= MIN_REGISTER && reg < MAX_REGISTER);
 	return emul->scalar_regs[reg];
 }
 
@@ -178,22 +181,25 @@ static uint32_t condition_flags(uint64_t cmp_result) {
 /* registers */
 #define pc (31)
 #define sr (30)
+#define gp (24)
 #define sp (25)
 #define lr (26)
+#define esp (28)
+#define tp (29)
 #define r15 (15)
 static uint32_t get_reg(struct vc4_emul *emul, int reg) {
-    assert(reg >= 0 && reg <= 31);
-    if ((emul->scalar_regs[30] & (1 << 30)) != 0 && reg == 25) {
-        reg = 28;
+    assert(reg >= MIN_REGISTER && reg < MAX_REGISTER);
+    if ((emul->scalar_regs[REGISTER_SR] & (1 << 30)) != 0 && reg == REGISTER_SP) {
+        reg = REGISTER_ESP;
     }
     return emul->scalar_regs[reg];
 }
 static void set_reg(struct vc4_emul *emul, int reg, uint32_t value) {
-    assert(reg >= 0 && reg <= 31);
-    if ((emul->scalar_regs[30] & (1 << 30)) != 0 && reg == 25) {
-        reg = 28;
+    assert(reg >= MIN_REGISTER && reg < MAX_REGISTER);
+    if ((emul->scalar_regs[REGISTER_SR] & (1 << 30)) != 0 && reg == REGISTER_SP) {
+        reg = REGISTER_ESP;
     }
-    if (reg == 31) {
+    if (reg == REGISTER_PC) {
         emul->pc_changed = 1;
     }
     /*print_log("r%d <= %08x\\n", reg, value);*/
@@ -279,8 +285,8 @@ static uint32_t load(struct vc4_emul *emul,
     uint32_t value;
     int format_size = size(format);
     if (address & (format_size - 1)) {
-        /* TODO: exception number? */
-        interrupt(0, "load: invalid alignment.");
+        /* TODO: Is this the correct exception number? */
+        interrupt(1, "load: invalid alignment.");
     }
     value = vc4_emul_load(emul->user_data, address, format_size);
     if (format == SIGNED_HALFWORD) {
@@ -294,8 +300,8 @@ static void store(struct vc4_emul *emul,
                   uint32_t value) {
     int format_size = size(format);
     if (address & (format_size - 1)) {
-        /* TODO: exception number? */
-        interrupt(0, "load: invalid alignment.\\n");
+        /* TODO: Is this the correct exception number? */
+        interrupt(1, "store: invalid alignment.");
     }
     vc4_emul_store(emul->user_data, address, format_size, value);
 }
@@ -305,24 +311,24 @@ static void store(struct vc4_emul *emul,
 void vc4_emul_interrupt(struct vc4_emul *emul,
                         unsigned int interrupt,
                         const char *reason) {
-	int i;
-	print_log("Interrupt %d: %s\\n", interrupt, reason);
-	for (i = 0; i < 32; i++) {
-		print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
-	}
-        uint32_t ivt = vc4_emul_get_ivt_address(emul->user_data);
-        uint32_t int_stack = emul->scalar_regs[28];
-        store(int_stack - 4, WORD, get_reg(pc));
-        store(int_stack - 8, WORD, get_reg(sr));
-        emul->scalar_regs[28] = int_stack - 8;
+    int i;
+    print_log("Interrupt %d: %s\\n", interrupt, reason);
+    for (i = MIN_REGISTER; i < MAX_REGISTER; i++) {
+        print_log("  r%d = %08x\\n", i, emul->scalar_regs[i]);
+    }
+    uint32_t ivt = vc4_emul_get_ivt_address(emul->user_data);
+    uint32_t int_stack = emul->scalar_regs[REGISTER_ESP];
+    store(int_stack - 4, WORD, get_reg(pc));
+    store(int_stack - 8, WORD, get_reg(sr));
+    emul->scalar_regs[REGISTER_ESP] = int_stack - 8;
 
-        set_reg(pc, load(ivt + (interrupt - 1) * 4, WORD));
-        set_reg(sr, get_reg(sr) | (1 << 30));
+    set_reg(pc, load(ivt + (interrupt - 1) * 4, WORD));
+    set_reg(sr, get_reg(sr) | (1 << 30));
 
     /* TODO */
-//    assert(0 && "Not implemented.\\n");
+    //assert(0 && "Not implemented.\\n");
+    exit(EXIT_FAILURE);
 }
-
 
 /* push/pop */
 static void push(struct vc4_emul *emul, uint32_t value) {
@@ -338,7 +344,7 @@ static uint32_t pop(struct vc4_emul *emul) {
 #define pop() pop(emul)
 
 static void illegal_instruction(struct vc4_emul *emul, uint16_t *instr) {
-    interrupt(0, "illegal instruction");
+    interrupt(3, "illegal instruction");
 }
 
 typedef void (*instruction_function)(struct vc4_emul *emul, uint16_t *instr);
@@ -348,13 +354,13 @@ step_function = """
 void vc4_emul_step(struct vc4_emul *emul) {
     uint16_t instr[5];
     uint32_t old_pc;
-    uint32_t old_sr = emul->scalar_regs[25];
+    uint32_t old_sr = emul->scalar_regs[REGISTER_SP];
     int instr_size = 2;
     /* handle exceptions which occur during execution */
     int exception_index = sigsetjmp(emul->exception_handler, 0);
     if (exception_index != 0) {
         uint32_t ivt = vc4_emul_get_ivt_address(emul->user_data);
-        uint32_t int_stack = emul->scalar_regs[28];
+        uint32_t int_stack = emul->scalar_regs[REGISTER_ESP];
         print_log("Exception %d\\n", exception_index);
         /* increment pc */
         instr[0] = load(get_reg(pc), HALFWORD);
@@ -373,7 +379,7 @@ void vc4_emul_step(struct vc4_emul *emul) {
         /* push pc and sr onto the stack */
         store(int_stack - 4, WORD, get_reg(pc));
         store(int_stack - 8, WORD, get_reg(sr));
-        emul->scalar_regs[28] = int_stack - 8;
+        emul->scalar_regs[REGISTER_ESP] = int_stack - 8;
         /* load new pc and sr */
         set_reg(pc, load(ivt + (exception_index - 1) * 4, WORD));
         /* TODO: correct bit? */
@@ -389,28 +395,28 @@ void vc4_emul_step(struct vc4_emul *emul) {
             instr[1] = load(get_reg(pc) + 2, HALFWORD); // Programmers Manual says these should be the other way round.
             instr[2] = load(get_reg(pc) + 4, HALFWORD); // ""
             instr_size = 6;
-            print_log("instr0 was a scalar48\\n");
+            // print_log("instr0 was a scalar48\\n");
         } else { /* instr[0] is 80 - df */ // Was 0x8000 - 0xffff, but not between 0xe000 and 0xefff
             instr[1] = load(get_reg(pc) + 2, HALFWORD);
             if (instr[0] < 0xe000) { // Was 0x8000 - 0xdfff
                 instr_size = 4;
-                print_log("instr0 was a scalar32\\n");
+                // print_log("instr0 was a scalar32\\n");
             } else { // Was 0xf000-0xffff
                 instr[2] = load(get_reg(pc) + 4, HALFWORD);
                 if (instr[0] >= 0xf800) { // Was 0xf8000
                     instr[3] = load(get_reg(pc) + 6, HALFWORD);
                     instr[4] = load(get_reg(pc) + 8, HALFWORD);
                     instr_size = 10;
-                    print_log("instr0 was a vector80\\n");
+                    // print_log("instr0 was a vector80\\n");
                 } else {
                     instr_size = 6;
-                    print_log("instr0 was a vector48\\n");
+                    // print_log("instr0 was a vector48\\n");
                 }
             }
         }
     } else {
-        print_log("instr0 was a scalar16\\n");
-    }
+        // print_log("instr0 was a scalar16\\n");
+    } 
     /*if (instr[0] & 0x8000) {
         instr[1] = load(get_reg(pc) + 2, HALFWORD);
         instr_size = 4;
@@ -423,10 +429,10 @@ void vc4_emul_step(struct vc4_emul *emul) {
     /* TODO */
     /* decode and execute the instruction */
     if (get_reg(sr) & (1 << 30)) {
-        uint32_t old_sp = emul->scalar_regs[25];
-        emul->scalar_regs[25] = emul->scalar_regs[28];
+        uint32_t old_sp = emul->scalar_regs[REGISTER_SP];
+        emul->scalar_regs[REGISTER_SP] = emul->scalar_regs[REGISTER_ESP];
         decode_instruction(emul, instr);
-        emul->scalar_regs[25] = old_sp;
+        emul->scalar_regs[REGISTER_SP] = old_sp;
     } else {
         decode_instruction(emul, instr);
     }
@@ -651,7 +657,7 @@ def generateEmulator(db, filename, include_filename, vcdbdir):
                 if parameter.name[0] == 'R':
                     text += '    #undef ' + parameter.name + '\n'
         else:
-            text += '    error("Instruction not specified!");\n'
+            text += '    error("Instruction not specified!\\n");\n'
         text += '}\n\n'
     # Generate the instruction decoder
     text += '/* decoder */\n\n'

@@ -63,3 +63,6 @@ registers:
         values:
           0x5a:
             name: PASSWORD
+  0x108:
+    name: IMAGE
+    brief: ???

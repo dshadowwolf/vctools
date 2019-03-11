@@ -15,22 +15,20 @@ gpio_init (struct bcm2835_emul *emul) {
 
 uint32_t
 gpio_load (struct bcm2835_emul *emul, uint32_t address) {
-  if (address >= VC_GPIO_FSEL0 && address <= VC_GPIO_FSEL5) {
+  if (address >= VC_GPIO_FSEL0 && address <= VC_GPIO_FSEL6) {
     return emul->gpio.fsel[(address - VC_GPIO_FSEL0) >> 2];
+  } else if (address == VC_GPIO_PUD) {
+    return emul->gpio.pud;
   }
-  /*
-   * TODO 
-   */
-  assert (0 && "GPIO Not implemented!\n");
-  (void) emul;
-  (void) address;
+  print_log("GPIO Address load: 0x%08x\n, address", address);
+  return 0;
 }
 
 void
 gpio_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   int i;
 
-  if (address >= VC_GPIO_FSEL0 && address <= VC_GPIO_FSEL5) {
+  if (address >= VC_GPIO_FSEL0 && address <= VC_GPIO_FSEL6) {
     int reg_index = (address - VC_GPIO_FSEL0) >> 2;
     uint32_t old_value = emul->gpio.fsel[reg_index];
 
@@ -43,7 +41,7 @@ gpio_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
       old_value >>= 3;
     }
     return;
-  } else if (address >= VC_GPIO_CLR0 && address <= VC_GPIO_CLR1) {
+  } else if (address >= VC_GPIO_CLR0 && address <= VC_GPIO_CLR2) {
     int reg_index = (address - VC_GPIO_CLR0) >> 2;
     uint32_t old_value = emul->gpio.output_level[reg_index];
 
@@ -55,7 +53,7 @@ gpio_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
       value >>= 1;
       old_value >>= 1;
     }
-  } else if (address >= VC_GPIO_SET0 && address <= VC_GPIO_SET1) {
+  } else if (address >= VC_GPIO_SET0 && address <= VC_GPIO_SET2) {
     int reg_index = (address - VC_GPIO_SET0) >> 2;
     uint32_t old_value = emul->gpio.output_level[reg_index];
 
@@ -67,29 +65,35 @@ gpio_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
       value >>= 1;
       old_value >>= 1;
     }
-  } else if (address >= VC_GPIO_LEV0 && address <= VC_GPIO_LEV1) {
+  } else if (address >= VC_GPIO_LEV0 && address <= VC_GPIO_LEV2) {
     /*
      * TODO 
      */
     print_log ("[%s:%u:%s] Address %x value %x\n", __FILE__, __LINE__,
                __FUNCTION__, address, value);
     assert (0 && "GPIO_LEVx not implemented!\n");
-  } else if (address == VC_GPIO_PUD && address <= VC_GPIO_PUDCLK1) {
+  } else if (address == VC_GPIO_PUD && address <= VC_GPIO_PUDCLK2) {
+    if (address == VC_GPIO_PUD) {
+      emul->gpio.pud = value;
+    } else if (address == VC_GPIO_PUDCLK0) {
+      emul->gpio.pudclk[0] = value;
+    } else if (address == VC_GPIO_PUDCLK1) {
+      emul->gpio.pudclk[1] = value;
+    } else if (address == VC_GPIO_PUDCLK2) {
+      emul->gpio.pudclk[2] = value;
+    } else {
     /*
      * TODO 
      */
-    print_log ("[%s:%u:%s] Address %x value %x\n", __FILE__, __LINE__,
-               __FUNCTION__, address, value);
-    assert (0 && "GPIO_PUD & GPIO_PUD_CLKx not implemented!\n");
+      print_log ("[%s:%u:%s] Address %x value %x\n", __FILE__, __LINE__,
+                 __FUNCTION__, address, value);
+    }
+    //assert (0 && "GPIO_PUD & GPIO_PUD_CLKx not implemented!\n");
   } else {
     /*
      * TODO 
      */
     print_log ("[%s:%u:%s] Address %x value %x\n", __FILE__, __LINE__,
                __FUNCTION__, address, value);
-    assert (0 && "Not implemented!\n");
-    (void) emul;
-    (void) address;
-    (void) value;
   }
 }

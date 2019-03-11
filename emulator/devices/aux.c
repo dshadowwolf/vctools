@@ -10,24 +10,19 @@ void print_log (const char *fmt, ...);
 
 void
 aux_init (struct bcm2835_emul *emul) {
-  /*
-   * TODO 
-   */
-  (void) emul;
+  memset (&emul->aux, 0, sizeof (emul->aux));
 }
 
 uint32_t
 aux_load (struct bcm2835_emul *emul, uint32_t address) {
   if (address == VC_AUX_MU_LSR_REG) {
-    return 0;                   // FIFO empty, we're idle
+    // FIFO empty, we're idle
+    return 0x20;
   } else {
     print_log ("AUX load %08x\n", address);
-    /*
-     * TODO 
-     */
-    assert (0 && "Unknown AUX Register!\n");
-    (void) emul;
   }
+  return 0;
+  (void) emul;
 }
 
 void
@@ -55,7 +50,6 @@ aux_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
      * TODO 
      */
     print_log ("AUX Store Address: 0x%08x, 0x%08x", address, value);
-    assert (0 && "Unknown AUX Register!\n");
     (void) emul;
   }
 }

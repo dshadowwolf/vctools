@@ -1,6 +1,6 @@
 ---
 name: USB
 brief: USB
-size: 0x1000
+size: 0x10001f
 desc: >
   TBD

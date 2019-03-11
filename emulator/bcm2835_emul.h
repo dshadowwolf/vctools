@@ -6,16 +6,73 @@
 #include <stddef.h>
 
 #include "devices/mult.h"
+#include "devices/ccpt.h"
 #include "devices/inte.h"
-//#include "devices/timer.h"
+#include "devices/timer.h"
+#include "devices/txp.h"
+#include "devices/jpeg.h"
+#include "devices/mphi.h"
+#include "devices/dma.h"
+#include "devices/nu.h"
+#include "devices/arba.h"
+#include "devices/brdg.h"
+#include "devices/armcb.h"
 #include "devices/pm.h"
 #include "devices/cm.h"
 #include "devices/a2w.h"
+#include "devices/avs.h"
+#include "devices/rng.h"
 #include "devices/gpio.h"
-//#include "devices/mmc.h"
+#include "devices/uart.h"
+#include "devices/mmc.h" // altmmc
+#include "devices/pcm.h"
+#include "devices/spi0.h"
+#include "devices/bsc0.h"
+#include "devices/pixv0.h"
+#include "devices/pixv1.h"
+#include "devices/dpi.h"
+#include "devices/dsi0.h"
+#include "devices/tb.h"
+#include "devices/pwm0.h"
+#include "devices/perm.h"
+#include "devices/tec.h"
 #include "devices/otp.h"
-//#include "devices/aux.h"
+#include "devices/slim.h"
+#include "devices/cpg.h"
+#include "devices/ts.h"
+#include "devices/avsp.h"
+#include "devices/i2cspislv.h"
+#include "devices/aux.h"
+#include "devices/aveout.h"
+#include "devices/emmc.h"
+#include "devices/ddrv.h"
+#include "devices/smi.h"
+#include "devices/dsi1.h"
+#include "devices/cam0.h"
+#include "devices/cam1.h"
+#include "devices/cmi.h"
+#include "devices/bsc1.h"
+#include "devices/bsc2.h"
+#include "devices/vec.h"
+#include "devices/pixv2.h"
+#include "devices/hd.h"
+#include "devices/hdcp.h"
+#include "devices/piarbctl.h"
+#include "devices/hdmi.h"
+#include "devices/avein.h"
+#include "devices/usb.h"
+#include "devices/isp.h"
+#include "devices/v3d.h"
 #include "devices/sdco.h"
+#include "devices/l2cc.h"
+#include "devices/l1cc.h"
+#include "devices/arbr.h"
+#include "devices/dma15.h"
+#include "devices/aphycsr.h"
+#include "devices/dcrc.h"
+#include "devices/axip.h"
+#include "devices/h264.h"
+#include "devices/vce.h"
 
 #define BOOTROM_BASE_ADDRESS 0x60000000
 #define DRAM_BASE_ADDRESS 0x80000000
@@ -29,16 +86,73 @@ struct bcm2835_emul {
   char *bootram;
 
   struct mult_data mult;
+  struct ccpt_data ccpt;
   struct inte_data inte;
-//  struct timer_data timer;
+  struct timer_data timer;
+  struct txp_data txp;
+  struct jpeg_data jpeg;
+  struct mphi_data mphi;
+  struct dma_data dma;
+  struct nu_data nu;
+  struct arba_data arba;
+  struct brdg_data brdg;
+  struct armcb_data armcb;
   struct pm_data pm;
   struct cm_data cm;
   struct a2w_data a2w;
+  struct avs_data avs;
+  struct rng_data rng;
   struct gpio_data gpio;
-//  struct mmc_data mmc;
+  struct uart_data uart;
+  struct mmc_data mmc; // altmmc
+  struct pcm_data pcm;
+  struct spi0_data spi0;
+  struct bsc0_data bsc0;
+  struct pixv0_data pixv0;
+  struct pixv1_data pixv1;
+  struct dpi_data dpi;
+  struct dsi0_data dsi0;
+  struct tb_data tb;
+  struct pwm0_data pwm0;
+  struct perm_data perm;
+  struct tec_data tec;
   struct otp_data otp;
-//  struct aux_data aux;
+  struct slim_data slim;
+  struct cpg_data cpg;
+  struct ts_data ts;
+  struct avsp_data avsp;
+  struct i2cspislv_data i2cspislv;
+  struct aux_data aux;
+  struct aveout_data aveout;
+  struct emmc_data emmc;
+  struct ddrv_data ddrv;
+  struct smi_data smi;
+  struct dsi1_data dsi1;
+  struct cam0_data cam0;
+  struct cam1_data cam1;
+  struct cmi_data cmi;
+  struct bsc1_data bsc1;
+  struct bsc2_data bsc2;
+  struct vec_data vec;
+  struct pixv2_data pixv2;
+  struct hd_data hd;
+  struct hdcp_data hdcp;
+  struct piarbctl_data piarbctl;
+  struct hdmi_data hdmi;
+  struct avein_data avein;
+  struct usb_data usb;
+  struct isp_data isp;
+  struct v3d_data v3d;
   struct sdco_data sdco;
+  struct l2cc_data l2cc;
+  struct l1cc_data l1cc;
+  struct arbr_data arbr;
+  struct dma15_data dma15;
+  struct aphycsr_data aphycsr;
+  struct dcrc_data dcrc;
+  struct axip_data axip;
+  struct h264_data h264;
+  struct vce_data vce;
 };
 
 void memory_init (struct bcm2835_emul *emul);

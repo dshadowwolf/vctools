@@ -3,10 +3,13 @@
 #include "../vcregs.h"
 
 #include <assert.h>
+#include <string.h>
+
+extern void print_log (const char *fmt, ...);
 
 #define GET_REG(reg) registers[(reg)>0?(reg):((reg)/4)]
 
-uint32_t registers[21] { 0, 0, 0, 0, // 0x00 to 0x0c
+uint32_t registers[21] = { 0, 0, 0, 0, // 0x00 to 0x0c
 						 0, 0, 0, 0, // 0x10 to 0x1c
 						 0, 0, 0, 0, // 0x20 to 0x2c
 						 0, 0, 0, 0, // 0x30 to 0x3c
@@ -15,22 +18,22 @@ uint32_t registers[21] { 0, 0, 0, 0, // 0x00 to 0x0c
 
 /*
  * COMMAND REGISTER (0x00):
-31:16 ignored ?
-15 	Enable 	R/W 	Set this to 1 to when executing a command, it will reset itself to 0 when the command has finished executing.
-14 	Fail Flag
-13
-12
-11 	Busy 	?/W 	Set this to zero when executing TRANSFER_STOP or one when executing READ_MULTIPLE_BLOCKS
-10 	No Response
-9 	Long Response
-8
-7 	Write
-6 	Read
-5:0 	Command 	?/W 	The command according to the MMC spec.
+ * 31:16 ignored ?
+ * 15 	Enable 	R/W 	Set this to 1 to when executing a command, it will reset itself to 0 when the command has finished executing.
+ * 14 	Fail Flag
+ * 13
+ * 12
+ * 11 	Busy 	?/W 	Set this to zero when executing TRANSFER_STOP or one when executing READ_MULTIPLE_BLOCKS
+ * 10 	No Response
+ * 9 	Long Response
+ * 8
+ * 7 	Write
+ * 6 	Read
+ * 5:0 	Command 	?/W 	The command according to the MMC spec.
  *
  * STATUS REGISTER (0x20):
-31:1 	? 		Bits 7:5 and 3 are sometimes returned from a function.
-0 	FIFO Status 	RO 	Set when there is data in the FIFO (Data Register 0x40)
+ * 31:1 	? 		Bits 7:5 and 3 are sometimes returned from a function.
+ * 0 	FIFO Status 	RO 	Set when there is data in the FIFO (Data Register 0x40)
  */
 
 /*
@@ -57,9 +60,9 @@ mmc_init (struct bcm2835_emul *emul, const char *sdcard_file) {
   /*
    * TODO 
    */
-  (void) emul;
-  (void) sdcard_file;
+  memset (&emul->mmc, 0, sizeof (emul->mmc));
   return 0;
+  (void) sdcard_file;
 }
 
 uint32_t
@@ -67,9 +70,9 @@ mmc_load (struct bcm2835_emul * emul, uint32_t address) {
   /*
    * TODO 
    */
-  assert (0 && "MMC Not implemented!\n");
+  print_log("MMC load address: 0x%08x\n", address);
+  return 0;
   (void) emul;
-  (void) address;
 }
 
 void
@@ -77,8 +80,6 @@ mmc_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   /*
    * TODO 
    */
-  assert (0 && "MMC Not implemented!\n");
+  print_log("MMC store address: 0x%08x: 0x%08x\n", address, value);
   (void) emul;
-  (void) address;
-  (void) value;
 }

@@ -321,6 +321,7 @@ function_lists:
         code_name: lsr
         code: |
           void lsr(int d, int32_t a, int32_t b) {
+              print_log("LSR D was: %d, A was: %x, B was: %d\n", d, a, b);
               set_reg(d, (uint32_t)a >> b);
           }
       - name: clz
@@ -421,7 +422,7 @@ function_lists:
         code: |
           void fcmp(int d, float a, float b) {
               float difference = a - b;
-              uint32_t flags;
+              uint32_t flags = 0;
               /* TODO */
               if (difference == 0.0f) {
                   flags |= 8; /* Z */
@@ -516,27 +517,30 @@ instructions:
   - name: bkpt
     pattern: 0000 0000 0000 0000
     code: |
-      //print_log("Breakpoint at 0x%08X", get_reg(31)); 
+      print_log("Breakpoint at 0x%08X\n", get_reg(REGISTER_PC)); 
+      //interrupt(0x0d, "Breakpoint!"); 
   - name: nop
     pattern: 0000 0000 0000 0001
     code: |
-      //print_log("NOP at 0x%08X", get_reg(31));
+      //print_log("NOP at 0x%08X\n", get_reg(REGISTER_PC));
   - name: wait # sleep
     pattern: 0000 0000 0000 0010
     code: |
-      //print_log("Sleep at 0x%08X", get_reg(31));
+      //print_log("Sleep at 0x%08X\n", get_reg(REGISTER_PC));
   - name: user
     pattern: 0000 0000 0000 0011
     code: |
-      //print_log("User at 0x%08X", get_reg(31));
+      //print_log("User at 0x%08X\n", get_reg(REGISTER_PC));
+      set_reg(sr, get_reg(sr) | PSR_FLAG_USER);
+      set_reg(sr, get_reg(sr) | PSR_FLAG_SUPERVISOR);
   - name: enable # ei
     pattern: 0000 0000 0000 0100
     code: |
-      set_reg(sr, get_reg(sr) | (1 << 30));
+      set_reg(sr, get_reg(sr) | PSR_FLAG_INTERRUPT);
   - name: disable # di
     pattern: 0000 0000 0000 0101
     code: |
-      set_reg(sr, get_reg(sr) | ~(1 << 30));
+      set_reg(sr, get_reg(sr) | ~PSR_FLAG_INTERRUPT);
   - name: clr # cbclr
     pattern: 0000 0000 0000 0110
     code: |
@@ -560,18 +564,19 @@ instructions:
       uint32_t new_sr = pop();
       set_reg(pc, pop());
       set_reg(sr, new_sr);
+  # 0x0B - 0x1F Exception 03 - Undefined Instruction
   - name: unknown_10 // Mentioned in bootrom, bootcode.bin
     pattern: 0000 0000 0001 0000
     code: |
-      error("Unknown Instruction 0x010\n");
+      error("Unknown Instruction 0x10\n");
   - name: unknown_14 # Mentioned in bootrom
     pattern: 0000 0000 0001 0100
     code: |
-      error("Unknown Instruction 0x014\n");
+      error("Unknown Instruction 0x14\n");
   - name: unknown_17 # Mentioned in bootrom
     pattern: 0000 0000 0001 0111
     code: |
-      error("Unknown Instruction 0x017\n");
+      error("Unknown Instruction 0x17\n");
   - name: swi Rd
     pattern: 0000 0000 001 Rd:5
     code: |
@@ -588,27 +593,37 @@ instructions:
   - name: switch.b Rd
     pattern: 0000 0000 100 Rd:5
     code: |
-        uint32_t original_pc = get_reg(pc);
-        int32_t base = sign_extend(load(original_pc+Rd, BYTE), 8);
-        set_reg(pc, 2*base);
-  - name: tbb Rd # switch Rd
+      uint32_t start = get_reg(pc);
+      uint32_t load_addr = start+get_reg(Rd);
+      uint32_t loaded = load(load_addr, BYTE);
+      uint32_t mult = 2*loaded;
+      set_reg(pc, start+mult);
+  - name: switch Rd
     pattern: 0000 0000 101 Rd:5
     code: |
-      error("switch Rd not yet implemented\n");
-  - name: unknown_c0_df #0xc9 & 0xd4 mentioned in bootcode.bin
+      uint32_t start = get_reg(pc);
+      uint32_t load_addr = start+get_reg(Rd);
+      uint32_t loaded = load(load_addr, HALFWORD);
+      uint32_t mult = 2*loaded;
+      set_reg(pc, start+mult);
+  - name: unknownc0_df # 0xC9 & 0xD4 mentioned in bootcode.bin
     pattern: 0000 0000 110 Rd:5
     code: |
-      error("Unknown Instruction between 0x0C0 and 0xDF\n");
+      error("Unknown Instruction between 0xC0 and 0xDF\n");
   - name: mov Rd, cpuid # version Rd
     pattern: 0000 0000 111 Rd:5
     code: |
       // TODO: compute the proper coreid
-      set_reg(Rd, 0x04010140);
-  - name: unknown_100_12f # 0x100, 0x101, 0x110 & 0x112 mentioned in bootrom
+      set_reg(Rd, CPUID);
+  # 0x100 - 0x13f - Exception 03 - Undefined Instruction
+  - name: unknown_100_11f # 0x100, 0x101, 0x110 & 0x112 mentioned in bootrom
     pattern: 0000 0001 000 Rd:5
     code: |
       error("Unknown Instruction between 0x100 and 0x12F\n");
-
+# - name: unknown_120_13f
+#  - pattern: 0000 0001 001 Rd:5
+#    code: |
+#      error("Unknown Instruction between 0x120 and 0x13F\n");
   - name: unknown_140_15f
     pattern: 0000 0001 010 Rd:5
     code: |
@@ -617,7 +632,7 @@ instructions:
     pattern: 0000 0001 011 Rd:5
     code: |
       error("Unknown Instruction between 0x160 and 0x17F\n");
-  - name: unknown_180_19f # 0x18f mentioned in bootcode.bin
+  - name: unknown_180_19f # 0x18F mentioned in bootcode.bin
     pattern: 0000 0001 100 Rd:5
     code: |
       error("Unknown Instruction between 0x180 and 0x19F\n");
@@ -703,6 +718,7 @@ instructions:
   - name: b<cond> offset
     pattern: 0001 1 cond:4 offset:7
     code: |
+      print_log("branch: %x, %x\n", cond, sr);
       if (condition_passed(cond, get_reg(sr))) {
         set_reg(pc, get_reg(pc) + sign_extend_7(offset) * 2);
       }
@@ -713,9 +729,9 @@ instructions:
   - name: st Rd, 4*imm(Rs)
     pattern: 0011 imm:4 Rs:4 Rd:4
     code: |
-      store(get_reg(Rs) + sign_extend(imm, 4) * 4, WORD, Rd);
+      store(get_reg(Rs) + imm * 4, WORD, get_reg(Rd));
   # TODO: What about add+shl?
-  - name: <op> Rd, Rs
+  - name: <op> Rd, Rs 
     pattern: 010 op:5 Rs:4 Rd:4
     code: |
       scalar_op(op, Rd, get_reg(Rd), get_reg(Rs));
@@ -1169,36 +1185,36 @@ instructions:
       }
 
   # 48-bit scalar instructions
-  - name: lea Rd, offset(pc)
+  - name: lea Rd, offset(pc) # add rd, pc, 0
     pattern: 1110 0101 000 Rd:5 offset1:16 offset2:16
     code: |
       set_reg(Rd, get_reg(pc) + (offset2 << 16) + offset1);
-  - name: ld Rd, offset(Rs)
+  - name: ld Rd, offset(Rs) # ld<w> rd, (rs+o)
     pattern: 1110 0110 format:2 0 Rd:5 offset1:16 Rs:5 offset2:11
     code: |
       set_reg(Rd, load(get_reg(Rs) + (offset2 << 16) + offset1, format));
-  - name: st Rd, offset(Rs)
+  - name: st Rd, offset(Rs) # st<w> rd, (rs+0)
     pattern: 1110 0110 format:2 1 Rd:5 offset1:16 Rs:5 offset2:11
     code: |
       store(get_reg(Rs) + (offset2 << 16) + offset1, format, get_reg(Rd));
-  - name: ld Rd, offset(Rs)
+  - name: ld Rd, offset(Rs) # ld<w> rd, (pc+0)
     pattern: 1110 0111 format:2 0 Rd:5 offset1:16 11111 offset2:11
     code: |
       set_reg(Rd, load(get_reg(pc) + (offset2 << 16) + offset1, format));
-  - name: st Rd, offset(Rs)
+  - name: st Rd, offset(Rs) # st<w> rd, (pc+0)
     pattern: 1110 0111 format:2 1 Rd:5 offset1:16 11111 offset2:11
     code: |
       store(get_reg(pc) + (offset2 << 16) + offset1, format, get_reg(Rd));
-  - name: <op> Rd, imm
+  - name: <op> Rd, imm # <op> rd, u
     pattern: 1110 10 op:5 Rd:5 imm1:16 imm2:16
     code: |
       scalar_op(op, Rd, get_reg(Rd), (imm2 << 16) | imm1);
-  - name: add Rd, Rs, imm
+  - name: add Rd, Rs, imm # add rd, rs, u
     pattern: 1110 11 Rs:5 Rd:5 imm1:16 imm2:16
     code: |
       set_reg(Rd, get_reg(Rs) + ((imm2 << 16) | imm1));
 # Temporary Hacks
-# vector 48
+# vector48
   - name: vector48memory
     pattern: 1111 00 offset1:21 offset2:21
     code: |
@@ -1207,7 +1223,7 @@ instructions:
     pattern: 1111 01 offset1:21 offset2:21
     code: |
       print_log("vector48 data operations are not implemented!\n");
-# vector80 
+# vector80
   - name: vector80memory
     pattern: 1111 10 offset1:32 offset2:32 offset3:10
     code: |

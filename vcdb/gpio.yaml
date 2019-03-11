@@ -1551,6 +1551,10 @@ registers:
           7:
             name: AUX5
             desc: GPIO Pin 50 takes alternate function 5
+  0x18:
+    name: FSEL6
+    access: rw
+    brief: GPIO Function Select 6
   0x1c:
     name: SET0
     access: w
@@ -1731,6 +1735,10 @@ registers:
           21:
             name: SET53
             desc: Set GPIO Pin 
+  0x24:
+    name: SET2
+    access: rw
+    brief: GPIO Pin Output Set 2
   0x28:
     name: CLR0
     access: w
@@ -1911,6 +1919,10 @@ registers:
           21:
             name: CLR53
             desc: Clear GPIO Pin 
+  0x30:
+    name: CLR2
+    access: rw
+    brief: GPIO Pin Output Clear 2
   0x34:
     name: LEV0
     access: r
@@ -2037,6 +2049,10 @@ registers:
             name: LEV52
           21:
             name: LEV53
+  0x3c:
+    name: LEV2
+    access: rw
+    brief: GPIO Pin Level 2
   0x40:
     name: EDS0
     access: rw
@@ -2999,3 +3015,7 @@ registers:
       #        values:
       #          0: No Effect
       #          1: Assert Clock on line (n)
+  0xa0:
+    name: PUDCLK2
+    access: rw
+    brief: GPIO Pin Pull-up/down Enable Clock 2

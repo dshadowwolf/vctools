@@ -8,8 +8,50 @@ registers:
   0x00:
     name: CS
     brief: CS
+  0x04:
+    name: SA
+    brief: SA
+  0x08:
+    name: SB
+    brief: SB
+  0x0c:
+    name: SC
+    brief: SC
+  0x10:
+    name: PT2
+    brief: PT2
+  0x14:
+    name: PT1
+    brief: PT1
+  0x18:
+    name: IDL
+    brief: IDL
+  0x1c:
+    name: RTC
+    brief: RTC
+  0x20:
+    name: WTC
+    brief: WTC
+  0x24:
+    name: RDC
+    brief: RDC
+  0x28:
+    name: WDC
+    brief: WDC
+  0x2c:
+    name: RAC
+    brief: RAC
+  0x30:
+    name: CYC
+    brief: CYC
+  0x34:
+    name: CMD
+    brief: CMD
+  0x38:
+    name: DAT
+    brief: DAT
   0x3c:
-    name: LOCK_LOW
+    name: SECSRT0
     brief: Lowest address of locked memory region. (?)
     bits:
       0:
@@ -19,5 +61,68 @@ registers:
           address have been set to enable the lock. Afterwards, ld/st
           instructions to the memory region will fail.
   0x40:
-    name: LOCK_HIGH
+    name: SECEND0
     brief: Highest address of locked memory region. (?)
+  0x44:
+    name: SECSRT1
+    brief: SECSRT1
+  0x48:
+    name: SECEND1
+    brief: SECEND1
+  0x4c:
+    name: SECSRT2
+    brief: SECSRT2
+  0x50:
+    name: SECEND2
+    brief: SECEND2
+  0x54:
+    name: SECSRT3
+    brief: SECSRT3
+  0x58:
+    name: SECEND3
+    brief: SECEND3
+  0x60:
+    name: PHYC
+    brief: PHYC
+  0x64:
+    name: MRT
+    brief: MRT
+  0x7c:
+    name: TMC
+    brief: TMC
+  0x80:
+    name: RWC
+    brief: RWC
+  0x84:
+    name: VAD
+    brief: VAD
+  0x88:
+    name: VIN
+    brief: VIN
+  0x90:
+    name: MR
+    brief: MR
+  0x94:
+    name: SD
+    brief: SD
+  0x98:
+    name: SE
+    brief: SE
+  0x9c:
+    name: VER
+    brief: VER
+  0xa0:
+    name: STALL
+    brief: STALL
+  0xa8:
+    name: REORD
+    brief: REORD
+  0xac:
+    name: LAC
+    brief: LAC
+  0xb0:
+    name: PRE
+    brief: PRE
+  0xB4:
+    name: SF
+    brief: SF
