@@ -9,7 +9,9 @@ BOOTMODE = 0x1020000a
 CPUID = 0x04000104 # 0x04000104, 0x04000140, 0x04010104, 0x04010140
 MEMORY = 512
 
-all: bcm2835_emul
+.NOTPARALLEL: vcregs.h vc4_decoder.c
+
+all: vcregs.h vc4_decoder.c bcm2835_emul
 
 bcm2835_emul: main.o vc4_decoder.o vc4_data.o vc4_emul.o memory.o \
               devices/mult.o devices/ccpt.o devices/inte.o devices/timer.o \
