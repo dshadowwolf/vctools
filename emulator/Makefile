@@ -11,7 +11,7 @@ MEMORY = 512
 
 all: bcm2835_emul
 
-bcm2835_emul: main.o vc4_emul.o memory.o \
+bcm2835_emul: main.o vc4_decoder.o vc4_data.o vc4_emul.o memory.o \
               devices/mult.o devices/ccpt.o devices/inte.o devices/timer.o \
               devices/txp.o devices/jpeg.o devices/mphi.o devices/dma.o \
 	      devices/nu.o devices/arba.o devices/brdg.o devices/armcb.o \
@@ -39,6 +39,9 @@ memory.o: memory.c
 vc4_emul.o: vc4_emul.c
 	$(GCC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
 
+vc4_decoder.o: vc4_decoder.c
+	$(GCC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
+
 devices/otp.o: devices/otp.c
 	$(GCC) -c -o $@ $^ $(CFLAGS) -DBOOTMODE=$(BOOTMODE)
 
@@ -49,9 +52,7 @@ frontend/messages_window.o: frontend/messages_window.c
      devices/inte.h
 	$(GCC) -c -o $@ $< $(CFLAGS)
 
-vc4_emul.h: vc4_emul.c
-
-vc4_emul.c: ../vcdb/_instructions.yaml
+vc4_decoder.c: ../vcdb/_instructions.yaml vcregs.h
 	$(PYTHON) ../dbscripts/emulgen.py ../vcdb .
 
 vcregs.h:
@@ -60,5 +61,5 @@ vcregs.h:
 clean:
 	-rm -f bcm2835_emul
 	-rm -f *.o devices/*.o frontend/*.o
-	-rm -f vc4_emul.h vc4_emul.c vcregs.h
+	-rm -f vcregs.h vc4_decoder.c
 

@@ -16,6 +16,5 @@ args = argparser.parse_args()
 # Load the file and generate the documentation
 db = instrdb.InstructionDatabase(args.vcdb + '/_instructions.yaml')
 print("Generating the emulator...")
-emulator.generateEmulator(db, args.output + '/vc4_emul.c',
-                          args.output + '/vc4_emul.h', args.vcdb)
+emulator.generateEmulator(db, args.output + '/vc4_decoder.c', args.vcdb)
 print("Done.")
