@@ -27,5 +27,5 @@ vc4_decoder.c
 *.log
 .idea
 .idea/*
-devices/sdmmc
-devices/sdmmc/*
+sdmmc
+sdmmc/*
