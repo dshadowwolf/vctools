@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a18f4ded-0ed0-4061-8a28-f43de3df66a8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dbscripts.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbscripts.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/emulgen.py" beforeDir="false" afterPath="$PROJECT_DIR$/emulgen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/instructions/emulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/instructions/emulator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../emulator/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../emulator/devices/aux.c" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/devices/aux.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../emulator/devices/aux.h" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/devices/aux.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emulator/devices/mmc.c" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/devices/mmc.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../emulator/devices/mmc.h" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/devices/mmc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emulator/vc4_data.c" beforeDir="false" afterPath="$PROJECT_DIR$/../emulator/vc4_data.c" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +46,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/instructions/emulator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
+            <state relative-caret-position="-68">
               <caret line="31" selection-start-line="31" selection-end-line="31" />
               <folding>
                 <element signature="e#1#18#0" expanded="true" />
@@ -139,16 +146,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1553263919705</updated>
-      <workItem from="1553263923169" duration="4192000" />
+      <workItem from="1553263923169" duration="4792000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4192000" />
+    <option name="totallyTimeSpent" value="4792000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="483" y="20" width="1400" height="1000" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
@@ -199,7 +205,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/instructions/emulator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
+        <state relative-caret-position="-68">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
           <folding>
             <element signature="e#1#18#0" expanded="true" />

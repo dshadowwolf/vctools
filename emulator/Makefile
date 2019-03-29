@@ -1,4 +1,4 @@
-GCC = gcc
+CC = gcc
 PYTHON = python
 CFLAGS = -g -Wall -Wextra -Werror 
 CFLAGS_CDK = -I/usr/include/cdk
@@ -33,26 +33,26 @@ bcm2835_emul: main.o vc4_decoder.o vc4_data.o vc4_emul.o memory.o \
 	      devices/axip.o devices/h264.o devices/vce.o \
 	      frontend/registers_window.o frontend/memory_window.o \
 	      frontend/stack_window.o frontend/messages_window.o
-	$(GCC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 memory.o: memory.c
-	$(GCC) -c -o $@ $^ $(CFLAGS) -DMEMORY=$(MEMORY)
+	$(CC) -c -o $@ $^ $(CFLAGS) -DMEMORY=$(MEMORY)
 
 vc4_emul.o: vc4_emul.c
-	$(GCC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
+	$(CC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
 
 vc4_decoder.o: vc4_decoder.c
-	$(GCC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
+	$(CC) -c -o $@ $^ $(CFLAGS_VC4_EMUL) -DCPUID=$(CPUID)
 
 devices/otp.o: devices/otp.c
-	$(GCC) -c -o $@ $^ $(CFLAGS) -DBOOTMODE=$(BOOTMODE)
+	$(CC) -c -o $@ $^ $(CFLAGS) -DBOOTMODE=$(BOOTMODE)
 
 frontend/messages_window.o: frontend/messages_window.c
-	$(GCC) -c -o $@ $^ $(CFLAGS) $(CFLAGS_CDK)
+	$(CC) -c -o $@ $^ $(CFLAGS) $(CFLAGS_CDK)
 
 %.o: %.c vc4_emul.h vc4_registers.h vcregs.h bcm2835_emul.h devices/cm.h devices/gpio.h \
      devices/inte.h
-	$(GCC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 vc4_decoder.c: ../vcdb/_instructions.yaml vcregs.h
 	$(PYTHON) ../dbscripts/emulgen.py ../vcdb .
