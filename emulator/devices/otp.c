@@ -53,9 +53,9 @@ otp_init (struct bcm2835_emul *emul) {
   emul->otp.registers[0] = BOOTMODE;
   emul->otp.otp_memory = malloc (sizeof (uint32_t) * 0x80);
   memset (emul->otp.otp_memory, 0, 0x80 * sizeof (uint32_t));
-  emul->otp.otp_memory[0x10] = CONTROL;     // 16 - M - OTP_CONTROL_ROW
-  emul->otp.otp_memory[0x11] = BOOTMODE;    // 17 - M - Bootmode Register
-  emul->otp.otp_memory[0x12] = BOOTMODE;    // 18 - M - Bootmode Register (Copy)
+  emul->otp.otp_memory[0x10] = CONTROL; // 16 - M - OTP_CONTROL_ROW
+  emul->otp.otp_memory[0x11] = BOOTMODE;  // 17 - M - Bootmode Register
+  emul->otp.otp_memory[0x12] = BOOTMODE;  // 18 - M - Bootmode Register (Copy)
   emul->otp.otp_memory[0x13] = BOOTSIGN_0;  // 19 - M - OTP_BOOT_SIGNING_KEY_ROW_0
   emul->otp.otp_memory[0x14] = BOOTSIGN_1;  // 20 - M - OTP_BOOT_SIGNING_KEY_ROW_1
   emul->otp.otp_memory[0x15] = BOOTSIGN_2;  // 21 - M - OTP_BOOT_SIGNING_KEY_ROW_2
@@ -67,7 +67,7 @@ otp_init (struct bcm2835_emul *emul) {
   emul->otp.otp_memory[0x1b] = PARITY_ROW;  // 27 - M - OTP_BOOT_SIGNING_PARITY_ROW
   emul->otp.otp_memory[0x1c] = SERIAL_NUM;  // 28 - M - Serial Number
   emul->otp.otp_memory[0x1d] = SERIAL_INV;  // 29 - M - ~Serial Number
-  emul->otp.otp_memory[0x1e] = BOARD_REV;   // 30 - M - Board Revision
+  emul->otp.otp_memory[0x1e] = BOARD_REV; // 30 - M - Board Revision
   emul->otp.otp_memory[0x1f] = 0x00000000;  // 31 - O - Batch Number
   emul->otp.otp_memory[0x20] = 0x00000000;  // 32 - O - Overclock Protection
   emul->otp.otp_memory[0x24] = 0x00000000;  // 36 - O - Customer OTP 0
@@ -97,16 +97,17 @@ otp_load (struct bcm2835_emul *emul, uint32_t address) {
   if (work > 9) {
     assert (0 && "Unknown OTP Register!\n");
   }
-  if (work == 4) { // Status register
-	  return 0x00000001;
+  if (work == 4) {              // Status register
+    return 0x00000001;
   }
   if (work == 6) {
-	  print_log("ADDR was: %d\n", emul->otp.registers[7]);
-	  print_log("DATA Requested!\n");
-	  // TODO: Is this correct?
-	  return emul->otp.otp_memory[emul->otp.registers[7]];
+    print_log ("ADDR was: %d\n", emul->otp.registers[7]);
+    print_log ("DATA Requested!\n");
+    // TODO: Is this correct?
+    return emul->otp.otp_memory[emul->otp.registers[7]];
   }
-  print_log ("Requested address: 0x%08x, What we got: 0x%08x\n", work, emul->otp.registers[work]);
+  print_log ("Requested address: 0x%08x, What we got: 0x%08x\n", work,
+             emul->otp.registers[work]);
   return emul->otp.registers[work];
 }
 

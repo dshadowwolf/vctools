@@ -69,6 +69,6 @@
 #define PROCESSOR_PRSPINL  16
 
 #define MIN_REGISTER  0
-#define MAX_REGISTER 32 // Always one less than this
+#define MAX_REGISTER 32         // Always one less than this
 
 #endif

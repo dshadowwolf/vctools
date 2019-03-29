@@ -24,7 +24,7 @@
 #include "devices/rng.h"
 #include "devices/gpio.h"
 #include "devices/uart.h"
-#include "devices/mmc.h" // altmmc
+#include "devices/mmc.h"        // altmmc
 #include "devices/pcm.h"
 #include "devices/spi0.h"
 #include "devices/bsc0.h"
@@ -104,7 +104,7 @@ struct bcm2835_emul {
   struct rng_data rng;
   struct gpio_data gpio;
   struct uart_data uart;
-  struct mmc_data mmc; // altmmc
+  struct mmc_data mmc;          // altmmc
   struct pcm_data pcm;
   struct spi0_data spi0;
   struct bsc0_data bsc0;

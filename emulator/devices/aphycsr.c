@@ -19,11 +19,11 @@ aphycsr_load (struct bcm2835_emul *emul, uint32_t address) {
   } else if (address == VC_APHYCSR_DDR_PLL_GLOBAL_RESET) {
     return 0x00000000;
   } else if (address == VC_APHYCSR_DDR_PLL_LOCK_STATUS) {
-	  return emul->aphycsr.ddr_pll_lock_status;
+    return emul->aphycsr.ddr_pll_lock_status;
   } else if (address == VC_APHYCSR_ADDR_PVT_COMP_STATUS) {
     return 0x00000002;
   }
-  print_log("APHYCSR Address load: 0x%08x\n", address);
+  print_log ("APHYCSR Address load: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
@@ -33,6 +33,6 @@ aphycsr_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   if (address == VC_APHYCSR_DDR_PLL_GLOBAL_RESET) {
     emul->aphycsr.ddr_pll_lock_status = 0x00010000;
   }
-  print_log("APHYCSR Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("APHYCSR Address store: 0x%08x 0x%08x\n", address, value);
   (void) emul;
 }

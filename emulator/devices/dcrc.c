@@ -19,13 +19,13 @@ dcrc_load (struct bcm2835_emul *emul, uint32_t address) {
   } else if (address == VC_DCRC_DQ_PVT_COMP_STATUS) {
     return 0x00000002;
   }
-  print_log("DCRC Address load: 0x%08x\n", address);
+  print_log ("DCRC Address load: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
 
 void
 dcrc_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
-  print_log("DCRC Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("DCRC Address store: 0x%08x 0x%08x\n", address, value);
   (void) emul;
 }

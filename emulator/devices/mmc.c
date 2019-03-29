@@ -9,12 +9,13 @@ extern void print_log (const char *fmt, ...);
 
 #define GET_REG(reg) registers[(reg)>0?(reg):((reg)/4)]
 
-uint32_t registers[21] = { 0, 0, 0, 0, // 0x00 to 0x0c
-						 0, 0, 0, 0, // 0x10 to 0x1c
-						 0, 0, 0, 0, // 0x20 to 0x2c
-						 0, 0, 0, 0, // 0x30 to 0x3c
-						 0, 0, 0, 0, // 0x40 to 0x5c
-						 0 }; //0x50
+uint32_t registers[21] = { 0, 0, 0, 0,  // 0x00 to 0x0c
+  0, 0, 0, 0,                   // 0x10 to 0x1c
+  0, 0, 0, 0,                   // 0x20 to 0x2c
+  0, 0, 0, 0,                   // 0x30 to 0x3c
+  0, 0, 0, 0,                   // 0x40 to 0x5c
+  0
+};                              //0x50
 
 /*
  * COMMAND REGISTER (0x00):
@@ -126,11 +127,11 @@ mmc_init (struct bcm2835_emul *emul, const char *sdcard_file) {
 }
 
 uint32_t
-mmc_load (struct bcm2835_emul * emul, uint32_t address) {
+mmc_load (struct bcm2835_emul *emul, uint32_t address) {
   /*
    * TODO 
    */
-  print_log("MMC load address: 0x%08x\n", address);
+  print_log ("MMC load address: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
@@ -140,6 +141,6 @@ mmc_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   /*
    * TODO 
    */
-  print_log("MMC store address: 0x%08x: 0x%08x\n", address, value);
+  print_log ("MMC store address: 0x%08x: 0x%08x\n", address, value);
   (void) emul;
 }

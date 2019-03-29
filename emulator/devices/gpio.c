@@ -20,7 +20,7 @@ gpio_load (struct bcm2835_emul *emul, uint32_t address) {
   } else if (address == VC_GPIO_PUD) {
     return emul->gpio.pud;
   }
-  print_log("GPIO Address load: 0x%08x\n, address", address);
+  print_log ("GPIO Address load: 0x%08x\n, address", address);
   return 0;
 }
 
@@ -82,9 +82,9 @@ gpio_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
     } else if (address == VC_GPIO_PUDCLK2) {
       emul->gpio.pudclk[2] = value;
     } else {
-    /*
-     * TODO 
-     */
+      /*
+       * TODO 
+       */
       print_log ("[%s:%u:%s] Address %x value %x\n", __FILE__, __LINE__,
                  __FUNCTION__, address, value);
     }

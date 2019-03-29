@@ -71,10 +71,10 @@ cm_load (struct bcm2835_emul *emul, uint32_t address) {
   }
   if (address == VC_CM_SDC_CTL) {
     if (emul->cm.clocks[36].control & 0x00020000) { // CM_SDCTL_UPDATE_SET
-      print_log("UPDATE_SET\n");
+      print_log ("UPDATE_SET\n");
       return 0x5a010080;
-    } else if (emul->cm.clocks[36].control & 0xfffdffff) { // CM_SDCTL_UPDATE_CLR
-      print_log("UPDATE_CLEAR\n");
+    } else if (emul->cm.clocks[36].control & 0xfffdffff) {  // CM_SDCTL_UPDATE_CLR
+      print_log ("UPDATE_CLEAR\n");
       return 0x5a000080;
     }
   }

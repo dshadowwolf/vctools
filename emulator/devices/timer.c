@@ -8,7 +8,7 @@
 extern void print_log (const char *fmt, ...);
 void
 timer_init (struct bcm2835_emul *emul) {
-  memset (&emul->timer, 0, sizeof(emul->timer));
+  memset (&emul->timer, 0, sizeof (emul->timer));
 }
 
 uint32_t

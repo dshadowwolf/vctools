@@ -18,7 +18,7 @@ pm_load (struct bcm2835_emul *emul, uint32_t address) {
     return 0x00000012;
     return emul->pm.image;
   }
-  print_log("PM Address load: 0x%08x\n", address);
+  print_log ("PM Address load: 0x%08x\n", address);
   return 0;
 }
 
@@ -26,7 +26,7 @@ void
 pm_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
   if (address == VC_PM_IMAGE) {
     emul->pm.image = value;
-   return; 
+    return;
   }
-  print_log("PM Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("PM Address store: 0x%08x 0x%08x\n", address, value);
 }

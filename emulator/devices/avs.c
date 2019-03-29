@@ -14,13 +14,13 @@ avs_init (struct bcm2835_emul *emul) {
 
 uint32_t
 avs_load (struct bcm2835_emul *emul, uint32_t address) {
-  print_log("AVS Address load: 0x%08x\n", address);
+  print_log ("AVS Address load: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
 
 void
 avs_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
-  print_log("AVS Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("AVS Address store: 0x%08x 0x%08x\n", address, value);
   (void) emul;
 }

@@ -1,3 +1,4 @@
+
 /**
  * VideoCore IV Emulator
  *
@@ -17,14 +18,14 @@
 #include <math.h>
 
 struct vc4_emul {
-    void *user_data;
+  void *user_data;
 
-    uint32_t scalar_regs[MAX_REGISTER];
-    int pc_changed;
+  uint32_t scalar_regs[MAX_REGISTER];
+  int pc_changed;
 
-    uint32_t ivt;
+  uint32_t ivt;
 
-    sigjmp_buf exception_handler;
+  sigjmp_buf exception_handler;
 };
 
 /* load/store formats */
@@ -32,6 +33,7 @@ struct vc4_emul {
 #define HALFWORD 1
 #define BYTE 2
 #define SIGNED_HALFWORD 3
+
 /* registers */
 #define pc (31)
 #define sr (30)
@@ -74,6 +76,7 @@ struct vc4_emul {
 #define sign_extend_29(x) sign_extend(x, 29)
 #define sign_extend_30(x) sign_extend(x, 30)
 #define sign_extend_31(x) sign_extend(x, 31)
+
 /* type conversion */
 #define to_uint64(x) (uint64_t)(x)
 #define to_int64(x) (int64_t)(int32_t)(x)
@@ -82,24 +85,28 @@ struct vc4_emul {
 #define push(x) _push(emul, x)
 #define pop() _pop(emul)
 
-struct vc4_emul *vc4_emul_init(void *user_data);
-void vc4_emul_free(struct vc4_emul *emul);
-void vc4_emul_exec(struct vc4_emul *emul, unsigned int steps);
-void vc4_emul_exception(struct vc4_emul *emul, unsigned int interrupt, const char *reason);
-void vc4_emul_set_scalar_reg(struct vc4_emul *emul, int reg, uint32_t value);
-uint32_t vc4_emul_get_scalar_reg(struct vc4_emul *emul, int reg);
-uint32_t _get_reg(struct vc4_emul *emul, int reg);
-void _set_reg(struct vc4_emul *emul, int reg, uint32_t value);
+struct vc4_emul *vc4_emul_init (void *user_data);
+void vc4_emul_free (struct vc4_emul *emul);
+void vc4_emul_exec (struct vc4_emul *emul, unsigned int steps);
+void vc4_emul_exception (struct vc4_emul *emul, unsigned int interrupt,
+                         const char *reason);
+void vc4_emul_set_scalar_reg (struct vc4_emul *emul, int reg, uint32_t value);
+uint32_t vc4_emul_get_scalar_reg (struct vc4_emul *emul, int reg);
+uint32_t _get_reg (struct vc4_emul *emul, int reg);
+void _set_reg (struct vc4_emul *emul, int reg, uint32_t value);
+
 /* sign extension */
-uint32_t sign_extend(uint32_t value, int bits);
-float int_to_float(uint32_t x);
-int32_t float_to_int(float x);
-int size(int format);
-uint32_t _load(struct vc4_emul *emul, uint32_t address, int format);
-void _store(struct vc4_emul *emul, uint32_t address, int format, uint32_t value);
+uint32_t sign_extend (uint32_t value, int bits);
+float int_to_float (uint32_t x);
+int32_t float_to_int (float x);
+int size (int format);
+uint32_t _load (struct vc4_emul *emul, uint32_t address, int format);
+void _store (struct vc4_emul *emul, uint32_t address, int format,
+             uint32_t value);
 
 /* push/pop */
-void _push(struct vc4_emul *emul, uint32_t value);
-uint32_t _pop(struct vc4_emul *emul);
+void _push (struct vc4_emul *emul, uint32_t value);
+uint32_t _pop (struct vc4_emul *emul);
 
-typedef void (*instruction_function)(struct vc4_emul *emul, uint16_t *instr);
+typedef void (*instruction_function) (struct vc4_emul * emul,
+                                      uint16_t * instr);

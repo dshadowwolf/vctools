@@ -14,13 +14,13 @@ l2cc_init (struct bcm2835_emul *emul) {
 
 uint32_t
 l2cc_load (struct bcm2835_emul *emul, uint32_t address) {
-  print_log("L2CC Address load: 0x%08x\n", address);
+  print_log ("L2CC Address load: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
 
 void
 l2cc_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
-  print_log("L2CC Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("L2CC Address store: 0x%08x 0x%08x\n", address, value);
   (void) emul;
 }

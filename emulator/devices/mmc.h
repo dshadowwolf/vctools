@@ -1,15 +1,19 @@
 #pragma once
+ struct mmc_data {
+};
 
-struct mmc_data {
-};
+ 
 
 /*
  * This file is covered under the GPLv2 (and only the GPLv2) as it contains contents
  * from the Linux Kernel (versions 4.20.14 and 5.0.0)
- */
+ */ 
+  
 
-/* Standard MMC commands (4.1)           type  argument     response */
-   /* class 1 */
+/* Standard MMC commands (4.1)           type  argument     response */ 
+  /*
+   * class 1 
+   */ 
 #define MMC_GO_IDLE_STATE         0   /* bc                          */
 #define MMC_SEND_OP_COND          1   /* bcr  [31:0] OCR         R3  */
 #define MMC_ALL_SEND_CID          2   /* bcr                     R2  */
@@ -29,53 +33,72 @@ struct mmc_data {
 #define MMC_BUS_TEST_W           19   /* adtc                    R1  */
 #define MMC_SPI_READ_OCR         58   /* spi                  spi_R3 */
 #define MMC_SPI_CRC_ON_OFF       59   /* spi  [0:0] flag      spi_R1 */
-
-  /* class 2 */
+  
+  /*
+   * class 2 
+   */ 
 #define MMC_SET_BLOCKLEN         16   /* ac   [31:0] block len   R1  */
 #define MMC_READ_SINGLE_BLOCK    17   /* adtc [31:0] data addr   R1  */
 #define MMC_READ_MULTIPLE_BLOCK  18   /* adtc [31:0] data addr   R1  */
 #define MMC_SEND_TUNING_BLOCK    19   /* adtc                    R1  */
 #define MMC_SEND_TUNING_BLOCK_HS200	21	/* adtc R1  */
-
-  /* class 3 */
+  
+  /*
+   * class 3 
+   */ 
 #define MMC_WRITE_DAT_UNTIL_STOP 20   /* adtc [31:0] data addr   R1  */
-
-  /* class 4 */
+  
+  /*
+   * class 4 
+   */ 
 #define MMC_SET_BLOCK_COUNT      23   /* adtc [31:0] data addr   R1  */
 #define MMC_WRITE_BLOCK          24   /* adtc [31:0] data addr   R1  */
 #define MMC_WRITE_MULTIPLE_BLOCK 25   /* adtc                    R1  */
 #define MMC_PROGRAM_CID          26   /* adtc                    R1  */
 #define MMC_PROGRAM_CSD          27   /* adtc                    R1  */
-
-  /* class 6 */
+  
+  /*
+   * class 6 
+   */ 
 #define MMC_SET_WRITE_PROT       28   /* ac   [31:0] data addr   R1b */
 #define MMC_CLR_WRITE_PROT       29   /* ac   [31:0] data addr   R1b */
 #define MMC_SEND_WRITE_PROT      30   /* adtc [31:0] wpdata addr R1  */
-
-  /* class 5 */
+  
+  /*
+   * class 5 
+   */ 
 #define MMC_ERASE_GROUP_START    35   /* ac   [31:0] data addr   R1  */
 #define MMC_ERASE_GROUP_END      36   /* ac   [31:0] data addr   R1  */
 #define MMC_ERASE                38   /* ac                      R1b */
-
-  /* class 9 */
+  
+  /*
+   * class 9 
+   */ 
 #define MMC_FAST_IO              39   /* ac   <Complex>          R4  */
 #define MMC_GO_IRQ_STATE         40   /* bcr                     R5  */
-
-  /* class 7 */
+  
+  /*
+   * class 7 
+   */ 
 #define MMC_LOCK_UNLOCK          42   /* adtc                    R1b */
-
-  /* class 8 */
+  
+  /*
+   * class 8 
+   */ 
 #define MMC_APP_CMD              55   /* ac   [31:16] RCA        R1  */
 #define MMC_GEN_CMD              56   /* adtc [0] RD/WR          R1  */
-
-  /* class 11 */
+  
+  /*
+   * class 11 
+   */ 
 #define MMC_QUE_TASK_PARAMS      44   /* ac   [20:16] task id    R1  */
 #define MMC_QUE_TASK_ADDR        45   /* ac   [31:0] data addr   R1  */
 #define MMC_EXECUTE_READ_TASK    46   /* adtc [20:16] task id    R1  */
 #define MMC_EXECUTE_WRITE_TASK   47   /* adtc [20:16] task id    R1  */
 #define MMC_CMDQ_TASK_MGMT       48   /* ac   [20:16] task id    R1b */
+  
 
-/* BCM2835 specific bits */
+/* BCM2835 specific bits */ 
 #define SDCMD  0x00 /* Command to SD card              - 16 R/W */
 #define SDARG  0x04 /* Argument to SD card             - 32 R/W */
 #define SDTOUT 0x08 /* Start value for timeout counter - 32 R/W */
@@ -91,7 +114,7 @@ struct mmc_data {
 #define SDHBCT 0x3c /* Host byte count (debug)         - 32 R/W */
 #define SDDATA 0x40 /* Data to/from SD card            - 32 R/W */
 #define SDHBLC 0x50 /* Host block count (SDIO/SDHC)    -  9 R/W */
-
+  
 #define SDCMD_NEW_FLAG			0x8000
 #define SDCMD_FAIL_FLAG			0x4000
 #define SDCMD_BUSYWAIT			0x800
@@ -100,9 +123,9 @@ struct mmc_data {
 #define SDCMD_WRITE_CMD			0x80
 #define SDCMD_READ_CMD			0x40
 #define SDCMD_CMD_MASK			0x3f
-
+  
 #define SDCDIV_MAX_CDIV			0x7ff
-
+  
 #define SDHSTS_BUSY_IRPT		0x400
 #define SDHSTS_BLOCK_IRPT		0x200
 #define SDHSTS_SDIO_IRPT		0x100
@@ -111,18 +134,16 @@ struct mmc_data {
 #define SDHSTS_CRC16_ERROR		0x20
 #define SDHSTS_CRC7_ERROR		0x10
 #define SDHSTS_FIFO_ERROR		0x08
-/* Reserved */
-/* Reserved */
+
+/* Reserved */ 
+
+/* Reserved */ 
 #define SDHSTS_DATA_FLAG		0x01
-
+  
 #define SDHSTS_TRANSFER_ERROR_MASK	(SDHSTS_CRC7_ERROR | \
-					 SDHSTS_CRC16_ERROR | \
-					 SDHSTS_REW_TIME_OUT | \
-					 SDHSTS_FIFO_ERROR)
-
+  SDHSTS_CRC16_ERROR | \SDHSTS_REW_TIME_OUT | \SDHSTS_FIFO_ERROR)  
 #define SDHSTS_ERROR_MASK		(SDHSTS_CMD_TIME_OUT | \
-					 SDHSTS_TRANSFER_ERROR_MASK)
-
+  SDHSTS_TRANSFER_ERROR_MASK)  
 #define SDHCFG_BUSY_IRPT_EN	BIT(10)
 #define SDHCFG_BLOCK_IRPT_EN	BIT(8)
 #define SDHCFG_SDIO_IRPT_EN	BIT(5)
@@ -131,18 +152,18 @@ struct mmc_data {
 #define SDHCFG_WIDE_EXT_BUS	BIT(2)
 #define SDHCFG_WIDE_INT_BUS	BIT(1)
 #define SDHCFG_REL_CMD_LINE	BIT(0)
-
+  
 #define SDVDD_POWER_OFF		0
 #define SDVDD_POWER_ON		1
-
+  
 #define SDEDM_FORCE_DATA_MODE	BIT(19)
 #define SDEDM_CLOCK_PULSE	BIT(20)
 #define SDEDM_BYPASS		BIT(21)
-
+  
 #define SDEDM_WRITE_THRESHOLD_SHIFT	9
 #define SDEDM_READ_THRESHOLD_SHIFT	14
 #define SDEDM_THRESHOLD_MASK		0x1f
-
+  
 #define SDEDM_FSM_MASK		0xf
 #define SDEDM_FSM_IDENTMODE	0x0
 #define SDEDM_FSM_DATAMODE	0x1
@@ -159,11 +180,11 @@ struct mmc_data {
 #define SDEDM_FSM_GENPULSES	0xc
 #define SDEDM_FSM_WRITEWAIT2	0xd
 #define SDEDM_FSM_STARTPOWDOWN	0xf
-
+  
 #define SDDATA_FIFO_WORDS	16
-
+  
 #define FIFO_READ_THRESHOLD	4
 #define FIFO_WRITE_THRESHOLD	4
 #define SDDATA_FIFO_PIO_BURST	8
-
+  
 #define PIO_THRESHOLD	1  /* Maximum block count for PIO (0 = always DMA) */

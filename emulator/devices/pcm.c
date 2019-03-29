@@ -14,13 +14,13 @@ pcm_init (struct bcm2835_emul *emul) {
 
 uint32_t
 pcm_load (struct bcm2835_emul *emul, uint32_t address) {
-  print_log("PCM Address load: 0x%08x\n", address);
+  print_log ("PCM Address load: 0x%08x\n", address);
   return 0;
   (void) emul;
 }
 
 void
 pcm_store (struct bcm2835_emul *emul, uint32_t address, uint32_t value) {
-  print_log("PCM Address store: 0x%08x 0x%08x\n", address, value);
+  print_log ("PCM Address store: 0x%08x 0x%08x\n", address, value);
   (void) emul;
 }
