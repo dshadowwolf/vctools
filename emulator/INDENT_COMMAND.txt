@@ -1,1 +1,1 @@
-find . -depth -type f -iname *[ch] -print -exec  indent -bad -bap -bbb -br -brf -brs -cdb -ce -cs -i2 -lp -lps -cdw -sai -saf -saw -nut -nprs -sc -ts2 {} \;
+find . -depth -type f -iname '*[ch]' -print -exec  indent -bad -bap -bbb -br -brf -brs -cdb -ce -cs -i2 -lp -lps -cdw -sai -saf -saw -nut -nprs -sc -ts2 {} \;
