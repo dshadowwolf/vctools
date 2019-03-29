@@ -66,16 +66,6 @@ uint32_t registers[21] = { 0, 0, 0, 0,  // 0x00 to 0x0c
  100     object_property_add_child(obj, "sdhost", OBJECT(&s->sdhost), NULL);
  101     qdev_set_parent_bus(DEVICE(&s->sdhost), sysbus_get_default());
 
- 257     /* Extended Mass Media Controller
- 258      *
- 259      * Compatible with:
- 260      * - SD Host Controller Specification Version 3.0 Draft 1.0
- 261      * - SDIO Specification Version 3.0
- 262      * - MMC Specification Version 4.4
- 263      *
- 264      * For the exact details please refer to the Arasan documentation:
- 265      *   SD3.0_Host_AHB_eMMC4.4_Usersguide_ver5.9_jan11_10.pdf
- 266      * /
  267     object_property_set_uint(OBJECT(&s->sdhci), 3, "sd-spec-version", &err);
  268     object_property_set_uint(OBJECT(&s->sdhci), BCM2835_SDHC_CAPAREG, "capareg",
  269                              &err);
@@ -98,7 +88,6 @@ uint32_t registers[21] = { 0, 0, 0, 0,  // 0x00 to 0x0c
  286         qdev_get_gpio_in_named(DEVICE(&s->ic), BCM2835_IC_GPU_IRQ,
  287                                INTERRUPT_ARASANSDIO));
 
- 289     /* SDHOST * /
  290     object_property_set_bool(OBJECT(&s->sdhost), true, "realized", &err);
  291     if (err) {
  292         error_propagate(errp, err);
@@ -111,7 +100,7 @@ uint32_t registers[21] = { 0, 0, 0, 0,  // 0x00 to 0x0c
  299         qdev_get_gpio_in_named(DEVICE(&s->ic), BCM2835_IC_GPU_IRQ,
  300                                INTERRUPT_SDIO));
 
-  21 /* Capabilities for SD controller: no DMA, high-speed, default clocks etc. * /
+  21 / * Capabilities for SD controller: no DMA, high-speed, default clocks etc. * /
   22 #define BCM2835_SDHC_CAPAREG 0x52134b4
 
  */
