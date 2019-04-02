@@ -363,7 +363,7 @@ function_lists:
         code_name: asr
         code: |
           void asr(int d, int32_t a, int32_t b) {
-              if (a && 0x80000000) {
+              if (a & 0x80000000) {
                   set_reg(d, (a >> b) | ~(0xffffffffu >> b));
               } else {
                   set_reg(d, a >> b);

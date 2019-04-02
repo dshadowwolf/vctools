@@ -16,6 +16,7 @@
 7E002028 			
 7E00202C 			
 7E002030 	Interrupt table address 	loader.bin 	Write the address of the interrupt vector table here to enable interrupts. You should make sure r28 contains a valid stack pointer for interrupt handlers to use before setting this.
+-- this defaults to 0x1B000
 7E002034 			
 7E002038 			
 7E002040 		start_cd 	1 unknown bit of information per interrupt (0-31)

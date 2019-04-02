@@ -20,8 +20,8 @@ uint32_t
 inte_load (struct bcm2835_emul *emul, uint32_t address) {
   if (address == VC_INTE_TABLE_PTR
       && emul->inte.registers[REG (address)] == 0) {
-    print_log ("Stopping Execution as INTE_TABLE_PTR wasn't set!\n");
-    exit (EXIT_FAILURE);
+    emul->inte.registers[REG (address)] = 0x0001B000;
+    print_log ("IC0_VADDR (VC_INTE_TABLE_PTR) not set (no bootrom?) - setting to functional default\n");
   }
   print_log ("INTE Load Address: %08x [register number: %u]\n", address,
              REG (address));
